@@ -25,21 +25,21 @@ revelações ao scroll, do gráfico do hero, do simulador de juro composto, das
 perguntas frequentes, do formulário de contacto e do banner de cookies.
 Se um CDN estiver em baixo ou a ligação for má, **o site funciona por inteiro**.
 
-**`enhance.js`** é o acabamento. Carrega as bibliotecas de animação de forma
-assíncrona e só depois do primeiro render, cada uma no seu bloco de segurança.
-É esta separação que permite ter 3D no hero sem comprometer o tempo de carregamento.
+**`enhance.js`** é o acabamento opcional: three.js, GSAP, Lenis e Taxi.js.
+Está **desligado por defeito** — o site publicado fica igual ao que se vê ao abrir
+o `index.html` directamente, sem a rede 3D no hero nem scroll com inércia.
 
-### Interruptores de diagnóstico
+Para o experimentar, acrescentar `?fx` ao endereço. Para o ligar de forma
+permanente, trocar a condição no fim do `index.html` por `true`.
 
-Acrescentar ao endereço para desligar partes sem tocar no código:
+### Interruptores
 
 | Endereço | Efeito |
 |---|---|
-| `?nofx` | desliga toda a camada de enriquecimento |
-| `?nothree` | desliga o 3D do hero |
-| `?nogsap` | desliga as animações de scroll |
-| `?nolenis` | desliga o scroll suave |
-| `?notaxi` | desliga as transições entre páginas |
+| `?fx` | liga a camada de animação |
+| `?fx&nothree` | liga tudo menos o 3D do hero |
+| `?fx&nogsap` | liga tudo menos as animações de scroll |
+| `?fx&nolenis` | liga tudo menos o scroll suave |
 
 ## Configuração
 

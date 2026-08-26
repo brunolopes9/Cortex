@@ -1371,6 +1371,18 @@
 <script src="js/main.js" defer></script>
 <!-- Camada de enriquecimento: three.js · GSAP · Lenis · Rive · Taxi.js
      Carregada como módulo, depois do render. Se falhar, o site fica na baseline. -->
-<script type="module" src="js/enhance.js"></script>
+<!-- Camada de animação pesada: three.js, GSAP, Lenis e Taxi.js.
+     DESLIGADA por defeito. Assim o site publicado fica exactamente igual ao que
+     se vê ao abrir o index.html directamente no browser — sem a rede verde em 3D
+     que reage ao rato. Para a experimentar, acrescentar ?fx ao endereço.
+     Para a voltar a ligar sempre, trocar a condição abaixo por true. -->
+<script>
+  if (new URLSearchParams(location.search).has('fx')) {
+    var s = document.createElement('script');
+    s.type = 'module';
+    s.src = 'js/enhance.js';
+    document.head.appendChild(s);
+  }
+</script>
 </body>
 </html>

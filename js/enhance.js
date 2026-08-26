@@ -502,8 +502,9 @@ function boot() {
     .catch(() => { /* a baseline continua intacta */ });
 }
 
-/* Escape hatch: abrir o site com ?nofx desliga toda esta camada e deixa
-   apenas a baseline. Útil para diagnosticar e para máquinas fracas. */
+/* Este ficheiro só é carregado quando o endereço tem ?fx — ver o final
+   do index.html. Por defeito o site corre apenas com o main.js, sem
+   dependências externas e sem a rede 3D no hero. */
 if (new URLSearchParams(location.search).has('nofx')) {
   console.info('[cortex] camada de enriquecimento desligada (?nofx)');
 } else if (document.readyState === 'complete') {
