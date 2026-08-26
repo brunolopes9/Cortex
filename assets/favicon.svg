@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Cortex Automation">
+  <defs>
+    <linearGradient id="fc" x1="12" y1="10" x2="54" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/><stop offset=".5" stop-color="#96A09B"/><stop offset="1" stop-color="#EDF2F0"/>
+    </linearGradient>
+    <linearGradient id="fg" x1="14" y1="14" x2="46" y2="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7BF2BC"/><stop offset="1" stop-color="#17A868"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#08090A"/>
+  <!-- Arcos do C -->
+  <path d="M13.6 28.4A20 20 0 0 1 51.4 23.4L46.6 25.6A15 15 0 0 0 18.4 29.3Z" fill="url(#fc)"/>
+  <path d="M51.4 40.6A20 20 0 0 1 13.6 35.6L18.4 34.7A15 15 0 0 0 46.6 38.4Z" fill="url(#fc)"/>
+  <!-- Cérebro simplificado -->
+  <path d="M31 15c-6-1-11 2-12 7-4 1-6 5-4 9-2 4 1 9 6 10 2 4 6 6 10 5" fill="none" stroke="url(#fg)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M31 15v31" stroke="url(#fg)" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M31 24h-6M31 34h-8" stroke="url(#fg)" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- Seta -->
+  <path d="M35 44c5-1 10-6 13-14" fill="none" stroke="#2EE08A" stroke-width="3" stroke-linecap="round"/>
+  <path d="M44 31l4.6-1.8.4 5" fill="none" stroke="#7BF2BC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

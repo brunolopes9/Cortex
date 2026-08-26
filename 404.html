@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>document.documentElement.classList.add('js');</script>
+
+<title>Página não encontrada | Cortex Automation</title>
+<meta name="description" content="A página que procura não existe ou foi movida.">
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#0A0B0C">
+
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="assets/favicon-64.png" sizes="64x64" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+  /* Pequeno gráfico que "cai" — o 404 desta casa tinha de ser um drawdown */
+  .dd404 { width: min(560px, 100%); margin: 0 auto 34px; }
+  .dd404 svg { width: 100%; height: auto; overflow: visible; }
+  .dd404 path.p { stroke-dasharray: 900; stroke-dashoffset: 900; animation: d404 2s cubic-bezier(.16,1,.3,1) .25s forwards; }
+  @keyframes d404 { to { stroke-dashoffset: 0; } }
+  .e404 { position: relative; }
+  .e404__glow {
+    position: absolute; left: 50%; top: 38%;
+    transform: translate(-50%, -50%);
+    width: min(760px, 120vw); aspect-ratio: 1; pointer-events: none; z-index: 0;
+    background: radial-gradient(circle, rgba(255,106,85,.13), transparent 62%);
+  }
+  /* O conteúdo é elevado pela sua própria classe. Uma regra `.e404 > *`
+     apanharia também o brilho e anular-lhe-ia o position:absolute — passava
+     a ocupar 760px de altura em fluxo e empurrava tudo para fora do ecrã. */
+  .e404__body { position: relative; z-index: 1; }
+</style>
+</head>
+<body>
+
+<header class="nav is-stuck">
+  <div class="wrap nav__in">
+    <a href="index.html" class="logo" aria-label="Cortex Automation — início">
+      <img class="logo__mark" src="assets/mark.png" width="38" height="38" alt="" aria-hidden="true">
+      <span class="logo__txt"><b>Cortex</b><span>Automation</span></span>
+    </a>
+    <div class="nav__cta">
+      <a href="index.html" class="btn btn--acc btn--sm">Ir para o início</a>
+    </div>
+  </div>
+</header>
+
+<main class="e404">
+  <div class="e404__glow" aria-hidden="true"></div>
+  <div class="e404__body">
+    <div class="dd404" aria-hidden="true">
+      <svg viewBox="0 0 560 150">
+        <line x1="0" y1="30" x2="560" y2="30" stroke="rgba(237,234,227,.09)" stroke-dasharray="4 5"/>
+        <path class="p" d="M0 34 L70 26 L118 44 L172 22 L228 40 L268 30 L300 62 L340 96 L392 84 L440 122 L500 112 L560 140"
+              fill="none" stroke="#FF6A55" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="560" cy="140" r="4" fill="#FF6A55"/>
+      </svg>
+    </div>
+
+    <div class="e404__code">404</div>
+    <h1 class="h2">Esta página foi para <span class="gilt">drawdown</span>.</h1>
+    <p class="lede">
+      O endereço que procura não existe, mudou de sítio ou foi escrito com um erro.
+      Acontece — e, ao contrário do mercado, isto resolve-se com um clique.
+    </p>
+    <div class="btn-row">
+      <a href="index.html" class="btn btn--acc">
+        Voltar ao início
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="index.html#performance" class="btn btn--ghost">Ver a performance</a>
+      <a href="#" class="btn btn--ghost" data-wa>Falar connosco</a>
+    </div>
+    <p class="micro" style="max-width:52ch;margin:32px auto 0">
+      Se chegou aqui a partir de uma ligação nossa, avise-nos pelo WhatsApp — corrigimos.
+    </p>
+  </div>
+</main>
+
+<script src="js/main.js" defer></script>
+</body>
+</html>

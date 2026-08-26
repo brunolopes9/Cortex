@@ -1,0 +1,11 @@
+# robots.txt — Cortex Automation
+# ALTERAR: substituir o domínio pela morada final antes de publicar.
+
+User-agent: *
+Allow: /
+Disallow: /404.html
+
+# Ficheiros de trabalho que não devem ir para o índice
+Disallow: /*.riv$
+
+Sitemap: https://www.cortexautomation.pt/sitemap.xml

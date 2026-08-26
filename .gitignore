@@ -1,0 +1,18 @@
+# Notas internas — ficam só na tua máquina.
+# O LEIA-ME.md tem observações francas sobre números por confirmar, questões
+# regulatórias e decisões editoriais. Num repositório público qualquer pessoa
+# as leria, incluindo potenciais clientes. Não vai para o GitHub de propósito.
+LEIA-ME.md
+
+# Ficheiro de origem da imagem de partilha — não faz parte do site publicado
+assets/og-source.html
+
+# Lixo de sistema
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Ficheiros temporários de trabalho
+_*.js
+_*.html
+_*.css

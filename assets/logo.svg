@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Cortex Automation">
+  <defs>
+    <linearGradient id="cx-chrome" x1="40" y1="30" x2="170" y2="175" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset=".34" stop-color="#D2D9D6"/>
+      <stop offset=".56" stop-color="#79837F"/>
+      <stop offset=".78" stop-color="#C8D0CD"/>
+      <stop offset="1" stop-color="#EFF3F1"/>
+    </linearGradient>
+    <linearGradient id="cx-green" x1="34" y1="46" x2="112" y2="158" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7BF2BC"/>
+      <stop offset=".52" stop-color="#2EE08A"/>
+      <stop offset="1" stop-color="#17A868"/>
+    </linearGradient>
+    <linearGradient id="cx-candle" x1="110" y1="150" x2="160" y2="86" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#17A868"/>
+      <stop offset="1" stop-color="#7BF2BC"/>
+    </linearGradient>
+    <filter id="cx-glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="3.4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Arco superior do C, em crómio -->
+  <path d="M29.1 87.5 A72 72 0 0 1 165.3 69.6 L150.8 76.3 A56 56 0 0 0 44.9 90.3 Z" fill="url(#cx-chrome)"/>
+  <!-- Arco inferior do C, em crómio -->
+  <path d="M165.3 130.4 A72 72 0 0 1 29.1 112.5 L44.9 109.7 A56 56 0 0 0 150.8 123.7 Z" fill="url(#cx-chrome)"/>
+
+  <g filter="url(#cx-glow)">
+    <!-- Contorno do hemisfério cerebral -->
+    <path d="M99 47C82 43 66 49 60 61C48 63 40 73 42 85C33 91 32 105 40 113C36 125 44 139 58 141C64 153 82 157 99 151"
+          fill="none" stroke="url(#cx-green)" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Espinha central -->
+    <path d="M99 47V151" stroke="url(#cx-green)" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- Traçados de circuito -->
+    <g fill="none" stroke="url(#cx-green)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M99 66H83V57"/>
+      <path d="M99 88H70V76H58"/>
+      <path d="M99 108H76V121"/>
+      <path d="M99 130H86V119"/>
+      <path d="M70 88V102H60"/>
+      <path d="M50 108H62"/>
+    </g>
+    <!-- Nós do circuito -->
+    <g fill="#7BF2BC">
+      <circle cx="83" cy="55" r="3.1"/>
+      <circle cx="56" cy="76" r="3.1"/>
+      <circle cx="76" cy="123" r="3.1"/>
+      <circle cx="86" cy="117" r="3.1"/>
+      <circle cx="58" cy="102" r="3.1"/>
+      <circle cx="48" cy="108" r="3.1"/>
+      <circle cx="70" cy="88" r="2.6"/>
+    </g>
+  </g>
+
+  <!-- Velas ascendentes dentro da abertura do C -->
+  <g stroke="url(#cx-candle)" stroke-linecap="round">
+    <g stroke-width="2">
+      <path d="M114 121v22"/><path d="M125 111v22"/><path d="M136 100v22"/><path d="M147 89v22"/>
+    </g>
+    <g stroke-width="7">
+      <path d="M114 126v11"/><path d="M125 116v11"/><path d="M136 105v12"/><path d="M147 94v12"/>
+    </g>
+  </g>
+
+  <!-- Seta de tendência -->
+  <g filter="url(#cx-glow)">
+    <path d="M107 145C124 143 141 128 155 100" fill="none" stroke="url(#cx-candle)" stroke-width="3.4" stroke-linecap="round"/>
+    <path d="M146 101l10-4 1 11" fill="none" stroke="#7BF2BC" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

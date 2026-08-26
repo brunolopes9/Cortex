@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="Cortex Automation">
+  <defs>
+    <linearGradient id="mc" x1="8" y1="6" x2="42" y2="44" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF"/><stop offset=".48" stop-color="#A6B0AC"/><stop offset="1" stop-color="#F2F6F4"/>
+    </linearGradient>
+    <linearGradient id="mg" x1="10" y1="8" x2="34" y2="42" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7BF2BC"/><stop offset="1" stop-color="#1FC079"/>
+    </linearGradient>
+  </defs>
+  <!-- Arcos do C, em crómio -->
+  <path d="M6.4 20.6A18 18 0 0 1 40.4 16.1L35.6 18.4A13 13 0 0 0 11.2 21.7Z" fill="url(#mc)"/>
+  <path d="M40.4 31.9A18 18 0 0 1 6.4 27.4L11.2 26.3A13 13 0 0 0 35.6 29.6Z" fill="url(#mc)"/>
+  <!-- Hemisfério cerebral -->
+  <path d="M23 8.5c-4.6-.7-8.4 1.6-9.2 5.4-3.1.8-4.6 3.8-3.1 6.9-1.5 3.1.8 6.9 4.6 7.7 1.5 3.1 4.6 4.6 7.7 3.8"
+        fill="none" stroke="url(#mg)" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M23 8.5v23.8" stroke="url(#mg)" stroke-width="2.3" stroke-linecap="round"/>
+  <path d="M23 15.4h-4.6M23 23.1h-6.1M23 29.2h-3.1" stroke="url(#mg)" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="17.6" cy="15.4" r="1.7" fill="#7BF2BC"/>
+  <circle cx="15.9" cy="23.1" r="1.7" fill="#7BF2BC"/>
+  <!-- Seta de tendência -->
+  <path d="M26.5 33.5c3.8-.8 7.3-4.6 9.6-10.7" fill="none" stroke="#2EE08A" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M33.4 23.4l3.5-1.4.3 3.8" fill="none" stroke="#7BF2BC" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
