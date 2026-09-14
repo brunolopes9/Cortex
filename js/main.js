@@ -377,10 +377,13 @@
     var cap = $('#cCap'), mon = $('#cMon');
     if (!cap || !mon) return;
 
-    /* A taxa é fixa: é a média mensal histórica do algoritmo.
+    /* A taxa é fixa: é a média mensal COMPOSTA da conta real, calculada
+       sobre os 32 meses fechados entre Janeiro de 2024 e Agosto de 2026
+       (+363,06% no total, com 1% de risco por operação).
+         (1 + 3,6306) ^ (1/32) − 1 = 0,04906…
        Não é um campo à escolha do visitante — se fosse, o simulador
        deixava de dizer alguma coisa sobre o sistema. */
-    var TAXA = 0.0689;
+    var TAXA = 0.0491;
 
     var oCap = $('#oCap'), oMon = $('#oMon');
     var oFinal = $('#oFinal'), oGain = $('#oGain');
@@ -527,7 +530,7 @@
 
 
   /* ══════════════════════ 9b. Modal do relatório ══════════════════════
-     A verificação no Myfxbook NUNCA é bloqueada — é a prova, e prova
+     Os números estão todos na página, à vista e sem formulário — prova
      atrás de formulário lê-se como prova escondida. O que se pede em
      troca do contacto é o relatório em PDF, que é documento nosso.     */
   var LEAD = 'cortex.lead.v1';
@@ -659,6 +662,59 @@
   }
 
   /* ══════════════════════ 10. Arranque ══════════════════════ */
+  /* ─────────────────────────────────────────────────────────────
+     VÍDEO DE APRESENTAÇÃO (VSL)
+
+     O ficheiro só começa a descarregar quando o visitante carrega
+     em "play" (preload="none"). Até lá vê-se apenas o poster, com
+     uma camada por cima a fazer de botão. Quando o vídeo arranca,
+     a camada desaparece e os controlos nativos ficam a comandar.
+     ───────────────────────────────────────────────────────────── */
+  function vsl() {
+    var v = $('#vslVideo'), btn = $('#vslPlay'), box = $('#vslBox');
+    if (!v || !btn || !box) return;
+
+    /* Sem JavaScript os controlos nativos ficam visíveis — é a única
+       forma de dar play. Com JavaScript, escondemo-los até o vídeo
+       arrancar, para o poster ficar limpo por baixo do botão. */
+    v.removeAttribute('controls');
+
+    var fb = $('#vslFallback'), stall = null;
+
+    function giveUp() {
+      if (fb) fb.hidden = false;
+      v.setAttribute('controls', '');
+      box.classList.remove('is-playing');
+    }
+
+    function start() {
+      box.classList.add('is-playing');
+      v.setAttribute('controls', '');
+      v.setAttribute('preload', 'auto');
+
+      /* Se ao fim de 10 segundos nem os metadados chegaram, algo está a
+         bloquear a reprodução: damos ao visitante uma saída em vez de o
+         deixar a olhar para um rectângulo preto. */
+      clearTimeout(stall);
+      stall = setTimeout(function () { if (v.readyState === 0) giveUp(); }, 10000);
+
+      var p = v.play();
+      if (p && p.catch) p.catch(function () { box.classList.remove('is-playing'); });
+    }
+
+    v.addEventListener('loadeddata', function () { clearTimeout(stall); });
+    v.addEventListener('error', giveUp);
+
+    btn.addEventListener('click', start);
+    v.addEventListener('play', function () { box.classList.add('is-playing'); });
+    v.addEventListener('pause', function () { if (v.currentTime === 0) box.classList.remove('is-playing'); });
+    v.addEventListener('ended', function () {
+      v.currentTime = 0;
+      v.removeAttribute('controls');
+      box.classList.remove('is-playing');
+    });
+  }
+
   function init() {
     wireLinks();
     nav();
@@ -666,6 +722,7 @@
     reveals();
     counters();
     heroCanvas();
+    vsl();
     calculator();
     faq();
     reportModal();

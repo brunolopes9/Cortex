@@ -48,7 +48,7 @@ Tudo o que é contacto está no topo de `js/main.js`:
 ```js
 var CONFIG = {
   whatsapp:  '351933938716',
-  telegram:  '',        // ex.: 'https://t.me/cortexautomation'
+  telegram:  'https://t.me/+QadwFS41SooxYTBk',
   instagram: '',        // ex.: 'https://instagram.com/cortexautomation'
   analytics: '',        // ex.: 'G-XXXXXXXXXX'
   formEndpoint: ''      // ex.: 'https://formspree.io/f/xxxxxxxx'
@@ -57,11 +57,18 @@ var CONFIG = {
 
 Campos vazios escondem automaticamente os elementos correspondentes.
 
-## Antes de publicar num domínio próprio
+## Domínio
 
-Substituir `https://www.cortexautomation.pt` pelo domínio real em `index.html`,
-`privacidade.html`, `termos.html`, `robots.txt` e `sitemap.xml` — é o endereço
-usado nas tags canónicas e de partilha.
+O endereço canónico é `https://cortexautomationai.com`, usado nas tags canónicas,
+no `robots.txt` e no `sitemap.xml`. Se algum dia mudar, é um find-and-replace
+em `index.html`, `privacidade.html`, `termos.html`, `robots.txt` e `sitemap.xml`.
+
+## Vídeo de apresentação
+
+O VSL está alojado no próprio site (`assets/vsl-720.mp4`, 4,5 MB, 720p com
+`faststart`). Não carrega nada até o visitante carregar em play: até lá vê-se
+apenas `assets/vsl-poster.jpg`. Para trocar o vídeo basta substituir os dois
+ficheiros, mantendo os nomes.
 
 ## Aviso
 

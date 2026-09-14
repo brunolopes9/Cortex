@@ -2910,7 +2910,7 @@ html.lenis { scroll-behavior: auto !important; }
 .bar__lbl { color: var(--fg); }
 .bar--best .bar__lbl { color: var(--fg); }
 
-/* Legendas das capturas do Myfxbook */
+/* Legendas das capturas de performance */
 .shot figcaption { color: var(--fg); }
 
 /* ==========================================================================
@@ -2967,3 +2967,191 @@ html.lenis { scroll-behavior: auto !important; }
 }
 .why__item p { font-size: .85rem; line-height: 1.6; }
 .why__item { padding-block: clamp(16px, 2.1vw, 22px); }
+
+/* ==========================================================================
+   Vídeo de apresentação (VSL)
+   Fica logo a seguir ao hero. Carrega só quando o visitante pede: até lá
+   é apenas o poster com uma camada por cima a fazer de botão de play.
+   ========================================================================== */
+.vsl { padding-block: clamp(48px, 6vw, 86px); }
+.vsl .sec-hd { margin-bottom: clamp(28px, 3.4vw, 42px); }
+
+.vsl__box {
+  position: relative;
+  max-width: 940px;
+  margin: 0 auto;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #07090A;
+  border: 1px solid var(--acc-line);
+  box-shadow:
+    0 40px 90px -50px rgba(0, 0, 0, .9),
+    0 0 90px -46px rgba(46, 224, 138, .55);
+}
+.vsl__video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: #07090A;
+}
+
+/* Camada de play — desaparece assim que o vídeo arranca */
+.vsl__play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  border: 0;
+  cursor: pointer;
+  background:
+    radial-gradient(70% 70% at 50% 46%, rgba(7, 9, 10, .62), rgba(7, 9, 10, .84));
+  color: var(--fg);
+  transition: opacity .45s var(--ease), visibility .45s;
+}
+.vsl__box.is-playing .vsl__play {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.vsl__ring {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  padding-left: 5px;          /* centra oticamente o triângulo */
+  border-radius: 50%;
+  color: #04180E;
+  background: linear-gradient(150deg, var(--acc-hi), var(--acc) 55%, var(--acc-deep));
+  box-shadow: 0 0 0 1px rgba(46, 224, 138, .5), 0 0 60px -10px rgba(46, 224, 138, .85);
+  transition: transform .4s var(--ease-out), box-shadow .4s var(--ease);
+}
+.vsl__play:hover .vsl__ring,
+.vsl__play:focus-visible .vsl__ring {
+  transform: scale(1.07);
+  box-shadow: 0 0 0 1px rgba(46, 224, 138, .8), 0 0 80px -6px rgba(46, 224, 138, 1);
+}
+.vsl__cap {
+  font-family: var(--mono);
+  font-size: .74rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fg);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, .8);
+}
+.vsl__cap i {
+  font-style: normal;
+  color: var(--acc);
+  margin-left: 8px;
+}
+@media (max-width: 620px) {
+  .vsl__ring { width: 66px; height: 66px; }
+  .vsl__cap { font-size: .66rem; letter-spacing: .1em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vsl__ring { transition: none; }
+}
+
+/* ==========================================================================
+   Cartão de prova — linha de verificação por baixo dos botões
+   ========================================================================== */
+.proof__vf {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: .74rem;
+  line-height: 1.5;
+  color: var(--fg-faint);
+}
+.proof__vf svg { flex: none; margin-top: 3px; color: var(--acc); }
+
+/* ==========================================================================
+   Barra mensal negativa — mantém-se assente na linha de base, a vermelho
+   ========================================================================== */
+.bar--neg { justify-content: flex-end; }
+.bar--neg i {
+  align-self: stretch;
+  margin-top: 0;
+  border-radius: 7px 7px 2px 2px;
+  background: linear-gradient(180deg, var(--loss) 0%, rgba(255, 106, 85, .28) 100%);
+}
+.bar--neg .bar__val {
+  top: auto;
+  bottom: calc(var(--h) + 10px);
+  color: var(--loss);
+}
+
+/* ==========================================================================
+   Drawdown mês a mês — lista compacta, sem scroll vertical
+   ========================================================================== */
+.ddm {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ddm li {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 12px 10px;
+  border: 1px solid var(--line-soft);
+  border-radius: 11px;
+  background: rgba(237, 234, 227, .022);
+  text-align: center;
+}
+.ddm span {
+  font-family: var(--mono);
+  font-size: .64rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.ddm b {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: .86rem;
+  font-weight: 500;
+  letter-spacing: -.02em;
+  color: var(--loss);
+}
+@media (max-width: 860px) { .ddm { grid-template-columns: repeat(4, 1fr); } }
+
+/* ==========================================================================
+   Rodapé — botão que abre o modal, com o mesmo aspecto das ligações
+   ========================================================================== */
+.foot__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: .88rem;
+  color: var(--fg-dim);
+  cursor: pointer;
+  text-align: left;
+  transition: color .3s var(--ease);
+}
+.foot__btn:hover { color: var(--acc); }
+.foot__btn svg { flex: none; }
+
+/* Saída de emergência do vídeo, se a reprodução falhar */
+.vsl__fb {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  text-align: center;
+  font-size: .82rem;
+  color: var(--fg-dim);
+}
+.vsl__fb a { color: var(--acc); text-decoration: underline; text-underline-offset: 3px; }
