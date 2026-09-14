@@ -3087,44 +3087,6 @@ html.lenis { scroll-behavior: auto !important; }
 }
 
 /* ==========================================================================
-   Drawdown mês a mês — lista compacta, sem scroll vertical
-   ========================================================================== */
-.ddm {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 8px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.ddm li {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 12px 10px;
-  border: 1px solid var(--line-soft);
-  border-radius: 11px;
-  background: rgba(237, 234, 227, .022);
-  text-align: center;
-}
-.ddm span {
-  font-family: var(--mono);
-  font-size: .64rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--fg-faint);
-}
-.ddm b {
-  font-family: var(--mono);
-  font-variant-numeric: tabular-nums;
-  font-size: .86rem;
-  font-weight: 500;
-  letter-spacing: -.02em;
-  color: var(--loss);
-}
-@media (max-width: 860px) { .ddm { grid-template-columns: repeat(4, 1fr); } }
-
-/* ==========================================================================
    Rodapé — botão que abre o modal, com o mesmo aspecto das ligações
    ========================================================================== */
 .foot__btn {
@@ -3155,3 +3117,228 @@ html.lenis { scroll-behavior: auto !important; }
   color: var(--fg-dim);
 }
 .vsl__fb a { color: var(--acc); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ==========================================================================
+   HERO VSL — o vídeo é o primeiro ecrã
+   Tudo o que está acima do player tem de caber num viewport curto, por isso
+   o título encolhe e as margens são apertadas. A barra de prova vem a seguir.
+   ========================================================================== */
+.hero--vsl {
+  padding-top: clamp(84px, 9vw, 112px);
+  padding-bottom: clamp(48px, 6vw, 80px);
+  text-align: center;
+}
+.hero--vsl .hero__head { margin: 0 auto; }
+.hero--vsl .hero__title {
+  font-size: clamp(1.6rem, 3.1vw, 2.55rem);
+  margin-bottom: 14px;
+}
+.hero--vsl .hero__lede {
+  margin: 0 auto 22px;
+  max-width: 56ch;
+  font-size: clamp(.92rem, 1.3vw, 1.02rem);
+}
+.hero--vsl .badge { margin-bottom: 16px; }
+
+/* O player manda no primeiro ecrã.
+   A altura é que comanda — a largura vem dela pelo aspect-ratio — para que
+   o vídeo encolha em portáteis baixos em vez de empurrar tudo para fora. */
+.hero--vsl .vsl__box {
+  aspect-ratio: 16 / 9;
+  height: clamp(196px, calc(100vh - 300px), 418px);
+  width: auto;
+  max-width: min(100%, 744px);
+  margin-inline: auto;
+}
+.hero--vsl .vsl__video { width: 100%; height: 100%; object-fit: contain; }
+
+.hero__cta {
+  justify-content: center;
+  margin-top: clamp(18px, 2.2vw, 26px);
+}
+
+/* Portáteis baixos: o texto cede o espaço todo ao vídeo */
+@media (min-width: 861px) and (max-height: 800px) {
+  .hero--vsl { padding-top: 78px; }
+  .hero--vsl .hero__title { font-size: clamp(1.44rem, 2.4vw, 1.95rem); }
+  .hero--vsl .hero__lede { display: none; }
+}
+
+@media (max-width: 620px) {
+  .hero--vsl { padding-top: 84px; }
+  .hero--vsl .hero__title { font-size: clamp(1.34rem, 6.6vw, 1.78rem); }
+  .hero--vsl .hero__lede { font-size: .86rem; margin-bottom: 16px; }
+  .hero--vsl .vsl__box { height: auto; width: 100%; max-width: 100%; }
+  .hero__cta { flex-direction: column; }
+  .hero__cta .btn { width: 100%; justify-content: center; }
+}
+
+/* ==========================================================================
+   Barra de prova — 4,91% em destaque, o resto em grelha à volta
+   ========================================================================== */
+.proof--bar {
+  margin-top: clamp(36px, 4.6vw, 60px);
+  text-align: left;
+}
+.proof__grid {
+  display: grid;
+  grid-template-columns: minmax(0, .78fr) minmax(0, 1.6fr);
+  gap: clamp(18px, 2.4vw, 30px);
+  padding: clamp(20px, 2.4vw, 28px);
+  align-items: center;
+}
+
+.proof__star {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: clamp(18px, 2vw, 24px);
+  border-radius: 14px;
+  border: 1px solid var(--acc-line);
+  background: linear-gradient(160deg, rgba(46, 224, 138, .11), rgba(46, 224, 138, .02));
+}
+.proof__star-lbl {
+  font-family: var(--mono);
+  font-size: .66rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--acc);
+}
+.proof__star-n {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(2.4rem, 4.6vw, 3.3rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -.045em;
+}
+.proof__star-sub {
+  font-size: .74rem;
+  line-height: 1.5;
+  color: var(--fg-faint);
+}
+
+.proof__cells {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.proof__cell {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 5px;
+  padding: 13px 14px 12px;
+  background: var(--ink);
+}
+.proof__cell dt {
+  font-size: .7rem;
+  line-height: 1.35;
+  color: var(--fg-faint);
+}
+.proof__cell dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 1.04rem;
+  font-weight: 500;
+  letter-spacing: -.025em;
+}
+.proof__cell--hi { background: rgba(46, 224, 138, .07); }
+.proof__cell--hi dd { color: var(--acc-hi); }
+/* Sete células numa grelha de quatro: a última ocupa o lugar que sobra,
+   senão fica um buraco no canto a fingir que é mais uma célula. */
+.proof__cell:last-child { grid-column: span 2; }
+.proof__cell--sm { font-size: .78rem !important; font-family: var(--sans) !important; color: var(--fg-dim); }
+
+.proof__ft--bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  padding: 14px clamp(20px, 2.4vw, 28px) 16px;
+}
+.proof__ft--bar .proof__vf { margin-top: 0; max-width: 46ch; }
+.proof__ft--bar .btn { flex: none; }
+
+@media (max-width: 1040px) {
+  .proof__grid { grid-template-columns: 1fr; }
+  .proof__cells { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .proof__cells { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .proof__star { align-items: flex-start; }
+  .proof__ft--bar { flex-direction: column; align-items: stretch; }
+  .proof__ft--bar .btn { justify-content: center; }
+}
+
+/* Benefícios em linha, por baixo da barra de prova */
+.perks--row {
+  display: grid;
+  max-width: none;               /* o .perks base trava em 52ch */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 12px 30px;
+  margin-top: clamp(24px, 3vw, 34px);
+  text-align: left;
+}
+.perks--row li { align-items: flex-start; }
+@media (max-width: 560px) { .perks--row { grid-template-columns: 1fr; } }
+
+/* ==========================================================================
+   Gestão de risco em duas células — substitui a lista de 8 drawdowns mensais,
+   que se lia como oito perdas em vez de uma medida de oscilação.
+   ========================================================================== */
+.riskbar {
+  margin-top: 36px;
+  padding: clamp(20px, 2.4vw, 26px);
+  border: 1px solid var(--line-soft);
+  border-radius: 14px;
+  background: rgba(237, 234, 227, .022);
+}
+.riskbar__eyebrow {
+  display: block;
+  font-family: var(--mono);
+  font-size: .64rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  margin-bottom: 16px;
+}
+.riskbar__cells {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 2.4vw, 34px);
+}
+.riskbar__cells > div { display: flex; flex-direction: column; gap: 7px; }
+.riskbar__cells b {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1.7rem, 3vw, 2.2rem);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -.04em;
+  color: var(--fg);
+}
+.riskbar__cells span {
+  font-size: .8rem;
+  line-height: 1.55;
+  color: var(--fg-faint);
+  max-width: 42ch;
+}
+@media (max-width: 620px) { .riskbar__cells { grid-template-columns: 1fr; } }
+
+/* Nota legal no fim dos escalões e da comparação de quedas */
+.tiers-legal {
+  margin-top: 22px;
+  max-width: none;
+  line-height: 1.7;
+  color: var(--fg-faint);
+}
+.tiers-legal a { color: var(--fg-dim); text-decoration: underline; text-underline-offset: 3px; }
+.tiers-legal a:hover { color: var(--acc); }
+.ddx__legal { margin-top: 14px; line-height: 1.65; color: var(--fg-faint); }

@@ -74,7 +74,7 @@
         { "@type": "Question", "name": "Onde é que deposito os fundos?",
           "acceptedAnswer": { "@type": "Answer", "text": "Directamente na sua própria conta de corretora, criada em seu nome e com as suas credenciais. A Cortex Automation não detém fundos de clientes nem pode fazer levantamentos da sua conta." } },
         { "@type": "Question", "name": "Quanto custa?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Zero de adesão e zero mensalidades. Só existe partilha de lucro sobre os ganhos gerados: Standard (500 a 999 euros) 60/40, Pro (1000 a 9999 euros) 75/25, VIP (10000 euros ou mais) 80/20. Se não houver lucro, não é cobrado nada." } },
+          "acceptedAnswer": { "@type": "Answer", "text": "Sem taxa de adesão e sem mensalidade. A Cortex é remunerada apenas por partilha do lucro gerado: Standard (500 a 999 euros) 60/40, Pro (1000 a 9999 euros) 75/25, VIP (10000 euros ou mais) 80/20. Se não houver lucro, não é cobrado nada." } },
         { "@type": "Question", "name": "Qual é o depósito mínimo?",
           "acceptedAnswer": { "@type": "Answer", "text": "500 euros, correspondente ao escalão Standard. Recomendamos começar com um valor confortável e que esteja disposto a arriscar." } },
         { "@type": "Question", "name": "Quais são os riscos?",
@@ -145,8 +145,10 @@
 <main id="main" data-taxi-view>
 <span id="top"></span>
 
-<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
-<section class="section hero">
+<!-- ═══════════════════════ HERO · VSL ═══════════════════════
+     O vídeo é o elemento principal do primeiro ecrã: fica acima da
+     barra de prova e visível sem scroll, em desktop e em telemóvel. -->
+<section class="section hero hero--vsl" id="video">
   <!-- Camada 3D (three.js) — rede neural do logo, em profundidade -->
   <div class="hero__three" id="heroThree" aria-hidden="true"></div>
   <!-- Curva de equity 2D — baseline garantida, funciona sem bibliotecas -->
@@ -156,78 +158,101 @@
   <div class="hero__glow" aria-hidden="true"></div>
 
   <div class="wrap hero__in">
-    <div class="hero__grid">
-      <div>
-        <div class="hero__fade" style="--rd:.05s">
-          <span class="badge badge--acc" style="margin-bottom:28px">Histórico real verificado e comprovado</span>
-        </div>
 
-        <h1 class="h-display hero__title">
-          <span class="ln">O seu dinheiro a trabalhar</span>
-          <span class="ln">para si todo o dia,</span>
-          <span class="ln"><em class="gilt">sem sair da sua conta.</em></span>
-        </h1>
-
-        <p class="lede hero__lede hero__fade" style="--rd:.55s">
-          Um algoritmo que lê o mercado e executa por si, dentro da <strong style="color:var(--fg);font-weight:600">sua própria conta de corretora</strong>.
-          Sem taxa de adesão. Sem mensalidades. Só ganhamos quando o seu capital gera lucro.
-        </p>
-
-        <div class="btn-row hero__fade" style="--rd:.68s">
-          <a href="#investimento" class="btn btn--acc">
-            Começar agora
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
-          </a>
-          <a href="#video" class="btn btn--ghost">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5-13-7.5Z"/></svg>
-            Ver o v&iacute;deo &middot; 1 min
-          </a>
-          <a href="#sistema" class="btn btn--ghost">
-            Como funciona
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v13M5 12l7 7 7-7"/></svg>
-          </a>
-        </div>
-
-        <ul class="perks hero__fade" style="--rd:.8s">
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg><span><b>100% gratuito para começar</b> — zero adesão, zero mensalidade</span></li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg><span><b>Só paga se houver lucro</b> — ganhamos por partilha de lucro</span></li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg><span><b>A conta é sua</b> — o dinheiro está sempre do seu lado</span></li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg><span><b>Pára quando quiser</b> — sem prazos nem penalizações</span></li>
-        </ul>
+    <!-- 1 · Cabeçalho compacto -->
+    <div class="hero__head">
+      <div class="hero__fade" style="--rd:.05s">
+        <span class="badge badge--acc">Conta real verificada &middot; 32 meses de hist&oacute;rico</span>
       </div>
 
-      <!-- Cartão de prova -->
-      <aside class="proof hero__fade" style="--rd:.4s" aria-label="Resultados da conta real verificada">
-        <div class="proof__hd">
-          <b>Conta Real</b>
-          <span class="badge badge--real">Verificada</span>
-        </div>
-        <dl class="proof__rows">
-          <div class="proof__row"><dt>Total desde Jan/2024</dt><dd class="c-gain" data-count="363.06" data-suffix="%" data-prefix="+" data-dec="2">+363,06%</dd></div>
-          <div class="proof__row"><dt>2025 &middot; ano fechado</dt><dd class="c-gain">+119,90%</dd></div>
-          <div class="proof__row"><dt>2026 &middot; Jan a Ago</dt><dd class="c-gain">+25,81%</dd></div>
-          <div class="proof__row"><dt>M&eacute;dia mensal composta</dt><dd class="c-gain">+4,91%</dd></div>
-          <div class="proof__row"><dt>Drawdown m&aacute;ximo hist&oacute;rico</dt><dd class="c-loss">&minus;9,20%</dd></div>
-          <div class="proof__row"><dt>Risco por opera&ccedil;&atilde;o</dt><dd>1%</dd></div>
-          <div class="proof__row"><dt>Custos de ades&atilde;o</dt><dd style="font-size:.84rem">Zero &middot; s&oacute; partilha de lucro</dd></div>
-        </dl>
-        <div class="proof__ft">
-          <div class="proof__cta">
-            <button type="button" class="btn btn--acc btn--sm btn--wide" data-open-report>
-              Quero o relat&oacute;rio
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg>
-            </button>
-          </div>
-          <p class="proof__vf">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>
-            <span>Conta real verificada &middot; hist&oacute;rico completo no relat&oacute;rio, &eacute; s&oacute; pedir.</span>
-          </p>
-        </div>
-      </aside>
+      <h1 class="h-display hero__title">
+        <span class="ln">O seu dinheiro a trabalhar para si,</span>
+        <span class="ln"><em class="gilt">sem sair da sua conta.</em></span>
+      </h1>
+
+      <p class="lede hero__lede hero__fade" style="--rd:.16s">
+        Veja em <strong style="color:var(--fg);font-weight:600">1 minuto</strong> como o algoritmo trabalha
+        dentro da sua pr&oacute;pria conta de corretora. Sem ades&atilde;o, sem mensalidades.
+      </p>
     </div>
 
-    <!-- Ticker -->
-    <div class="ticker hero__fade" style="--rd:.9s">
+    <!-- 2 · Vídeo de apresentação (entregue pela CDN da Cloudinary) -->
+    <figure class="vsl__box hero__fade" id="vslBox" style="--rd:.24s">
+      <video id="vslVideo" class="vsl__video" poster="assets/vsl-poster.jpg" preload="metadata" playsinline controls controlslist="nodownload" width="1280" height="720">
+        <source src="https://res.cloudinary.com/mzqx3xbc/video/upload/q_auto/f_auto/v1789233073/vsl-720.mp4" type="video/mp4">
+        <p class="small">O seu navegador n&atilde;o consegue reproduzir este v&iacute;deo.</p>
+      </video>
+      <button type="button" class="vsl__play" id="vslPlay" aria-label="Reproduzir o v&iacute;deo de apresenta&ccedil;&atilde;o">
+        <span class="vsl__ring" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5-13-7.5Z"/></svg>
+        </span>
+        <span class="vsl__cap">Ver a apresenta&ccedil;&atilde;o <i>1 min</i></span>
+      </button>
+      <p class="vsl__fb" id="vslFallback" hidden>
+        N&atilde;o foi poss&iacute;vel reproduzir o v&iacute;deo aqui.
+        <a href="https://res.cloudinary.com/mzqx3xbc/video/upload/q_auto/f_auto/v1789233073/vsl-720.mp4" target="_blank" rel="noopener">Abrir num separador novo</a>.
+      </p>
+    </figure>
+
+    <!-- 3 · Acção imediata -->
+    <div class="btn-row hero__cta hero__fade" style="--rd:.34s">
+      <a href="#investimento" class="btn btn--acc">
+        Come&ccedil;ar agora
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#sistema" class="btn btn--ghost">
+        Como funciona
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v13M5 12l7 7 7-7"/></svg>
+      </a>
+    </div>
+
+    <!-- 4 · Barra de prova — o número que interessa primeiro, o resto à volta -->
+    <aside class="proof proof--bar hero__fade" style="--rd:.44s" aria-label="Resultados da conta real verificada">
+      <div class="proof__hd">
+        <b>Conta Real</b>
+        <span class="badge badge--real">Verificada</span>
+      </div>
+
+      <div class="proof__grid">
+        <div class="proof__star">
+          <span class="proof__star-lbl">Lucro m&eacute;dio mensal</span>
+          <b class="proof__star-n c-gain" data-count="4.91" data-suffix="%" data-prefix="+" data-dec="2">+4,91%</b>
+          <span class="proof__star-sub">M&eacute;dia composta dos 32 meses de conta real,<br>de Janeiro de 2024 a Agosto de 2026.</span>
+        </div>
+
+        <dl class="proof__cells">
+          <div class="proof__cell"><dt>Lucro de 2026 &middot; at&eacute; Agosto</dt><dd class="c-gain">+25,81%</dd></div>
+          <div class="proof__cell"><dt>Lucro de 2025</dt><dd class="c-gain">+119,90%</dd></div>
+          <div class="proof__cell"><dt>Lucro de 2024</dt><dd class="c-gain">+67,37%</dd></div>
+          <div class="proof__cell proof__cell--hi"><dt>Total composto desde 2024</dt><dd class="c-gain">+363,06%</dd></div>
+          <div class="proof__cell"><dt>Maior oscila&ccedil;&atilde;o hist&oacute;rica</dt><dd>9,20%</dd></div>
+          <div class="proof__cell"><dt>Risco por opera&ccedil;&atilde;o</dt><dd>1%</dd></div>
+          <div class="proof__cell"><dt>Custos de ades&atilde;o</dt><dd class="proof__cell--sm">Zero &middot; s&oacute; partilha de lucro</dd></div>
+        </dl>
+      </div>
+
+      <div class="proof__ft proof__ft--bar">
+        <p class="proof__vf">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>
+          <span>Conta real verificada &middot; hist&oacute;rico completo no relat&oacute;rio, &eacute; s&oacute; pedir.</span>
+        </p>
+        <button type="button" class="btn btn--acc btn--sm" data-open-report>
+          Quero o relat&oacute;rio
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- 5 · Benefícios -->
+    <ul class="perks perks--row hero__fade" style="--rd:.54s">
+      <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg><span><b>Sem custos de ades&atilde;o</b> — 0 &euro; de ades&atilde;o, 0 &euro; de mensalidade</span></li>
+      <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg><span><b>S&oacute; h&aacute; remunera&ccedil;&atilde;o se houver lucro</b> — por partilha do lucro gerado</span></li>
+      <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg><span><b>A conta &eacute; sua</b> — o dinheiro permanece do seu lado</span></li>
+      <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg><span><b>P&aacute;ra quando quiser</b> — sem prazos nem penaliza&ccedil;&otilde;es</span></li>
+    </ul>
+
+    <!-- 6 · Ticker -->
+    <div class="ticker hero__fade" style="--rd:.62s">
       <div class="ticker__cell">
         <b class="c-acc">600<i>+</i></b>
         <span>Clientes activos a usar o sistema todos os dias</span>
@@ -248,48 +273,6 @@
   </div>
 </section>
 
-<!-- ═══════════════════════ VSL · VÍDEO ═══════════════════════ -->
-<section class="section vsl" id="video">
-  <div class="wrap">
-    <div class="sec-hd sec-hd--solo sec-hd--center">
-      <span class="eyebrow reveal" style="justify-content:center"><i>&#9658;</i> Em 1 minuto</span>
-      <h2 class="h2 reveal" style="--rd:.06s">Veja o sistema<br><em class="gilt">a trabalhar por si</em>.</h2>
-      <p class="lede reveal" style="--rd:.12s;margin-top:20px">
-        Um resumo curto e directo: o que o algoritmo faz, como entra na sua conta
-        e porque &eacute; que o dinheiro <strong style="color:var(--fg);font-weight:600">nunca sai do seu lado</strong>.
-      </p>
-    </div>
-
-    <figure class="vsl__box reveal-l" id="vslBox">
-      <video id="vslVideo" class="vsl__video" poster="assets/vsl-poster.jpg" preload="none" playsinline controls controlslist="nodownload" width="1280" height="720">
-        <source src="assets/vsl-720.mp4" type="video/mp4">
-        <p class="small">O seu navegador n&atilde;o consegue reproduzir este v&iacute;deo.</p>
-      </video>
-      <button type="button" class="vsl__play" id="vslPlay" aria-label="Reproduzir o v&iacute;deo de apresenta&ccedil;&atilde;o">
-        <span class="vsl__ring" aria-hidden="true">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5-13-7.5Z"/></svg>
-        </span>
-        <span class="vsl__cap">Ver a apresenta&ccedil;&atilde;o <i>1 min</i></span>
-      </button>
-      <p class="vsl__fb" id="vslFallback" hidden>
-        N&atilde;o foi poss&iacute;vel reproduzir o v&iacute;deo aqui.
-        <a href="assets/vsl-720.mp4" target="_blank" rel="noopener">Abrir num separador novo</a>.
-      </p>
-    </figure>
-
-    <div class="btn-row reveal" style="justify-content:center;margin-top:28px">
-      <a href="#investimento" class="btn btn--acc">
-        Come&ccedil;ar agora
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
-      </a>
-      <button type="button" class="btn btn--ghost" data-open-report>
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg>
-        Pedir o relat&oacute;rio
-      </button>
-    </div>
-  </div>
-</section>
-
 <!-- Faixa de confiança -->
 <div class="trust" aria-hidden="true">
   <div class="trust__track" id="trustTrack">
@@ -300,7 +283,7 @@
     <span class="trust__item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4.6 3.4 8.4 8 9 4.6-.6 8-4.4 8-9V6l-8-3Z"/></svg>Stop-loss em cada operação, sem excepção</span>
     <span class="trust__item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-6 4 4 4-6 5 5"/></svg>Opera em Bitcoin, o mercado que nunca fecha</span>
     <span class="trust__item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>5 anos a afinar a estratégia</span>
-    <span class="trust__item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="3.5"/><path d="M21 20v-2a4 4 0 0 0-3-3.9"/></svg>Só ganhamos se o seu capital crescer</span>
+    <span class="trust__item"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="3.5"/><path d="M21 20v-2a4 4 0 0 0-3-3.9"/></svg>Só há remuneração se houver lucro</span>
   </div>
 </div>
 
@@ -676,11 +659,11 @@
     <div class="sec-hd">
       <div>
         <span class="eyebrow reveal"><i>06</i> Performance</span>
-        <h2 class="h2 reveal" style="--rd:.06s">Rentabilidade histórica do sistema<br>que pode <em class="gilt">ir confirmar</em>.</h2>
+        <h2 class="h2 reveal" style="--rd:.06s">Resultados reais.<br>Hist&oacute;rico <em class="gilt">verific&aacute;vel</em>.</h2>
       </div>
       <p class="lede reveal" style="--rd:.12s">
-        Conta real, com dinheiro real e 1% de risco por operação. Todos os meses estão aqui —
-        incluindo os negativos. O <strong style="color:var(--fg);font-weight:600">relatório completo confirma cada número</strong>, e é só pedir.
+        Conta real, dinheiro real e 1% de risco por operação. Todos os resultados estão aqui —
+        incluindo os meses negativos. O <strong style="color:var(--fg);font-weight:600">relatório completo permite confirmar cada número</strong>.
       </p>
     </div>
 
@@ -696,9 +679,9 @@
       <div class="perf-panel__bd">
         <div class="kpis">
           <div class="kpi"><b class="c-gain">+25,81%</b><span>Lucro composto em 2026</span></div>
-          <div class="kpi"><b class="c-gain">+23,66%</b><span>Soma simples dos meses</span></div>
-          <div class="kpi"><b class="c-loss">−9,20%</b><span>Drawdown máximo em 2026</span></div>
-          <div class="kpi"><b>7 / 8</b><span>Meses positivos em 2026</span></div>
+          <div class="kpi"><b>7 / 8</b><span>Meses positivos</span></div>
+          <div class="kpi"><b>9,20%</b><span>Maior oscila&ccedil;&atilde;o em 2026</span></div>
+          <div class="kpi"><b>1%</b><span>Risco por opera&ccedil;&atilde;o</span></div>
         </div>
 
         <h4 class="h4" style="margin:36px 0 6px">Resultado fechado de cada mês</h4>
@@ -715,25 +698,21 @@
           <div class="bar bar--neg" style="--h:9%;--d:.54s"><i></i><span class="bar__val">−0,84%</span><span class="bar__lbl">Ago</span></div>
         </div>
 
-        <h4 class="h4" style="margin:36px 0 6px">Drawdown m&aacute;ximo de cada m&ecirc;s</h4>
-        <p class="small" style="margin-bottom:18px">A maior queda registada dentro de cada m&ecirc;s, do topo at&eacute; ao fundo.</p>
-        <ul class="ddm">
-          <li><span>Jan</span><b>4,32%</b></li>
-          <li><span>Fev</span><b>5,22%</b></li>
-          <li><span>Mar</span><b>6,99%</b></li>
-          <li><span>Abr</span><b>8,29%</b></li>
-          <li><span>Mai</span><b>8,50%</b></li>
-          <li><span>Jun</span><b>6,22%</b></li>
-          <li><span>Jul</span><b>8,72%</b></li>
-          <li><span>Ago</span><b>9,20%</b></li>
-        </ul>
+        <div class="riskbar">
+          <span class="riskbar__eyebrow">Gest&atilde;o de risco</span>
+          <div class="riskbar__cells">
+            <div><b>9,20%</b><span>Maior oscila&ccedil;&atilde;o hist&oacute;rica, de um pico at&eacute; ao ponto mais baixo seguinte</span></div>
+            <div><b>1%</b><span>Risco definido por opera&ccedil;&atilde;o, em todo o hist&oacute;rico apresentado</span></div>
+          </div>
+        </div>
 
 
         <div class="doors">
           <div class="door">
-            <span class="door__n">A prova</span>
+            <span class="door__n">Hist&oacute;rico verific&aacute;vel</span>
             <h4 class="h4">Conta real verificada</h4>
             <p class="small">Os n&uacute;meros desta p&aacute;gina v&ecirc;m de uma conta real, em MetaTrader 5, com dinheiro real e 1% de risco por opera&ccedil;&atilde;o. N&atilde;o &eacute; simula&ccedil;&atilde;o nem backtest. Os meses negativos est&atilde;o c&aacute;, tal como os bons.</p>
+            <p class="small" style="flex:none;color:var(--fg-faint)">Os resultados apresentados correspondem ao hist&oacute;rico passado e n&atilde;o garantem resultados futuros.</p>
             <p class="newtab">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.6 3.4 8.4 8 9 4.6-.6 8-4.4 8-9V6l-8-3Z"/></svg>
               32 meses fechados &middot; Janeiro de 2024 a Agosto de 2026
@@ -742,15 +721,15 @@
 
           <div class="door door--feat">
             <span class="door__n">Como confirmar</span>
-            <h4 class="h4">Pe&ccedil;a o relat&oacute;rio completo</h4>
-            <p class="small">O relat&oacute;rio traz a l&oacute;gica do algoritmo, os extractos integrais do MetaTrader 5, o hist&oacute;rico m&ecirc;s a m&ecirc;s da conta real e o aviso de risco. &Eacute; o documento que usamos nas reuni&otilde;es &mdash; &eacute; s&oacute; pedir.</p>
+            <h4 class="h4">Confirme os resultados</h4>
+            <p class="small">O relat&oacute;rio completo inclui a l&oacute;gica do algoritmo, os extractos da conta no MetaTrader 5, o hist&oacute;rico mensal e as informa&ccedil;&otilde;es de risco.</p>
             <button type="button" class="btn btn--acc btn--sm btn--wide" data-open-report>
-              Quero o relat&oacute;rio
+              Quero ver o relat&oacute;rio
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg>
             </button>
             <p class="newtab">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.6 3.4 8.4 8 9 4.6-.6 8-4.4 8-9V6l-8-3Z"/></svg>
-              Fica aqui mesmo. S&oacute; nome e email.
+              Fica aqui mesmo. Apenas nome e email.
             </p>
           </div>
         </div>
@@ -760,33 +739,28 @@
     <!-- HISTÓRICO -->
     <div class="perf-panel reveal-l">
       <div class="perf-panel__hd">
-        <h3>Hist&oacute;rico completo &middot; 2024, 2025 e 2026</h3>
+        <h3>Hist&oacute;rico completo &middot; Janeiro de 2024 a Agosto de 2026</h3>
         <span class="badge badge--test">BTCUSD &middot; MetaTrader 5</span>
       </div>
       <div class="perf-panel__bd">
-        <div class="kpis" style="margin-bottom:26px">
-          <div class="kpi"><b class="c-gain">+67,37%</b><span>2024 &middot; ano fechado</span></div>
-          <div class="kpi"><b class="c-gain">+119,90%</b><span>2025 &middot; ano fechado</span></div>
-          <div class="kpi"><b class="c-gain">+25,81%</b><span>2026 &middot; Janeiro a Agosto</span></div>
-          <div class="kpi"><b>1%</b><span>Risco por operação</span></div>
-        </div>
-
-
-        <h4 class="h4" style="margin:36px 0 6px">Hist&oacute;rico mensal &middot; 2024, 2025 e 2026</h4>
-        <p class="small" style="margin-bottom:20px">Lucro e drawdown m&aacute;ximo de cada m&ecirc;s, com o total simples e composto de cada ano.</p>
+        <p class="small" style="margin-bottom:20px">Resultados mensais da conta real, com o total simples, o total composto e a maior oscila&ccedil;&atilde;o de cada ano.</p>
 
         <figure class="shot shot--table">
           <img src="assets/tabela-mensal.jpg" width="1400" height="506" alt="Tabela de lucro e drawdown máximo mês a mês em 2024, 2025 e 2026, com totais compostos de +67,37%, +119,90% e +25,81%" loading="lazy" decoding="async">
         </figure>
 
-        <h4 class="h4" style="margin:36px 0 6px">Desde Janeiro de 2024</h4>
-        <p class="small" style="margin-bottom:20px">32 meses fechados, at&eacute; Agosto de 2026. Juro composto, com 1% de risco por opera&ccedil;&atilde;o.</p>
+        <h4 class="h4" style="margin:36px 0 6px">32 meses de hist&oacute;rico</h4>
+        <p class="small" style="margin-bottom:20px">Juro composto, com 1% de risco por opera&ccedil;&atilde;o.</p>
         <div class="kpis">
-          <div class="kpi"><b class="c-gain">+363,06%</b><span>Rentabilidade composta total</span></div>
-          <div class="kpi"><b class="c-loss">−9,20%</b><span>Drawdown máximo histórico</span></div>
-          <div class="kpi"><b class="c-gain">+4,91%</b><span>Média mensal composta</span></div>
+          <div class="kpi"><b class="c-gain">+363,06%</b><span>Rentabilidade composta</span></div>
           <div class="kpi"><b>29 / 32</b><span>Meses positivos</span></div>
+          <div class="kpi"><b>9,20%</b><span>Maior oscila&ccedil;&atilde;o hist&oacute;rica</span></div>
+          <div class="kpi"><b class="c-gain">+4,91%</b><span>M&eacute;dia mensal composta</span></div>
         </div>
+        <p class="micro" style="margin-top:18px">
+          Drawdown (ou oscila&ccedil;&atilde;o) corresponde &agrave; queda tempor&aacute;ria de uma conta desde o seu m&aacute;ximo anterior
+          at&eacute; ao m&iacute;nimo seguinte. Resultados passados n&atilde;o garantem resultados futuros.
+        </p>
       </div>
     </div>
   </div>
@@ -845,40 +819,41 @@
     <div class="risk">
       <div>
         <p class="lede reveal" style="margin-bottom:26px">
-          Qualquer pessoa mostra um mês bom. O que conta é o comportamento nas fases más —
-          e sobretudo o <strong style="color:var(--fg);font-weight:600">limite definido antes de elas acontecerem</strong>.
+          Qualquer pessoa mostra um mês bom. O que conta é perceber como o sistema se comporta quando as
+          condições ficam difíceis — e <strong style="color:var(--fg);font-weight:600">quais são as regras definidas antes disso acontecer</strong>.
         </p>
 
         <div class="algo__list">
           <div class="algo__li reveal">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-            <div><b>1% de risco por operação</b><p>Nenhuma operação isolada faz um estrago sério. É o risco usado em todo o histórico que mostramos.</p></div>
+            <div><b>1% de risco por operação</b><p>O risco é definido em 1% por operação, e foi esse o nível utilizado em todo o histórico apresentado.</p></div>
           </div>
           <div class="algo__li reveal">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
-            <div><b>Travão absoluto nos −30%</b><p>Se a conta lá chegar, o sistema pára. Limite definido à partida.</p></div>
+            <div><b>Limite de segurança nos &minus;30%</b><p>Se a conta atingir esse limite, o sistema pára. É uma regra definida à partida — não é um resultado histórico.</p></div>
           </div>
           <div class="algo__li reveal">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l5-6 4 4 4-6 5 5"/></svg>
-            <div><b>Recua quando o mercado piora</b><p>Em fases difíceis o objectivo passa a ser preservar capital.</p></div>
+            <div><b>Recua quando o mercado piora</b><p>Em fases difíceis, o sistema pode reduzir a exposição e seguir as regras de risco definidas.</p></div>
           </div>
           <div class="algo__li reveal">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m9 12 2 2 4-4"/></svg>
-            <div><b>Pior queda de sempre: 9,20%</b><p>Em 32 meses de conta real, a maior queda do topo ao fundo ficou abaixo dos 10%.</p></div>
+            <div><b>Maior queda histórica: 9,20%</b><p>Nos 32 meses de conta real apresentados, a maior queda do topo ao fundo foi de 9,20%.</p></div>
           </div>
         </div>
 
         <div class="cycles reveal">
-          <h3 class="h4">Cinco anos, vários ciclos</h3>
-          <p>Mais de cinco anos a desenvolver e a testar a estratégia, atravessando ciclos e momentos de mercado muito diferentes — COVID-19, eleições nos EUA, guerra na Ucrânia, tensões Irão–Israel, bear market cripto e halvings do Bitcoin. Os números que mostramos nesta página são os <strong style="color:var(--fg);font-weight:600">32 meses de conta real</strong>, de Janeiro de 2024 a Agosto de 2026.</p>
-          <p>Mesmo em fases anormais e de elevada volatilidade, o sistema manteve uma abordagem conservadora, com foco em <strong style="color:var(--fg);font-weight:600">proteger o capital e controlar o risco</strong>.</p>
+          <h3 class="h4">Cinco anos de desenvolvimento. 32 meses de conta real.</h3>
+          <p>Mais de cinco anos de desenvolvimento e testes da estratégia, atravessando diferentes regimes de mercado, períodos de maior volatilidade e fases de tendência e de correcção.</p>
+          <p>Os resultados apresentados nesta página correspondem, no entanto, <strong style="color:var(--fg);font-weight:600">exclusivamente aos 32 meses de conta real</strong>, de Janeiro de 2024 a Agosto de 2026.</p>
+          <p>Mesmo em períodos de maior volatilidade, a estratégia manteve as regras de risco definidas e uma abordagem disciplinada à exposição.</p>
         </div>
       </div>
 
       <div class="dd reveal-l">
         <div class="ddx__hd">
-          <h3 class="h4">O pior momento de cada um</h3>
-          <p class="small">Maior queda registada, do topo até ao fundo.</p>
+          <h3 class="h4">A maior queda registada</h3>
+          <p class="small">Do ponto mais alto ao ponto mais baixo de cada período.</p>
         </div>
 
         <ul class="ddx">
@@ -905,8 +880,12 @@
         </ul>
 
         <p class="small ddx__note">
-          Quem tem acções ou índices convive com quedas maiores e passa
-          <strong style="color:var(--fg);font-weight:600">muito mais tempo em prejuízo</strong> à espera de recuperar.
+          Uma queda faz parte de qualquer investimento. Estes valores servem apenas como
+          <strong style="color:var(--fg);font-weight:600">referência para contextualizar a magnitude das oscilações</strong> observadas.
+        </p>
+        <p class="micro ddx__legal">
+          Nota: drawdown corresponde à queda temporária de uma conta desde o seu máximo anterior até ao
+          mínimo seguinte. Resultados passados não garantem resultados futuros.
         </p>
       </div>
     </div>
@@ -919,13 +898,13 @@
     <div class="sec-hd">
       <div>
         <span class="eyebrow reveal"><i>09</i> Investimento</span>
-        <h2 class="h2 reveal" style="--rd:.06s">Só ganhamos<br>quando <em class="gilt">você ganha</em>.</h2>
+        <h2 class="h2 reveal" style="--rd:.06s">Só somos remunerados<br>quando <em class="gilt">há lucro</em>.</h2>
       </div>
       <p class="lede reveal" style="--rd:.12s">
-        <strong style="color:var(--fg);font-weight:600">100% grátis para começar.</strong>
-        Sem taxa de adesão e sem mensalidades. Mantém o controlo total sobre os seus fundos e a única
-        remuneração é uma percentagem <strong style="color:var(--fg);font-weight:600">do lucro gerado</strong> —
-        se não houver lucro, não há nada a pagar.
+        <strong style="color:var(--fg);font-weight:600">Sem taxa de adesão nem mensalidade.</strong>
+        O capital permanece na sua conta pessoal de corretora e a Cortex é remunerada apenas através de
+        uma percentagem <strong style="color:var(--fg);font-weight:600">do lucro</strong>, de acordo com o
+        escalão escolhido. Sem lucro, não há remuneração para a Cortex.
       </p>
     </div>
 
@@ -935,7 +914,7 @@
         <h3 class="tier__name">Standard</h3>
 
         <div class="tier__blk">
-          <span class="tier__lbl">Depósito mínimo</span>
+          <span class="tier__lbl">Capital inicial</span>
           <b class="tier__dep">500 € – 999 €</b>
         </div>
 
@@ -949,14 +928,14 @@
         </div>
 
         <ul class="tier__feats">
-          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Controlo total sobre os seus fundos</span></li>
-          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Acompanhamento de cada operação em tempo real</span></li>
-          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Levanta quando quiser</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Controlo sobre os seus fundos</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Acompanhamento das operações</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Pode solicitar levantamentos através da sua corretora</span></li>
         </ul>
 
         <div class="tier__free">
-          <b>100% <em>GRÁTIS</em></b>
-          <p>Sem taxa de adesão &middot; Sem mensalidades<br>Só ganhamos quando você ganha</p>
+          <b>0 &euro; <em>DE ADESÃO</em></b>
+          <p>Sem taxa de adesão &middot; Sem mensalidade<br>Sem lucro, não há remuneração para a Cortex</p>
         </div>
 
         <a href="#" class="btn btn--acc btn--wide" data-wa data-wa-msg="Olá! Tenho interesse no escalão Standard da Cortex Automation.">
@@ -971,7 +950,7 @@
         <h3 class="tier__name">Pro</h3>
 
         <div class="tier__blk">
-          <span class="tier__lbl">Depósito mínimo</span>
+          <span class="tier__lbl">Capital inicial</span>
           <b class="tier__dep">1 000 € – 9 999 €</b>
         </div>
 
@@ -985,14 +964,14 @@
         </div>
 
         <ul class="tier__feats">
-          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Controlo total sobre os seus fundos</span></li>
-          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Acompanhamento de cada operação em tempo real</span></li>
-          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Levanta quando quiser</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Controlo sobre os seus fundos</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Acompanhamento das operações</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Pode solicitar levantamentos através da sua corretora</span></li>
         </ul>
 
         <div class="tier__free">
-          <b>100% <em>GRÁTIS</em></b>
-          <p>Sem taxa de adesão &middot; Sem mensalidades<br>Só ganhamos quando você ganha</p>
+          <b>0 &euro; <em>DE ADESÃO</em></b>
+          <p>Sem taxa de adesão &middot; Sem mensalidade<br>Sem lucro, não há remuneração para a Cortex</p>
         </div>
 
         <a href="#" class="btn btn--acc btn--wide" data-wa data-wa-msg="Olá! Tenho interesse no escalão Pro da Cortex Automation.">
@@ -1006,7 +985,7 @@
         <h3 class="tier__name">VIP</h3>
 
         <div class="tier__blk">
-          <span class="tier__lbl">Depósito mínimo</span>
+          <span class="tier__lbl">Capital inicial</span>
           <b class="tier__dep">10 000 € +</b>
         </div>
 
@@ -1020,14 +999,14 @@
         </div>
 
         <ul class="tier__feats">
-          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Controlo total sobre os seus fundos</span></li>
-          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Acompanhamento de cada operação em tempo real</span></li>
-          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Levanta quando quiser</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Controlo sobre os seus fundos</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Acompanhamento das operações</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11"/><path d="m6.6 12.4 3.6 3.6 7.2-7.4" fill="none" stroke="#04180E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Pode solicitar levantamentos através da sua corretora</span></li>
         </ul>
 
         <div class="tier__free">
-          <b>100% <em>GRÁTIS</em></b>
-          <p>Sem taxa de adesão &middot; Sem mensalidades<br>Só ganhamos quando você ganha</p>
+          <b>0 &euro; <em>DE ADESÃO</em></b>
+          <p>Sem taxa de adesão &middot; Sem mensalidade<br>Sem lucro, não há remuneração para a Cortex</p>
         </div>
 
         <a href="#" class="btn btn--acc btn--wide" data-wa data-wa-msg="Olá! Tenho interesse no escalão VIP da Cortex Automation.">
@@ -1039,11 +1018,19 @@
 
     <div class="tiers-foot reveal">
       <p class="small">
-        <strong style="color:var(--fg);font-weight:600">Os fundos permanecem sempre na sua conta pessoal de corretora.</strong>
-        A partilha de lucro é aplicada apenas sobre ganhos efectivos. Em períodos sem lucro, não é cobrado nada.
+        <strong style="color:var(--fg);font-weight:600">O capital permanece sempre na sua conta pessoal de corretora.</strong>
+        A percentagem é aplicada apenas ao lucro efectivo gerado pelo sistema — não existe comissão sobre o
+        capital depositado. Em períodos sem lucro, não há remuneração para a Cortex.
       </p>
-      <a href="#" class="btn btn--ghost btn--sm" data-wa>Esclarecer dúvidas</a>
+      <a href="#" class="btn btn--ghost btn--sm" data-wa>Quero saber mais</a>
     </div>
+
+    <p class="micro tiers-legal reveal">
+      A automatização envolve risco de perda de capital. Os resultados apresentados são históricos e não
+      garantem resultados futuros. Custos eventualmente cobrados pela corretora — spreads, comissões ou
+      swaps — não estão incluídos na remuneração da Cortex. As regras de cálculo da partilha de lucro
+      constam por inteiro dos <a href="termos.html">Termos e Condições</a>.
+    </p>
   </div>
 </section>
 
@@ -1053,11 +1040,11 @@
     <div class="sec-hd">
       <div>
         <span class="eyebrow reveal"><i>10</i> Transparência</span>
-        <h2 class="h2 reveal" style="--rd:.06s">O seu dinheiro é seu.<br><em class="gilt">Sempre.</em></h2>
+        <h2 class="h2 reveal" style="--rd:.06s">O seu dinheiro<br><em class="gilt">continua a ser seu</em>.</h2>
       </div>
       <p class="lede reveal" style="--rd:.12s">
-        O algoritmo não recebe nem guarda o seu capital. O dinheiro permanece na sua conta,
-        em seu nome e sob o seu controlo. <strong style="color:var(--fg);font-weight:600">Nós fornecemos apenas a tecnologia.</strong>
+        O algoritmo não recebe nem guarda o seu capital. O dinheiro permanece na sua conta de corretora,
+        em seu nome e sob o seu controlo. <strong style="color:var(--fg);font-weight:600">A Cortex fornece a tecnologia que automatiza a execução da estratégia.</strong>
       </p>
     </div>
 
@@ -1065,46 +1052,46 @@
       <div class="safe__cell">
         <span class="safe__n">01</span>
         <h3 class="h4">O capital permanece na sua conta</h3>
-        <p>Conta aberta em seu nome, directamente na corretora. Depósitos e levantamentos são feitos por si.</p>
+        <p>Conta aberta em seu nome, directamente na corretora. Os depósitos e levantamentos são realizados por si.</p>
       </div>
 
       <div class="safe__cell">
         <span class="safe__n">02</span>
-        <h3 class="h4">Sem acesso aos seus fundos</h3>
-        <p>A ligação permite apenas abrir, gerir e fechar posições. Não permite levantamentos, transferências ou alterações aos seus dados.</p>
+        <h3 class="h4">Sem acesso a levantamentos</h3>
+        <p>A ligação usada pelo sistema é configurada apenas para executar operações: abrir, gerir e fechar posições. Não permite levantamentos nem transferências de fundos.</p>
       </div>
 
       <div class="safe__cell">
         <span class="safe__n">03</span>
         <h3 class="h4">Sem capital bloqueado</h3>
-        <p>O dinheiro continua na sua conta e pode ser levantado quando quiser, sem período mínimo ou taxa de saída da nossa parte.</p>
+        <p>O dinheiro não é entregue à Cortex nem fica depositado connosco. Pode solicitar levantamentos através da sua corretora, sujeito às condições aplicáveis.</p>
       </div>
 
       <div class="safe__cell">
         <span class="safe__n">04</span>
         <h3 class="h4">Sem fidelização</h3>
-        <p>Pode parar a automatização a qualquer momento. Desliga a ligação e termina a execução.</p>
+        <p>Pode interromper a automatização a qualquer momento. Desliga a ligação e a execução termina.</p>
       </div>
 
       <div class="safe__cell">
         <span class="safe__n">05</span>
         <h3 class="h4">Performance transparente</h3>
-        <p>Acompanhe as operações e o desempenho em tempo real, incluindo histórico, drawdown e taxa de acerto.</p>
+        <p>Acompanhe o desempenho e o histórico de operações, com informação sobre rentabilidade, oscilações e outros indicadores da estratégia.</p>
       </div>
 
       <div class="safe__cell">
         <span class="safe__n">06</span>
         <h3 class="h4">Remuneração alinhada</h3>
-        <p>Só ganhamos se você tiver lucro. Se não houver lucro, não recebemos.</p>
+        <p>Só somos remunerados quando existe lucro. Sem lucro, não há remuneração para a Cortex.</p>
       </div>
     </div>
 
     <div class="safe__close reveal">
-      <h3 class="h3">Você mantém o capital. Você mantém o controlo.</h3>
+      <h3 class="h3">O capital é seu. O controlo também.</h3>
       <div class="safe__close-grid">
         <p>Nós fornecemos a tecnologia.</p>
-        <p>O algoritmo executa.</p>
-        <p><strong>O dinheiro continua a ser seu.</strong></p>
+        <p>O algoritmo executa a estratégia.</p>
+        <p><strong>O dinheiro permanece na sua conta.</strong></p>
       </div>
     </div>
   </div>
@@ -1151,12 +1138,12 @@
 
       <div class="faq__item">
         <button class="faq__q" aria-expanded="false"><span>Quanto custa e como é que ganham?</span><span class="faq__ico" aria-hidden="true"></span></button>
-        <div class="faq__a"><div><p>Zero de adesão. Zero mensalidades. Só ganhamos quando você tem lucro, através de um modelo simples de partilha:</p><p><strong>Standard</strong> (depósitos de 500 € a 999 €): 40% Cortex / 60% cliente. <strong>Pro</strong> (1 000 € a 9 999 €): 25% / 75%. <strong>VIP</strong> (10 000 € ou mais): 20% / 80%.</p><p>Este alinhamento significa que temos todo o incentivo em maximizar o seu retorno — se não tiver lucro, não ganhamos nada.</p></div></div>
+        <div class="faq__a"><div><p>Sem taxa de adesão e sem mensalidade. A Cortex é remunerada apenas por uma percentagem do lucro gerado, de acordo com o escalão:</p><p><strong>Standard</strong> (capital de 500 € a 999 €): 40% Cortex / 60% cliente. <strong>Pro</strong> (1 000 € a 9 999 €): 25% / 75%. <strong>VIP</strong> (10 000 € ou mais): 20% / 80%.</p><p>A percentagem aplica-se apenas ao lucro efectivo — não há comissão sobre o capital depositado. Sem lucro, não há remuneração para a Cortex. Custos cobrados pela corretora (spreads, comissões, swaps) são alheios a este modelo. As regras completas constam dos <a href="termos.html">Termos e Condições</a>.</p></div></div>
       </div>
 
       <div class="faq__item">
         <button class="faq__q" aria-expanded="false"><span>Qual é o depósito mínimo?</span><span class="faq__ico" aria-hidden="true"></span></button>
-        <div class="faq__a"><div><p>O mínimo para começar é <strong>500 €</strong>, o que corresponde ao escalão Standard (60% do lucro para si, 40% para a Cortex).</p><p>Recomendamos começar com um valor com que se sinta confortável e que possa arriscar. Muitos membros começam no mínimo, acompanham os resultados durante alguns meses e só depois passam para Pro ou VIP, onde a partilha é mais favorável.</p></div></div>
+        <div class="faq__a"><div><p>O capital mínimo para começar é <strong>500 €</strong>, o que corresponde ao escalão Standard (60% do lucro para si, 40% para a Cortex).</p><p>Recomendamos começar com um valor com que se sinta confortável e que possa arriscar. Muitos membros começam no mínimo, acompanham os resultados durante alguns meses e só depois passam para Pro ou VIP, onde a partilha é mais favorável.</p></div></div>
       </div>
 
       <div class="faq__item">

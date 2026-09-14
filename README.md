@@ -63,12 +63,24 @@ O endereço canónico é `https://cortexautomationai.com`, usado nas tags canón
 no `robots.txt` e no `sitemap.xml`. Se algum dia mudar, é um find-and-replace
 em `index.html`, `privacidade.html`, `termos.html`, `robots.txt` e `sitemap.xml`.
 
-## Vídeo de apresentação
+## Vídeo de apresentação (VSL)
 
-O VSL está alojado no próprio site (`assets/vsl-720.mp4`, 4,5 MB, 720p com
-`faststart`). Não carrega nada até o visitante carregar em play: até lá vê-se
-apenas `assets/vsl-poster.jpg`. Para trocar o vídeo basta substituir os dois
-ficheiros, mantendo os nomes.
+O vídeo abre o site, logo no primeiro ecrã, e é entregue pela **CDN da Cloudinary**
+— o MP4 não está no repositório. O URL traz `q_auto` e `f_auto`, para a Cloudinary
+escolher a qualidade e o formato conforme o navegador:
+
+```
+https://res.cloudinary.com/mzqx3xbc/video/upload/q_auto/f_auto/v1789233073/vsl-720.mp4
+```
+
+O player é o do site — um `<video>` normal com uma camada de play por cima.
+Não usamos o player nem o iframe da Cloudinary.
+
+Fica em `preload="metadata"`: ao abrir a página só se lê o cabeçalho do ficheiro,
+não os 4,3 MB. Até o visitante carregar em play vê-se `assets/vsl-poster.jpg`.
+
+Para trocar o vídeo: carregar o novo ficheiro na Cloudinary e actualizar o `src`
+do `<source>` no `index.html` (e o link da alternativa, logo por baixo).
 
 ## Aviso
 

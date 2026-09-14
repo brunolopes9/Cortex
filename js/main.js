@@ -665,10 +665,11 @@
   /* ─────────────────────────────────────────────────────────────
      VÍDEO DE APRESENTAÇÃO (VSL)
 
-     O ficheiro só começa a descarregar quando o visitante carrega
-     em "play" (preload="none"). Até lá vê-se apenas o poster, com
-     uma camada por cima a fazer de botão. Quando o vídeo arranca,
-     a camada desaparece e os controlos nativos ficam a comandar.
+     O vídeo é entregue pela CDN da Cloudinary, com q_auto e f_auto.
+     Fica em preload="metadata": ao abrir a página o browser lê só o
+     cabeçalho do ficheiro, não os 4,3 MB — vê-se o poster, com uma
+     camada por cima a fazer de botão. Quando o vídeo arranca, a
+     camada desaparece e os controlos nativos ficam a comandar.
      ───────────────────────────────────────────────────────────── */
   function vsl() {
     var v = $('#vslVideo'), btn = $('#vslPlay'), box = $('#vslBox');
@@ -690,7 +691,7 @@
     function start() {
       box.classList.add('is-playing');
       v.setAttribute('controls', '');
-      v.setAttribute('preload', 'auto');
+      v.setAttribute('preload', 'metadata');
 
       /* Se ao fim de 10 segundos nem os metadados chegaram, algo está a
          bloquear a reprodução: damos ao visitante uma saída em vez de o

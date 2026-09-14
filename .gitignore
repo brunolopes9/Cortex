@@ -16,3 +16,6 @@ desktop.ini
 _*.js
 _*.html
 _*.css
+
+# O VSL é servido pela CDN da Cloudinary — não guardamos o MP4 no repositório
+assets/vsl-*.mp4
