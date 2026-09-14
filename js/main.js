@@ -675,44 +675,81 @@
     var v = $('#vslVideo'), btn = $('#vslPlay'), box = $('#vslBox');
     if (!v || !btn || !box) return;
 
+    var fb = $('#vslFallback'), cap = $('.vsl__cap i', box);
+    var stall = null, started = false;
+
     /* Sem JavaScript os controlos nativos ficam visíveis — é a única
        forma de dar play. Com JavaScript, escondemo-los até o vídeo
        arrancar, para o poster ficar limpo por baixo do botão. */
     v.removeAttribute('controls');
 
-    var fb = $('#vslFallback'), stall = null;
+    /* A duração real do ficheiro substitui o "1 min" escrito à mão,
+       assim que os metadados chegam da CDN. */
+    v.addEventListener('loadedmetadata', function () {
+      if (!cap || !isFinite(v.duration) || !v.duration) return;
+      var t = Math.round(v.duration);
+      cap.textContent = Math.floor(t / 60) + ':' + ('0' + (t % 60)).slice(-2);
+    });
 
     function giveUp() {
       if (fb) fb.hidden = false;
       v.setAttribute('controls', '');
+      box.classList.remove('is-loading');
       box.classList.remove('is-playing');
     }
 
     function start() {
+      if (started && !v.paused) return;
+      started = true;
       box.classList.add('is-playing');
+      /* Só marcamos "a carregar" se ainda não houver imagem para mostrar */
+      if (v.readyState < 3) box.classList.add('is-loading');
       v.setAttribute('controls', '');
-      v.setAttribute('preload', 'metadata');
+      v.setAttribute('preload', 'auto');
 
-      /* Se ao fim de 10 segundos nem os metadados chegaram, algo está a
-         bloquear a reprodução: damos ao visitante uma saída em vez de o
-         deixar a olhar para um rectângulo preto. */
+      /* Se ao fim de 12 segundos nem os metadados chegaram, algo está a
+         bloquear a reprodução — CDN inacessível, rede a cair, política do
+         browser. Damos ao visitante uma saída em vez de o deixar a olhar
+         para um rectângulo preto. */
       clearTimeout(stall);
-      stall = setTimeout(function () { if (v.readyState === 0) giveUp(); }, 10000);
+      stall = setTimeout(function () { if (v.readyState === 0) giveUp(); }, 12000);
 
       var p = v.play();
-      if (p && p.catch) p.catch(function () { box.classList.remove('is-playing'); });
+      if (p && p.catch) {
+        p.catch(function () {
+          /* Reprodução recusada (sem gesto válido, poupança de energia…):
+             devolvemos o poster e o botão, com os controlos nativos à vista. */
+          box.classList.remove('is-loading');
+          box.classList.remove('is-playing');
+          started = false;
+        });
+      }
     }
 
-    v.addEventListener('loadeddata', function () { clearTimeout(stall); });
+    function ready() {
+      clearTimeout(stall);
+      box.classList.remove('is-loading');
+    }
+
+    v.addEventListener('loadeddata', ready);
+    v.addEventListener('playing', ready);
+    v.addEventListener('waiting', function () { if (!v.paused) box.classList.add('is-loading'); });
     v.addEventListener('error', giveUp);
+    v.addEventListener('stalled', function () { if (!v.paused && v.readyState === 0) box.classList.add('is-loading'); });
 
     btn.addEventListener('click', start);
     v.addEventListener('play', function () { box.classList.add('is-playing'); });
-    v.addEventListener('pause', function () { if (v.currentTime === 0) box.classList.remove('is-playing'); });
+    v.addEventListener('pause', function () {
+      /* Só voltamos ao poster se o vídeo estiver mesmo no início —
+         uma pausa a meio deve continuar a mostrar o fotograma. */
+      if (v.currentTime === 0) { box.classList.remove('is-playing'); started = false; }
+    });
     v.addEventListener('ended', function () {
       v.currentTime = 0;
       v.removeAttribute('controls');
+      box.classList.remove('is-loading');
       box.classList.remove('is-playing');
+      started = false;
     });
   }
 

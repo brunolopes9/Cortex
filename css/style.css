@@ -3342,3 +3342,114 @@ html.lenis { scroll-behavior: auto !important; }
 .tiers-legal a { color: var(--fg-dim); text-decoration: underline; text-underline-offset: 3px; }
 .tiers-legal a:hover { color: var(--acc); }
 .ddx__legal { margin-top: 14px; line-height: 1.65; color: var(--fg-faint); }
+
+/* ==========================================================================
+   Regra de cálculo da partilha de lucro
+   "40% de quê?" é a pergunta que toda a gente faz a seguir aos escalões.
+   Três regras curtas à esquerda, um exemplo com números à direita.
+   ========================================================================== */
+.feerule {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, .92fr);
+  gap: clamp(22px, 3vw, 44px);
+  margin-top: clamp(24px, 3vw, 34px);
+  padding: clamp(22px, 2.8vw, 32px);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(237, 234, 227, .022);
+}
+.feerule__txt h3 { margin-bottom: 16px; }
+.feerule__list {
+  display: grid;
+  gap: 13px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.feerule__list li {
+  position: relative;
+  padding-left: 17px;
+  font-size: .87rem;
+  line-height: 1.6;
+  color: var(--fg-dim);
+}
+.feerule__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .62em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--acc);
+}
+.feerule__list b { color: var(--fg); font-weight: 600; }
+
+.feerule__ex {
+  padding: clamp(18px, 2.2vw, 24px);
+  border-radius: 14px;
+  border: 1px solid var(--acc-line);
+  background: linear-gradient(162deg, rgba(46, 224, 138, .09), rgba(46, 224, 138, .015));
+}
+.feerule__ex-lbl {
+  display: block;
+  font-family: var(--mono);
+  font-size: .64rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--acc);
+  margin-bottom: 16px;
+}
+.feerule__ex-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line-soft);
+  border: 1px solid var(--line-soft);
+  border-radius: 11px;
+  overflow: hidden;
+}
+.feerule__ex-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 13px 14px;
+  background: var(--ink);
+}
+.feerule__ex-grid b {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 1.06rem;
+  font-weight: 500;
+  letter-spacing: -.025em;
+}
+.feerule__ex-grid span {
+  font-size: .71rem;
+  line-height: 1.4;
+  color: var(--fg-faint);
+}
+.feerule__ex-you { background: rgba(46, 224, 138, .08) !important; }
+.feerule__ex-note { margin-top: 12px; color: var(--fg-faint); }
+
+@media (max-width: 900px) { .feerule { grid-template-columns: 1fr; } }
+
+/* Vídeo a carregar da CDN — anel de espera por cima do poster */
+.vsl__box.is-loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  border-radius: 50%;
+  border: 2px solid rgba(46, 224, 138, .22);
+  border-top-color: var(--acc);
+  animation: vslspin .8s linear infinite;
+  pointer-events: none;
+  z-index: 3;
+}
+@keyframes vslspin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .vsl__box.is-loading::after { animation-duration: 2.4s; }
+}

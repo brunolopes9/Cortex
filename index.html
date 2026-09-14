@@ -32,6 +32,8 @@
 <link rel="icon" href="assets/favicon-64.png" sizes="64x64" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
+<link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+<link rel="dns-prefetch" href="https://res.cloudinary.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap">
@@ -74,7 +76,7 @@
         { "@type": "Question", "name": "Onde é que deposito os fundos?",
           "acceptedAnswer": { "@type": "Answer", "text": "Directamente na sua própria conta de corretora, criada em seu nome e com as suas credenciais. A Cortex Automation não detém fundos de clientes nem pode fazer levantamentos da sua conta." } },
         { "@type": "Question", "name": "Quanto custa?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Sem taxa de adesão e sem mensalidade. A Cortex é remunerada apenas por partilha do lucro gerado: Standard (500 a 999 euros) 60/40, Pro (1000 a 9999 euros) 75/25, VIP (10000 euros ou mais) 80/20. Se não houver lucro, não é cobrado nada." } },
+          "acceptedAnswer": { "@type": "Answer", "text": "Sem taxa de adesão e sem mensalidade. A Cortex é remunerada apenas por partilha do lucro gerado: Standard (500 a 999 euros) 60/40, Pro (1000 a 9999 euros) 75/25, VIP (10000 euros ou mais) 80/20. A percentagem incide sobre o lucro de cada mês, nunca sobre o capital depositado. Se o mês fechar sem lucro, não é cobrado nada." } },
         { "@type": "Question", "name": "Qual é o depósito mínimo?",
           "acceptedAnswer": { "@type": "Answer", "text": "500 euros, correspondente ao escalão Standard. Recomendamos começar com um valor confortável e que esteja disposto a arriscar." } },
         { "@type": "Question", "name": "Quais são os riscos?",
@@ -903,8 +905,8 @@
       <p class="lede reveal" style="--rd:.12s">
         <strong style="color:var(--fg);font-weight:600">Sem taxa de adesão nem mensalidade.</strong>
         O capital permanece na sua conta pessoal de corretora e a Cortex é remunerada apenas através de
-        uma percentagem <strong style="color:var(--fg);font-weight:600">do lucro</strong>, de acordo com o
-        escalão escolhido. Sem lucro, não há remuneração para a Cortex.
+        uma percentagem <strong style="color:var(--fg);font-weight:600">do lucro de cada mês</strong>, de acordo
+        com o escalão escolhido. Mês sem lucro, zero a pagar.
       </p>
     </div>
 
@@ -1014,6 +1016,28 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
         </a>
       </article>
+    </div>
+
+    <div class="feerule reveal-l">
+      <div class="feerule__txt">
+        <h3 class="h4">Como &eacute; calculada a partilha de lucro</h3>
+        <ul class="feerule__list">
+          <li><b>Incide s&oacute; sobre o lucro do m&ecirc;s.</b> A percentagem do seu escal&atilde;o aplica-se ao lucro gerado nesse m&ecirc;s &mdash; nunca ao capital que depositou.</li>
+          <li><b>M&ecirc;s sem lucro, zero a pagar.</b> Se o m&ecirc;s fechar sem lucro, n&atilde;o &eacute; cobrado absolutamente nada. Sem m&iacute;nimos, sem mensalidade e sem ficar nada em d&iacute;vida.</li>
+          <li><b>Cada m&ecirc;s &eacute; apurado por si.</b> O c&aacute;lculo &eacute; feito m&ecirc;s a m&ecirc;s, sobre o resultado desse m&ecirc;s.</li>
+        </ul>
+      </div>
+
+      <div class="feerule__ex">
+        <span class="feerule__ex-lbl">Exemplo &middot; escal&atilde;o Pro (25% / 75%)</span>
+        <div class="feerule__ex-grid">
+          <div><b>10 000 &euro;</b><span>na sua conta de corretora</span></div>
+          <div><b class="c-gain">+1 000 &euro;</b><span>lucro do m&ecirc;s (+10%)</span></div>
+          <div><b>250 &euro;</b><span>partilha de lucro (25%)</span></div>
+          <div class="feerule__ex-you"><b class="c-gain">+750 &euro;</b><span>fica para si</span></div>
+        </div>
+        <p class="micro feerule__ex-note">No m&ecirc;s seguinte, se n&atilde;o houver lucro, n&atilde;o &eacute; cobrado nada.</p>
+      </div>
     </div>
 
     <div class="tiers-foot reveal">
@@ -1138,7 +1162,7 @@
 
       <div class="faq__item">
         <button class="faq__q" aria-expanded="false"><span>Quanto custa e como é que ganham?</span><span class="faq__ico" aria-hidden="true"></span></button>
-        <div class="faq__a"><div><p>Sem taxa de adesão e sem mensalidade. A Cortex é remunerada apenas por uma percentagem do lucro gerado, de acordo com o escalão:</p><p><strong>Standard</strong> (capital de 500 € a 999 €): 40% Cortex / 60% cliente. <strong>Pro</strong> (1 000 € a 9 999 €): 25% / 75%. <strong>VIP</strong> (10 000 € ou mais): 20% / 80%.</p><p>A percentagem aplica-se apenas ao lucro efectivo — não há comissão sobre o capital depositado. Sem lucro, não há remuneração para a Cortex. Custos cobrados pela corretora (spreads, comissões, swaps) são alheios a este modelo. As regras completas constam dos <a href="termos.html">Termos e Condições</a>.</p></div></div>
+        <div class="faq__a"><div><p>Sem taxa de adesão e sem mensalidade. A Cortex é remunerada apenas por uma percentagem do lucro gerado, de acordo com o escalão:</p><p><strong>Standard</strong> (capital de 500 € a 999 €): 40% Cortex / 60% cliente. <strong>Pro</strong> (1 000 € a 9 999 €): 25% / 75%. <strong>VIP</strong> (10 000 € ou mais): 20% / 80%.</p><p>O cálculo é simples: <strong>a percentagem incide sobre o lucro do mês</strong>, nunca sobre o capital depositado. Se o mês fechar com +10% de lucro, a partilha aplica-se a esses 10%. <strong>Se o mês fechar sem lucro, não é cobrado absolutamente nada</strong> — sem mínimos, sem mensalidade e sem ficar nada em dívida para o mês seguinte.</p><p>Custos cobrados pela corretora (spreads, comissões, swaps) são alheios a este modelo. As regras completas constam dos <a href="termos.html">Termos e Condições</a>.</p></div></div>
       </div>
 
       <div class="faq__item">
