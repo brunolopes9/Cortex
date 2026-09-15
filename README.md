@@ -57,6 +57,20 @@ var CONFIG = {
 
 Campos vazios escondem automaticamente os elementos correspondentes.
 
+## Publicação
+
+O site está publicado na Vercel a partir deste repositório. Não há build:
+os ficheiros são servidos tal como estão, com `index.html` na raiz.
+Preset **Other**, sem comando de build e sem output directory.
+
+O `vercel.json` só acrescenta cabeçalhos: HSTS, `nosniff`, `X-Frame-Options`,
+`Referrer-Policy` e `Permissions-Policy`, mais um dia de cache (com uma semana
+de `stale-while-revalidate`) para o que está em `assets/`.
+
+O DNS está na Cloudflare, mas os registos do site ficam em **DNS only**
+(nuvem cinzenta): quem trata do TLS é a Vercel. Com a nuvem laranja há dois
+CDNs em cima um do outro e a emissão do certificado da Vercel falha.
+
 ## Domínio
 
 O endereço canónico é `https://cortexautomationai.com`, usado nas tags canónicas,
