@@ -3453,3 +3453,34 @@ html.lenis { scroll-behavior: auto !important; }
 @media (prefers-reduced-motion: reduce) {
   .vsl__box.is-loading::after { animation-duration: 2.4s; }
 }
+
+/* ==========================================================================
+   Tabela mensal em ecrãs estreitos
+   A imagem tem 13 colunas: encolhida para 350px não se lê nada. Em vez de a
+   espremer, damos-lhe scroll horizontal próprio e avisamos que ele existe.
+   ========================================================================== */
+.shot-hint { display: none; }
+
+@media (max-width: 860px) {
+  .shot--table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    border-radius: 14px;
+  }
+  .shot--table img { min-width: 760px; }
+
+  .shot-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+    font-family: var(--mono);
+    font-size: .66rem;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+  }
+  .shot-hint svg { flex: none; opacity: .75; }
+}
