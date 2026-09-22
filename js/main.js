@@ -24,7 +24,7 @@
     // Com um endpoint (Formspree, Netlify Forms, Getform...), o contacto
     // fica gravado e podes fazer follow-up por email.
     formEndpoint: '',                                // ex.: 'https://formspree.io/f/xxxxxxxx'
-    reportFile: 'assets/relatorio-performance-btc.pdf'
+    reportFile: 'assets/relatorio-performance.pdf'
   };
 
   var $  = function (s, c) { return (c || document).querySelector(s); };
@@ -377,13 +377,15 @@
     var cap = $('#cCap'), mon = $('#cMon');
     if (!cap || !mon) return;
 
-    /* A taxa é fixa: é a média mensal COMPOSTA da conta real, calculada
-       sobre os 32 meses fechados entre Janeiro de 2024 e Agosto de 2026
-       (+363,06% no total, com 1% de risco por operação).
-         (1 + 3,6306) ^ (1/32) − 1 = 0,04906…
+    /* A taxa é fixa: é a média mensal COMPOSTA dos 32 meses fechados
+       entre Janeiro de 2024 e Agosto de 2026, à escala de 1% de risco
+       por operação (+285,13% no total).
+         (1 + 2,8513) ^ (1/32) − 1 = 0,04297…
+       Até Janeiro de 2026 são resultados de teste sobre dados históricos;
+       a partir de Fevereiro de 2026, conta real.
        Não é um campo à escolha do visitante — se fosse, o simulador
        deixava de dizer alguma coisa sobre o sistema. */
-    var TAXA = 0.0491;
+    var TAXA = 0.0430;
 
     var oCap = $('#oCap'), oMon = $('#oMon');
     var oFinal = $('#oFinal'), oGain = $('#oGain');
