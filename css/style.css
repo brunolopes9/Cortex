@@ -3682,3 +3682,134 @@ html.lenis { scroll-behavior: auto !important; }
   background: rgba(237, 234, 227, .022);
 }
 .impro__card--plain .small + .small { margin-top: 10px; }
+
+/* ==========================================================================
+   Gráfico de barras, versão com linha de zero
+   As barras negativas descem abaixo da linha, como devem. A linha é
+   desenhada por cada barra e estende-se até meio da goteira, para os
+   segmentos se juntarem num traço contínuo.
+   ========================================================================== */
+.bars {
+  --bars-h: 300px;
+  --zero: 70%;
+  --half-gap: clamp(3px, .7vw, 9px);
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: clamp(6px, 1.4vw, 18px);
+  align-items: stretch;
+  height: var(--bars-h);
+  margin-top: 26px;
+  padding: 34px clamp(10px, 1.8vw, 22px) 56px;
+  border: 1px solid var(--line-soft);
+  border-radius: 14px;
+  background: rgba(237, 234, 227, .018);
+}
+.bars::after { content: none; }
+
+.bar {
+  position: relative;
+  display: block;
+  height: auto;
+}
+/* Linha de zero, em segmentos que se tocam */
+.bar::before {
+  content: "";
+  position: absolute;
+  top: var(--zero);
+  left: calc(-1 * var(--half-gap));
+  right: calc(-1 * var(--half-gap));
+  height: 1px;
+  background: var(--line);
+  z-index: 0;
+}
+
+.bar i {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% - var(--zero));
+  height: 0;
+  z-index: 1;
+  border-radius: 6px 6px 2px 2px;
+  background: linear-gradient(180deg, var(--acc) 0%, rgba(46, 224, 138, .3) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3);
+  transition: height .95s var(--ease-out), filter .3s var(--ease);
+  transition-delay: var(--d, 0s);
+}
+.is-visible .bar i { height: var(--h); }
+.bar:hover i { filter: brightness(1.15); }
+
+.bar--neg i {
+  bottom: auto;
+  top: var(--zero);
+  border-radius: 2px 2px 6px 6px;
+  background: linear-gradient(0deg, var(--loss) 0%, rgba(255, 106, 85, .3) 100%);
+  box-shadow: none;
+}
+
+.bar--best i {
+  background: linear-gradient(180deg, var(--acc-hi) 0%, var(--acc) 55%, rgba(46, 224, 138, .32) 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .45), 0 0 26px -8px rgba(46, 224, 138, .65);
+}
+
+.bar__val {
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  bottom: calc(100% - var(--zero) + var(--h) + 8px);
+  top: auto;
+  z-index: 2;
+  text-align: center;
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(.6rem, 1vw, .72rem);
+  font-weight: 500;
+  letter-spacing: -.03em;
+  color: var(--acc);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity .45s var(--ease) calc(var(--d, 0s) + .5s);
+}
+.is-visible .bar__val { opacity: 1; }
+.bar--best .bar__val { color: var(--acc-hi); font-weight: 600; }
+.bar--neg .bar__val {
+  bottom: auto;
+  top: calc(var(--zero) + var(--h) + 8px);
+  color: var(--loss);
+}
+
+.bar__lbl {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: auto;
+  bottom: -34px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: .66rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.bar--best .bar__lbl { color: var(--fg-dim); }
+
+@media (max-width: 700px) {
+  .bars { --bars-h: 230px; gap: 4px; padding: 28px 8px 48px; }
+  .bar__val { font-size: .54rem; letter-spacing: -.04em; }
+  .bar__lbl { font-size: .58rem; bottom: -28px; letter-spacing: .02em; }
+}
+
+/* Cartões de KPI de cada ano, mesmo aspecto do painel de 2026 */
+.year-hd { margin: 44px 0 0; }
+.year-hd .h4 { margin-bottom: 14px; }
+
+/* Mais folga em baixo: a barra negativa mais funda tem de caber com o
+   seu valor por baixo, e o nome do mês ainda mais abaixo. */
+.bars { padding-bottom: 74px; }
+.bar__lbl { bottom: -52px; }
+@media (max-width: 700px) {
+  .bars { padding-bottom: 62px; }
+  .bar__lbl { bottom: -44px; }
+}
