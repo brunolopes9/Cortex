@@ -3673,3 +3673,12 @@ html.lenis { scroll-behavior: auto !important; }
 .rmdl b { font-size: .89rem; font-weight: 600; letter-spacing: -.012em; }
 .rmdl span { grid-column: 1; font-size: .74rem; color: var(--fg-faint); }
 .rmdl svg { grid-row: span 2; color: var(--acc); flex: none; }
+
+/* Uma porta só na performance, agora que a outra saiu */
+.doors--one { grid-template-columns: 1fr; max-width: 680px; }
+/* Segundo cartão dos bastidores, sem o verde */
+.impro__card--plain {
+  border-color: var(--line);
+  background: rgba(237, 234, 227, .022);
+}
+.impro__card--plain .small + .small { margin-top: 10px; }
