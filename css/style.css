@@ -3821,3 +3821,6 @@ html.lenis { scroll-behavior: auto !important; }
   text-underline-offset: 3px;
 }
 .agosto__fx a:hover { color: var(--acc-hi); }
+
+/* Botão do MyFxBook dentro da nota de Agosto */
+.agosto__cta { margin-top: 14px; }
