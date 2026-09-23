@@ -16,12 +16,21 @@
 
    Variáveis de ambiente (Vercel → Settings → Environment Variables):
      RESEND_API_KEY       obrigatória
-     RESEND_AUDIENCE_ID   opcional — sem ela, só envia o aviso
      MAIL_TO              para onde vão os avisos
-     MAIL_FROM            remetente verificado em Resend → Domains
+     MAIL_FROM            remetente. O domínio tem de estar verificado em
+                          Resend → Domains; a caixa de correio não precisa
+                          de existir. Sem domínio verificado, usar
+                          onboarding@resend.dev — que só consegue enviar
+                          para o email da própria conta Resend.
+     RESEND_AUDIENCE_ID   opcional. Se faltar, a lista é descoberta
+                          sozinha — o painel da Resend já não mostra o ID.
    ========================================================================== */
 
 const RESEND = 'https://api.resend.com';
+
+/* O ID da lista fica em memória entre pedidos quentes, para não andarmos
+   a perguntá-lo à Resend a cada contacto. */
+let audienciaEmCache = null;
 
 /* Escapar antes de meter seja o que for dentro do HTML do email.
    Os valores vêm de um formulário público: não se confia neles. */
@@ -48,13 +57,37 @@ function emailValido(v) {
 
 async function resend(caminho, corpo, chave) {
   const r = await fetch(RESEND + caminho, {
-    method: 'POST',
+    method: corpo ? 'POST' : 'GET',
     headers: { Authorization: 'Bearer ' + chave, 'Content-Type': 'application/json' },
-    body: JSON.stringify(corpo)
+    body: corpo ? JSON.stringify(corpo) : undefined
   });
   const texto = await r.text();
   if (!r.ok) throw new Error(caminho + ' devolveu ' + r.status + ': ' + texto.slice(0, 300));
   return texto ? JSON.parse(texto) : {};
+}
+
+/* O painel novo da Resend já não mostra o ID da lista, por isso
+   perguntamos-lho. Se a variável estiver preenchida, manda ela. */
+async function descobrirAudiencia(chave) {
+  if (process.env.RESEND_AUDIENCE_ID) return process.env.RESEND_AUDIENCE_ID;
+  if (audienciaEmCache) return audienciaEmCache;
+  try {
+    const r = await resend('/audiences', null, chave);
+    const lista = (r && (r.data || r.audiences)) || [];
+    if (lista.length) {
+      audienciaEmCache = lista[0].id;
+      return audienciaEmCache;
+    }
+    /* Conta sem nenhuma lista ainda: criamos a primeira. */
+    const nova = await resend('/audiences', { name: 'Cortex Automation' }, chave);
+    if (nova && nova.id) {
+      audienciaEmCache = nova.id;
+      return audienciaEmCache;
+    }
+  } catch (e) {
+    console.error('não consegui descobrir a Audience:', e.message);
+  }
+  return null;
 }
 
 export default async function handler(req, res) {
@@ -127,14 +160,16 @@ export default async function handler(req, res) {
 
   /* ── 2. Lista de campanhas. Só com email E autorização.
          Se falhar, não estragamos o pedido: o contacto já chegou acima. ── */
-  const audiencia = process.env.RESEND_AUDIENCE_ID;
   let naLista = false;
-  if (email && consentimento && audiencia) {
+  if (email && consentimento) {
     try {
-      await resend('/audiences/' + audiencia + '/contacts', {
-        email, first_name: primeiro, last_name: ultimo, unsubscribed: false
-      }, chave);
-      naLista = true;
+      const audiencia = await descobrirAudiencia(chave);
+      if (audiencia) {
+        await resend('/audiences/' + audiencia + '/contacts', {
+          email, first_name: primeiro, last_name: ultimo, unsubscribed: false
+        }, chave);
+        naLista = true;
+      }
     } catch (e) {
       console.error('Audience falhou:', e.message);
     }
