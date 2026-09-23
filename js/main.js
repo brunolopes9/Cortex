@@ -678,49 +678,73 @@
     if (!v || !btn || !box) return;
 
     var fb = $('#vslFallback'), cap = $('.vsl__cap i', box);
-    var stall = null, started = false;
+    var stall = null, started = false, desistiu = false;
 
-    /* Sem JavaScript os controlos nativos ficam visíveis — é a única
-       forma de dar play. Com JavaScript, escondemo-los até o vídeo
-       arrancar, para o poster ficar limpo por baixo do botão. */
+    /* Sem JavaScript os controlos nativos ficam visíveis — é a única forma
+       de dar play. Com JavaScript, escondemo-los até o vídeo arrancar,
+       para o poster ficar limpo por baixo do botão. */
     v.removeAttribute('controls');
 
-    /* A duração real do ficheiro substitui o "1 min" escrito à mão,
-       assim que os metadados chegam da CDN. */
-    v.addEventListener('loadedmetadata', function () {
-      if (!cap || !isFinite(v.duration) || !v.duration) return;
+    /* A duração escrita à mão só é substituída quando o ficheiro está
+       mesmo lido de ponta a ponta. Um ficheiro ainda a ser gerado na
+       CDN reporta durações absurdas que vão crescendo — e não queremos
+       isso a piscar no ecrã. */
+    v.addEventListener('durationchange', function () {
+      if (!cap || !isFinite(v.duration) || v.duration < 5) return;
+      if (v.readyState < 1) return;
       var t = Math.round(v.duration);
       cap.textContent = Math.floor(t / 60) + ':' + ('0' + (t % 60)).slice(-2);
     });
 
-    function giveUp() {
+    function limparEspera() {
+      clearTimeout(stall);
+      box.classList.remove('is-loading');
+    }
+
+    function desistir() {
+      if (desistiu) return;
+      desistiu = true;
       if (fb) fb.hidden = false;
       v.setAttribute('controls', '');
       box.classList.remove('is-loading');
       box.classList.remove('is-playing');
+      started = false;
+    }
+
+    /* Só desistimos se nada estiver a acontecer. Enquanto chegarem bytes
+       ou o tempo avançar, o relógio é reposto: um ficheiro grande numa
+       ligação lenta não é um erro, é só lento. */
+    function armarRelogio() {
+      clearTimeout(stall);
+      stall = setTimeout(function () {
+        if (v.readyState === 0 && !v.currentTime) desistir();
+      }, 25000);
+    }
+
+    function houveProgresso() {
+      if (desistiu) return;
+      armarRelogio();
+      if (v.readyState >= 3 || v.currentTime > 0) limparEspera();
     }
 
     function start() {
       if (started && !v.paused) return;
       started = true;
+      desistiu = false;
+      if (fb) fb.hidden = true;
       box.classList.add('is-playing');
-      /* Só marcamos "a carregar" se ainda não houver imagem para mostrar */
       if (v.readyState < 3) box.classList.add('is-loading');
       v.setAttribute('controls', '');
       v.setAttribute('preload', 'auto');
-
-      /* Se ao fim de 12 segundos nem os metadados chegaram, algo está a
-         bloquear a reprodução — CDN inacessível, rede a cair, política do
-         browser. Damos ao visitante uma saída em vez de o deixar a olhar
-         para um rectângulo preto. */
-      clearTimeout(stall);
-      stall = setTimeout(function () { if (v.readyState === 0) giveUp(); }, 12000);
+      armarRelogio();
 
       var p = v.play();
       if (p && p.catch) {
         p.catch(function () {
-          /* Reprodução recusada (sem gesto válido, poupança de energia…):
-             devolvemos o poster e o botão, com os controlos nativos à vista. */
+          /* Reprodução recusada (sem gesto válido, poupança de energia…).
+             Devolvemos o poster e o botão, com os controlos nativos à vista
+             para a pessoa poder carregar em play ela própria. */
+          clearTimeout(stall);
           box.classList.remove('is-loading');
           box.classList.remove('is-playing');
           started = false;
@@ -728,16 +752,16 @@
       }
     }
 
-    function ready() {
-      clearTimeout(stall);
-      box.classList.remove('is-loading');
-    }
+    ['progress', 'loadeddata', 'canplay', 'playing', 'timeupdate'].forEach(function (ev) {
+      v.addEventListener(ev, houveProgresso);
+    });
+    v.addEventListener('waiting', function () {
+      if (!v.paused && !desistiu) { box.classList.add('is-loading'); armarRelogio(); }
+    });
 
-    v.addEventListener('loadeddata', ready);
-    v.addEventListener('playing', ready);
-    v.addEventListener('waiting', function () { if (!v.paused) box.classList.add('is-loading'); });
-    v.addEventListener('error', giveUp);
-    v.addEventListener('stalled', function () { if (!v.paused && v.readyState === 0) box.classList.add('is-loading'); });
+    /* O browser só dispara 'error' no <video> depois de esgotar TODAS as
+       <source>. Se chegámos aqui, nem a local nem a da CDN serviram. */
+    v.addEventListener('error', desistir);
 
     btn.addEventListener('click', start);
     v.addEventListener('play', function () { box.classList.add('is-playing'); });
@@ -749,7 +773,7 @@
     v.addEventListener('ended', function () {
       v.currentTime = 0;
       v.removeAttribute('controls');
-      box.classList.remove('is-loading');
+      limparEspera();
       box.classList.remove('is-playing');
       started = false;
     });

@@ -182,6 +182,10 @@
     <!-- 2 · Vídeo de apresentação (entregue pela CDN da Cloudinary) -->
     <figure class="vsl__box hero__fade" id="vslBox" style="--rd:.24s">
       <video id="vslVideo" class="vsl__video" poster="assets/vsl-poster.jpg" preload="metadata" playsinline controls controlslist="nodownload" width="1280" height="720">
+        <!-- Servido do próprio site: é a fonte mais fiável e não depende
+             de bloqueios de terceiros nem de transformações a gerar. -->
+        <source src="assets/vsl.mp4" type="video/mp4">
+        <!-- Reserva na CDN da Cloudinary, caso o ficheiro local falhe -->
         <source src="https://res.cloudinary.com/mzqx3xbc/video/upload/q_auto,f_auto,w_1280/v1790149986/Cortex_Automation_-_FINAL_4.38_v2.mp4" type="video/mp4">
         <p class="small">O seu navegador n&atilde;o consegue reproduzir este v&iacute;deo.</p>
       </video>
@@ -193,7 +197,7 @@
       </button>
       <p class="vsl__fb" id="vslFallback" hidden>
         N&atilde;o foi poss&iacute;vel reproduzir o v&iacute;deo aqui.
-        <a href="https://res.cloudinary.com/mzqx3xbc/video/upload/q_auto,f_auto,w_1280/v1790149986/Cortex_Automation_-_FINAL_4.38_v2.mp4" target="_blank" rel="noopener">Abrir num separador novo</a>.
+        <a href="assets/vsl.mp4" target="_blank" rel="noopener">Abrir num separador novo</a>.
       </p>
     </figure>
 
