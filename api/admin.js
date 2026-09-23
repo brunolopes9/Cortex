@@ -124,6 +124,82 @@ export default async function handler(req, res) {
     }
   }
 
+  /* ── diagnostico ──────────────────────────────────────────────────
+     Responde a uma pergunta só: porque é que o email não chegou?
+     Não envia nada e não revela nenhuma chave — só diz o que está
+     ligado, o que falta e o que a Resend responde a quem pergunta. */
+  if (accao === 'diagnostico') {
+    const env = function (n) { return Boolean(process.env[n]); };
+    const d2 = {
+      variaveis: {
+        RESEND_API_KEY: env('RESEND_API_KEY'),
+        MAIL_FROM: process.env.MAIL_FROM || null,
+        MAIL_TO: process.env.MAIL_TO || null,
+        ADMIN_PASSWORD: env('ADMIN_PASSWORD'),
+        ADMIN_SECRET: env('ADMIN_SECRET'),
+        KV_REST_API_URL: env('KV_REST_API_URL') || env('UPSTASH_REDIS_REST_URL'),
+        KV_REST_API_TOKEN: env('KV_REST_API_TOKEN') || env('UPSTASH_REDIS_REST_TOKEN')
+      },
+      baseDados: { ligada: disponivel(), leituraOk: null, contactos: null },
+      resend: { chaveValida: null, erro: null, dominios: [], remetenteOk: null }
+    };
+
+    /* A base de dados: não basta ter as variáveis, tem de responder. */
+    if (disponivel()) {
+      try {
+        const l = await lerLeads(1);
+        d2.baseDados.leituraOk = true;
+        d2.baseDados.contactos = l.length;
+      } catch (e) {
+        d2.baseDados.leituraOk = false;
+        d2.baseDados.erro = e.message.slice(0, 160);
+      }
+    }
+
+    /* A Resend: perguntamos pelos domínios. É um pedido de leitura —
+       diz-nos de uma vez se a chave ainda serve e se o domínio do
+       remetente está mesmo verificado. */
+    const k = process.env.RESEND_API_KEY;
+    if (!k) {
+      d2.resend.erro = 'RESEND_API_KEY não está definida.';
+    } else {
+      try {
+        const r = await fetch(RESEND + '/domains', {
+          headers: { Authorization: 'Bearer ' + k }
+        });
+        const txt = await r.text();
+        if (r.status === 401 || r.status === 403) {
+          d2.resend.chaveValida = false;
+          d2.resend.erro = 'A Resend recusou a chave (' + r.status + '). Foi revogada ou está mal copiada.';
+        } else if (!r.ok) {
+          d2.resend.chaveValida = false;
+          d2.resend.erro = 'A Resend devolveu ' + r.status + ': ' + txt.slice(0, 200);
+        } else {
+          d2.resend.chaveValida = true;
+          const lista = (JSON.parse(txt || '{}').data) || [];
+          d2.resend.dominios = lista.map(function (x) {
+            return { nome: x.name, estado: x.status, regiao: x.region || '' };
+          });
+          /* O remetente só funciona se o domínio dele estiver verificado. */
+          const from = process.env.MAIL_FROM || '';
+          const dom = (from.match(/@([^\s>]+)/) || [])[1] || '';
+          if (!from) d2.resend.remetenteOk = null;
+          else if (!dom) d2.resend.remetenteOk = false;
+          else {
+            const achado = lista.find(function (x) { return x.name === dom; });
+            d2.resend.remetenteOk = Boolean(achado && achado.status === 'verified');
+            d2.resend.remetenteDominio = dom;
+          }
+        }
+      } catch (e) {
+        d2.resend.chaveValida = false;
+        d2.resend.erro = 'Não consegui falar com a Resend: ' + e.message.slice(0, 160);
+      }
+    }
+
+    return res.status(200).json({ ok: true, diag: d2 });
+  }
+
   /* ── campanha ── */
   if (accao === 'campanha') {
     const chave = process.env.RESEND_API_KEY;

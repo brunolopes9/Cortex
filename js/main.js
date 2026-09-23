@@ -609,6 +609,30 @@
     }
 
     if (!form) return;
+
+    var estado = $('#rmEstado');
+
+    function dizer(texto, tipo) {
+      if (!estado) return;
+      estado.hidden = !texto;
+      estado.textContent = texto || '';
+      estado.className = 'f-estado' + (texto ? ' f-estado--' + tipo : '');
+    }
+
+    /* Deixar usar outro contacto: sem isto, quem já pediu uma vez fica
+       preso ao ecrã de sucesso e não consegue voltar ao formulário. */
+    var outro = $('#rmOutro');
+    if (outro) {
+      outro.addEventListener('click', function () {
+        try { localStorage.removeItem(LEAD); } catch (err) { /* nada */ }
+        stDone.classList.remove('is-on');
+        stForm.classList.add('is-on');
+        dizer('', '');
+        form.reset();
+        setTimeout(function () { var n = $('#rmName'); if (n) n.focus(); }, 120);
+      });
+    }
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
@@ -618,26 +642,18 @@
       var consent = $('#rmConsent').checked;
       var hp = ($('#rmWebsite') || {}).value || '';
 
-      /* Nome e telemóvel são obrigatórios. O email é opcional, mas se
-         vier escrito tem de estar bem escrito — não vale a pena guardar
-         um endereço com gralha e nunca mais conseguir lá chegar. */
       var soDigitos = tel.replace(/[^\d]/g, '');
       var okNome = bad('#fName', nome.length < 2);
       var okTel = bad('#fTel', soDigitos.length < 9 || soDigitos.length > 15);
-      var okMail = bad('#fMail', email !== '' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email));
+      var okMail = bad('#fMail', !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email));
 
-      if (!okNome) { $('#rmName').focus(); return; }
-      if (!okTel) { $('#rmTel').focus(); return; }
-      if (!okMail) { $('#rmEmail').focus(); return; }
+      if (!okNome || !okTel || !okMail) {
+        dizer('Falta preencher alguma coisa. Veja os campos assinalados.', 'erro');
+        $(!okNome ? '#rmName' : !okTel ? '#rmTel' : '#rmEmail').focus();
+        return;
+      }
 
-      try {
-        localStorage.setItem(LEAD, JSON.stringify({
-          nome: nome, tel: tel, email: email, consent: consent, ts: Date.now()
-        }));
-      } catch (err) { /* modo privado — segue na mesma */ }
-
-      /* De onde veio a visita. Serve para saber o que está a dar
-         resultado: Instagram, campanha paga, pesquisa, link directo. */
+      /* De onde veio a visita, para sabermos o que está a dar resultado. */
       var origem = location.href;
       try {
         var utm = new URLSearchParams(location.search);
@@ -646,16 +662,14 @@
         else if (document.referrer) origem = document.referrer + ' → ' + origem;
       } catch (err) { /* nada */ }
 
-      function pelaMao() {
-        /* Última linha de defesa: se o servidor não responder, o contacto
-           não se perde — vai para o WhatsApp já escrito. */
-        var t = 'Olá! Chamo-me ' + nome + ' (' + tel + ') e queria receber os relatórios da Cortex Automation.';
-        window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(t), '_blank', 'noopener');
-        showDone(nome);
-      }
-
+      dizer('A enviar…', 'ok');
       submit.setAttribute('aria-busy', 'true');
       submit.disabled = true;
+
+      /* Um limite de tempo próprio: sem isto, se o servidor ficar calado,
+         a roda gira para sempre e a pessoa não sabe o que fazer. */
+      var abortou = false;
+      var relogio = setTimeout(function () { abortou = true; }, 15000);
 
       fetch('/api/lead', {
         method: 'POST',
@@ -665,11 +679,46 @@
           consentimento: consent, origem: origem, website: hp
         })
       }).then(function (r) {
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        showDone(nome);
+        return r.json().catch(function () { return {}; }).then(function (j) {
+          return { http: r.status, dados: j };
+        });
+      }).then(function (r) {
+        if (abortou) return;
+        clearTimeout(relogio);
+
+        if (r.http === 200 && r.dados.ok) {
+          try {
+            localStorage.setItem(LEAD, JSON.stringify({
+              nome: nome, tel: tel, email: email, consent: consent, ts: Date.now()
+            }));
+          } catch (err) { /* modo privado — segue na mesma */ }
+          dizer('', '');
+          showDone(nome);
+          return;
+        }
+
+        /* Validação recusada pelo servidor: dizemos qual campo, em vez
+           de mandar a pessoa para o WhatsApp sem perceber porquê. */
+        if (r.http === 400 && r.dados.campos) {
+          var nomes = { nome: 'o nome', telefone: 'o telemóvel', email: 'o email' };
+          var quais = r.dados.campos.map(function (c) { return nomes[c] || c; }).join(' e ');
+          r.dados.campos.forEach(function (c) {
+            bad(c === 'nome' ? '#fName' : c === 'telefone' ? '#fTel' : '#fMail', true);
+          });
+          dizer('Verifique ' + quais + '.', 'erro');
+          submit.removeAttribute('aria-busy');
+          submit.disabled = false;
+          return;
+        }
+
+        throw new Error('HTTP ' + r.http);
       }).catch(function () {
-        pelaMao();
-      }).then(function () {
+        clearTimeout(relogio);
+        /* Última linha de defesa: o contacto não se perde, vai para o
+           WhatsApp já escrito. Mas dizemos à pessoa o que aconteceu. */
+        dizer('Não consegui enviar daqui. Abri o WhatsApp com a mensagem escrita — é só carregar em enviar.', 'erro');
+        var t = 'Olá! Chamo-me ' + nome + ' (' + tel + ', ' + email + ') e queria receber os relatórios da Cortex Automation.';
+        window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(t), '_blank', 'noopener');
         submit.removeAttribute('aria-busy');
         submit.disabled = false;
       });
@@ -839,9 +888,17 @@
         form.querySelectorAll('.f-field, #nsBtn').forEach(function (el) { el.hidden = true; });
         if (nota) nota.hidden = true;
         ok.hidden = false;
+        ok.className = 'news__ok';
         ok.textContent = 'Pronto, ' + nome.split(/\s+/)[0] + '. Está na lista.';
         visita.cliques.push('newsletter');
       }).catch(function () {
+        /* Dizer o que aconteceu, em vez de abrir o WhatsApp sem explicação
+           e deixar a pessoa sem saber se ficou ou não inscrita. */
+        if (ok) {
+          ok.hidden = false;
+          ok.className = 'news__ok news__ok--erro';
+          ok.textContent = 'Não consegui inscrever daqui. Abri o WhatsApp com a mensagem escrita — é só carregar em enviar.';
+        }
         var t = 'Olá! Chamo-me ' + nome + ' e queria subscrever a newsletter da Cortex Automation.';
         window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(t), '_blank', 'noopener');
       }).then(function () {

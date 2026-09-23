@@ -792,7 +792,7 @@
             </button>
             <p class="newtab">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.6 3.4 8.4 8 9 4.6-.6 8-4.4 8-9V6l-8-3Z"/></svg>
-              Fica aqui mesmo. Apenas nome e email.
+              Fica aqui mesmo. Nome, telem&oacute;vel e email.
             </p>
           </div>
         </div>
@@ -1439,7 +1439,6 @@
         Drawdown máximo mensal: 13,83%, à escala de 1% de risco por operação, entre Janeiro de 2024 e Agosto de 2026.
         A maior queda seguida no período foi de 17,60%.
         Rentabilidade acumulada com juro composto no período: +271,95%.
-        Rentabilidade acumulada com juro composto no período: +271,95%.
         De Janeiro de 2024 a Janeiro de 2026 os resultados apresentados são de teste sobre dados históricos e não
         correspondem a operações reais. Leia todas as divulgações de risco antes de começar.
       </p>
@@ -1527,8 +1526,10 @@
         <label class="f-check">
           <input type="checkbox" id="rmConsent" name="consentimento">
           <span class="box"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg></span>
-          <span>Autorizo o contacto e o envio de resultados mensais e novidades. Opcional — recebe os relatórios de qualquer forma. <a href="privacidade.html" target="_blank" rel="noopener">Como tratamos os dados</a></span>
+          <span>Autorizo o envio de resultados mensais e novidades. Opcional — recebe os relat&oacute;rios de qualquer forma. <a href="privacidade.html" target="_blank" rel="noopener">Como tratamos os dados</a></span>
         </label>
+
+        <p class="f-estado" id="rmEstado" role="status" aria-live="polite" hidden></p>
 
         <button type="submit" class="btn btn--acc btn--wide" id="rmSubmit">
           Receber os relat&oacute;rios
@@ -1548,6 +1549,7 @@
         <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>
       </div>
       <h3 class="h3">Pronto, <span id="rmWho" class="c-acc">obrigado</span>.</h3>
+      <button type="button" class="rm-outro" id="rmOutro" hidden>Usar outro contacto</button>
       <p class="modal__lede" id="rmMsg">Ficámos com o seu contacto. Pode abrir o relatório já a seguir — e continua neste site.</p>
 
       <div class="rmdl">

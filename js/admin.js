@@ -219,6 +219,71 @@
     });
   });
 
+
+  /* ══════════════════════ Diagnóstico ══════════════════════
+     Um botão que responde à pergunta mais aflitiva de todas:
+     "deixei o contacto e não me chegou nada — onde é que parou?" */
+  function linha(rotulo, estado, detalhe) {
+    var cor = estado === true ? 'ok' : estado === false ? 'mau' : 'meio';
+    var simbolo = estado === true ? '✓' : estado === false ? '✕' : '—';
+    return '<li class="adm-diag__l adm-diag__l--' + cor + '">' +
+      '<b>' + simbolo + '</b><span>' + rotulo + '</span>' +
+      '<i>' + (detalhe == null ? '' : seguro(detalhe)) + '</i></li>';
+  }
+
+  $('#diagBtn').addEventListener('click', function () {
+    var caixa = $('#diag');
+    caixa.hidden = false;
+    caixa.innerHTML = '<p class="adm-diag__espera">A verificar…</p>';
+
+    api({ accao: 'diagnostico' }).then(function (r) {
+      if (!r.dados || !r.dados.ok) {
+        caixa.innerHTML = '<p class="adm-diag__espera">Não consegui verificar.</p>';
+        return;
+      }
+      var d = r.dados.diag, v = d.variaveis, h = '';
+
+      h += '<h2>Envio de email</h2><ul>';
+      h += linha('Chave da Resend', d.resend.chaveValida,
+        d.resend.erro || (d.resend.chaveValida ? 'aceite' : ''));
+      h += linha('Remetente (MAIL_FROM)', v.MAIL_FROM ? d.resend.remetenteOk : false,
+        v.MAIL_FROM || 'em falta');
+      h += linha('Destinatário (MAIL_TO)', Boolean(v.MAIL_TO), v.MAIL_TO || 'em falta — vai para o email por omissão');
+      if (d.resend.dominios.length) {
+        h += linha('Domínios na Resend', null,
+          d.resend.dominios.map(function (x) { return x.nome + ' (' + x.estado + ')'; }).join(', '));
+      } else if (d.resend.chaveValida) {
+        h += linha('Domínios na Resend', false, 'nenhum domínio adicionado');
+      }
+      h += '</ul>';
+
+      h += '<h2>Base de dados</h2><ul>';
+      h += linha('Variáveis presentes', v.KV_REST_API_URL && v.KV_REST_API_TOKEN,
+        v.KV_REST_API_URL && v.KV_REST_API_TOKEN ? '' : 'faltam — ou falta um Redeploy depois de as ligar');
+      h += linha('Responde', d.baseDados.leituraOk,
+        d.baseDados.erro || (d.baseDados.leituraOk ? d.baseDados.contactos + ' contacto(s) guardado(s)' : ''));
+      h += '</ul>';
+
+      h += '<h2>Acesso ao painel</h2><ul>';
+      h += linha('ADMIN_PASSWORD', v.ADMIN_PASSWORD, '');
+      h += linha('ADMIN_SECRET', v.ADMIN_SECRET, '');
+      h += '</ul>';
+
+      /* Uma frase de conclusão, para não obrigar a ler a lista toda. */
+      var culpa = '';
+      if (d.resend.chaveValida === false) culpa = 'O email não sai porque a Resend está a recusar a chave. Gere uma chave nova e actualize a RESEND_API_KEY na Vercel.';
+      else if (v.MAIL_FROM && d.resend.remetenteOk === false) culpa = 'O email não sai porque o domínio do remetente (' + (d.resend.remetenteDominio || '?') + ') não está verificado na Resend.';
+      else if (!v.MAIL_FROM) culpa = 'Falta a MAIL_FROM. Sem remetente, a Resend recusa o envio.';
+      else if (d.baseDados.leituraOk === false || !(v.KV_REST_API_URL && v.KV_REST_API_TOKEN)) culpa = 'O email sai, mas os contactos não ficam guardados aqui. Faça um Redeploy depois de ligar a base de dados.';
+      else culpa = 'Está tudo ligado. Se mesmo assim não recebe, veja o spam e confirme que MAIL_TO é o seu endereço.';
+      h += '<p class="adm-diag__fim">' + seguro(culpa) + '</p>';
+
+      caixa.innerHTML = h;
+    }).catch(function () {
+      caixa.innerHTML = '<p class="adm-diag__espera">Sem ligação ao servidor.</p>';
+    });
+  });
+
   /* Se o cookie ainda for válido, entra directo. */
   api({ accao: 'dados' }).then(function (r) {
     if (r.http !== 401) abrirPainel();

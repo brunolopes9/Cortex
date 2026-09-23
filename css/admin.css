@@ -147,3 +147,51 @@
    todo. Limitamos a largura e alinhamos à esquerda. */
 .adm-dias { justify-content: flex-start; }
 .adm-dia { flex: 0 1 46px; min-width: 18px; }
+
+/* ══════════════════════ Diagnóstico ══════════════════════
+   Aparece só quando é pedido. Três listas curtas e uma frase
+   de conclusão — a ideia é responder sem obrigar a interpretar. */
+.adm-diag {
+  margin: 0 0 22px;
+  padding: 20px 22px;
+  border: 1px solid var(--line-soft);
+  border-radius: 13px;
+  background: rgba(237, 234, 227, .018);
+}
+.adm-diag h2 {
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  margin: 18px 0 10px;
+}
+.adm-diag h2:first-child { margin-top: 0; }
+.adm-diag ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 7px; }
+
+.adm-diag__l {
+  display: grid;
+  grid-template-columns: 18px minmax(120px, 190px) 1fr;
+  gap: 10px;
+  align-items: baseline;
+  font-size: .82rem;
+}
+.adm-diag__l b { font-size: .9rem; line-height: 1; }
+.adm-diag__l i { font-style: normal; font-family: var(--mono); font-size: .74rem; color: var(--fg-dim); word-break: break-word; }
+.adm-diag__l--ok b { color: var(--acc); }
+.adm-diag__l--mau b { color: var(--loss); }
+.adm-diag__l--meio b { color: var(--fg-dim); }
+
+.adm-diag__fim {
+  margin: 20px 0 0;
+  padding-top: 15px;
+  border-top: 1px solid var(--line-soft);
+  font-size: .86rem;
+  line-height: 1.6;
+}
+.adm-diag__espera { margin: 0; font-size: .84rem; color: var(--fg-dim); }
+
+@media (max-width: 620px) {
+  .adm-diag__l { grid-template-columns: 18px 1fr; }
+  .adm-diag__l i { grid-column: 2; }
+}

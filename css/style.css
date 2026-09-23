@@ -2461,6 +2461,7 @@ html.lenis { scroll-behavior: auto !important; }
   margin-bottom: 8px;
 }
 .f-field input[type="text"],
+.f-field input[type="tel"],
 .f-field input[type="email"] {
   width: 100%;
   padding: 13px 15px;
@@ -3940,3 +3941,98 @@ html.lenis { scroll-behavior: auto !important; }
 }
 .rmdl__aviso svg { flex: none; margin-top: 2px; color: var(--loss); }
 .rmdl__aviso strong { color: var(--fg-dim); }
+
+/* ==========================================================================
+   Formulários — correcções de aspecto
+
+   1. O Chrome pinta os campos preenchidos automaticamente com um fundo
+      branco que não há forma de mudar com background-color: só a sombra
+      interior o cobre. Sem isto, num site escuro, os campos que o browser
+      preenche ficam brancos e os outros pretos.
+   2. A barra de deslocamento do modal era a do sistema, clara e larga.
+   ========================================================================== */
+.modal input:-webkit-autofill,
+.modal input:-webkit-autofill:hover,
+.modal input:-webkit-autofill:focus,
+.news__form input:-webkit-autofill,
+.news__form input:-webkit-autofill:hover,
+.news__form input:-webkit-autofill:focus,
+.adm input:-webkit-autofill,
+.adm input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--fg);
+  -webkit-box-shadow: 0 0 0 100px #14161a inset;
+  box-shadow: 0 0 0 100px #14161a inset;
+  caret-color: var(--fg);
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Barra de deslocamento do modal, a condizer com o resto */
+.modal__box { scrollbar-width: thin; scrollbar-color: rgba(237,234,227,.22) transparent; }
+.modal__box::-webkit-scrollbar { width: 9px; }
+.modal__box::-webkit-scrollbar-track { background: transparent; }
+.modal__box::-webkit-scrollbar-thumb {
+  background: rgba(237, 234, 227, .16);
+  border-radius: 99px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.modal__box::-webkit-scrollbar-thumb:hover { background: rgba(237, 234, 227, .3); background-clip: content-box; }
+
+/* Mensagem de estado do formulário */
+.f-estado {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-bottom: 14px;
+  padding: 11px 13px;
+  border-radius: 10px;
+  font-size: .84rem;
+  line-height: 1.55;
+}
+.f-estado--erro {
+  color: var(--loss);
+  background: rgba(255, 106, 85, .08);
+  border: 1px solid rgba(255, 106, 85, .26);
+}
+.f-estado--ok {
+  color: var(--acc);
+  background: rgba(46, 224, 138, .08);
+  border: 1px solid var(--acc-line);
+}
+
+/* Roda de espera dentro do botão, enquanto o servidor responde */
+.btn[aria-busy="true"] { pointer-events: none; opacity: .85; }
+.btn[aria-busy="true"] svg { display: none; }
+.btn[aria-busy="true"]::after {
+  content: "";
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 2px solid rgba(4, 24, 14, .3);
+  border-top-color: #04180E;
+  animation: btnspin .7s linear infinite;
+}
+.btn--ghost[aria-busy="true"]::after {
+  border-color: rgba(237, 234, 227, .25);
+  border-top-color: var(--fg);
+}
+@keyframes btnspin { to { transform: rotate(360deg); } }
+
+/* "Usar outro contacto", no ecrã de sucesso */
+.rm-outro {
+  margin-bottom: 14px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: .8rem;
+  color: var(--fg-faint);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.rm-outro:hover { color: var(--acc); }
+
+/* Newsletter: o mesmo sítio serve para a confirmação e para o erro.
+   Só muda a cor — a pessoa olha para onde já estava a olhar. */
+.news__ok--erro { color: var(--loss); }
