@@ -26,7 +26,7 @@
                           sozinha — o painel da Resend já não mostra o ID.
    ========================================================================== */
 
-import { disponivel, guardarLead } from './_store.js';
+import { disponivel, guardarLead } from '../lib/store.js';
 
 const RESEND = 'https://api.resend.com';
 

@@ -11,8 +11,8 @@
      campanha    envia email a quem autorizou
    ========================================================================== */
 
-import { autenticado, passwordCorrecta, criarCookie, limparCookie } from './_auth.js';
-import { disponivel, lerLeads, lerSessoes } from './_store.js';
+import { autenticado, passwordCorrecta, criarCookie, limparCookie } from '../lib/auth.js';
+import { disponivel, lerLeads, lerSessoes } from '../lib/store.js';
 
 const RESEND = 'https://api.resend.com';
 

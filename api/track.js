@@ -17,7 +17,7 @@
    ela. É por isso que isto não precisa de consentimento prévio.
    ========================================================================== */
 
-import { disponivel, guardarSessao } from './_store.js';
+import { disponivel, guardarSessao } from '../lib/store.js';
 
 function limpar(v, max) {
   return String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, max || 200);

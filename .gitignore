@@ -12,8 +12,11 @@ Thumbs.db
 desktop.ini
 .DS_Store
 
-# Ficheiros temporários de trabalho
-_*.js
-_*.html
-_*.css
+# Ficheiros temporários de trabalho.
+# A barra à frente prende o padrão à raiz: sem ela apanhava também
+# ficheiros de código em subpastas, e foi o que aconteceu com os
+# ajudantes de /api — nunca chegaram a ser enviados.
+/_*.js
+/_*.html
+/_*.css
 
