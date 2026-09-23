@@ -13,6 +13,7 @@
 
 import { autenticado, passwordCorrecta, criarCookie, limparCookie } from '../lib/auth.js';
 import { disponivel, lerLeads, lerSessoes } from '../lib/store.js';
+import { envelope, remetente, enderecoRemetente, FONTE, SITE } from '../lib/emails.js';
 
 const RESEND = 'https://api.resend.com';
 
@@ -231,9 +232,20 @@ export default async function handler(req, res) {
     /* Um email por pessoa, para o nome entrar na mensagem e para que
        ninguém veja o endereço de ninguém. Em lotes, para não esbarrar
        nos limites da Resend. */
-    const html = corpo.split(/\n{2,}/).map(function (p) {
-      return '<p style="margin:0 0 14px">' + esc(p).replace(/\n/g, '<br>') + '</p>';
+    const paragrafos = corpo.split(/\n{2,}/).map(function (p) {
+      return '<p style="margin:0 0 15px;font:15px/1.65 ' + FONTE + ';color:#5C646E">' +
+        esc(p).replace(/\n/g, '<br>') + '</p>';
     }).join('');
+
+    const deQuem = remetente();
+    const endereco = enderecoRemetente();
+
+    /* Sem estes cabeçalhos, o Gmail e o Outlook atiram campanhas para o
+       lixo — passaram a exigi-los a quem envia para muita gente. */
+    const cabecalhosSaida = {
+      'List-Unsubscribe': '<mailto:' + endereco + '?subject=SAIR>',
+      'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click'
+    };
 
     let enviados = 0, falhados = 0;
     for (let i = 0; i < destinos.length; i += 20) {
@@ -244,17 +256,19 @@ export default async function handler(req, res) {
             method: 'POST',
             headers: { Authorization: 'Bearer ' + chave, 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              from: process.env.MAIL_FROM || 'Cortex Automation <onboarding@resend.dev>',
+              from: deQuem,
               to: [p.email],
-              reply_to: process.env.MAIL_TO || undefined,
+              reply_to: process.env.MAIL_TO || endereco,
               subject: assunto,
-              html:
-                '<div style="font:15px/1.65 system-ui,-apple-system,sans-serif;color:#1a1a1a;max-width:560px">' +
-                (p.nome ? '<p style="margin:0 0 14px">Olá ' + esc(p.nome) + ',</p>' : '') +
-                html +
-                '<p style="margin:26px 0 0;font-size:12px;color:#888;border-top:1px solid #eee;padding-top:14px">' +
-                'Recebe este email porque autorizou o contacto no site da Cortex Automation. ' +
-                'Para deixar de receber, responda a este email com a palavra SAIR.</p></div>'
+              headers: cabecalhosSaida,
+              html: envelope(
+                (p.nome ? '<p style="margin:0 0 15px;font:15px/1.65 ' + FONTE + ';color:#15181C">Olá ' +
+                  esc(p.nome) + ',</p>' : '') + paragrafos),
+              /* A versão em texto conta a favor de quem envia, e há quem
+                 leia o email assim mesmo. */
+              text: (p.nome ? 'Olá ' + p.nome + ',\n\n' : '') + corpo +
+                '\n\n---\nRecebe este email porque autorizou o contacto em ' + SITE + '\n' +
+                'Para deixar de receber, responda com a palavra SAIR.\n'
             })
           });
           if (r.ok) enviados++; else falhados++;

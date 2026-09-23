@@ -2,45 +2,38 @@
    POST /api/lead
    Recebe o formulário de pedido dos relatórios.
 
-   Faz duas coisas, por esta ordem de importância:
+   Faz três coisas, por esta ordem de importância:
 
-     1. Avisa-nos por email, sempre. É o que garante que nenhum contacto
-        se perde — incluindo os que só deixam telemóvel e por isso não
-        podem entrar numa lista de email.
+     1. Manda os relatórios à pessoa. É o que o site promete, e é a única
+        parte que ela vê. Se isto falhar, o pedido falha.
 
-     2. Se a pessoa deixou email e autorizou contacto, acrescenta-a à
-        Audience da Resend. É de lá que saem as campanhas.
+     2. Avisa-nos, e diz-nos se o ponto 1 correu bem. Quando não correu,
+        o aviso traz o contacto para lhe enviarmos à mão.
 
-   A chave da Resend vive só aqui, no servidor. Nunca no browser: quem
-   a apanhasse podia enviar email em nome do domínio.
+     3. Guarda para o painel e, com email e autorização, acrescenta à
+        Audience da Resend.
+
+   A chave da Resend vive só aqui, no servidor. Nunca no browser: quem a
+   apanhasse podia enviar email em nome do domínio.
 
    Variáveis de ambiente (Vercel → Settings → Environment Variables):
      RESEND_API_KEY       obrigatória
-     MAIL_TO              para onde vão os avisos
      MAIL_FROM            remetente. O domínio tem de estar verificado em
-                          Resend → Domains; a caixa de correio não precisa
-                          de existir. Sem domínio verificado, usar
-                          onboarding@resend.dev — que só consegue enviar
-                          para o email da própria conta Resend.
-     RESEND_AUDIENCE_ID   opcional. Se faltar, a lista é descoberta
-                          sozinha — o painel da Resend já não mostra o ID.
+                          Resend → Domains. Basta o endereço: o nome que
+                          aparece na caixa de entrada é posto aqui.
+     MAIL_TO              para onde vão os avisos internos
+     SITE_URL             endereço público, para os links dos relatórios
+     RESEND_AUDIENCE_ID   opcional; se faltar, a lista é descoberta sozinha
    ========================================================================== */
 
 import { disponivel, guardarLead } from '../lib/store.js';
+import { paraCliente, avisoInterno, remetente, enderecoRemetente } from '../lib/emails.js';
 
 const RESEND = 'https://api.resend.com';
 
 /* O ID da lista fica em memória entre pedidos quentes, para não andarmos
    a perguntá-lo à Resend a cada contacto. */
 let audienciaEmCache = null;
-
-/* Escapar antes de meter seja o que for dentro do HTML do email.
-   Os valores vêm de um formulário público: não se confia neles. */
-function esc(v) {
-  return String(v == null ? '' : v)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-}
 
 function limpar(v, max) {
   return String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, max || 200);
@@ -80,7 +73,6 @@ async function descobrirAudiencia(chave) {
       audienciaEmCache = lista[0].id;
       return audienciaEmCache;
     }
-    /* Conta sem nenhuma lista ainda: criamos a primeira. */
     const nova = await resend('/audiences', { name: 'Cortex Automation' }, chave);
     if (nova && nova.id) {
       audienciaEmCache = nova.id;
@@ -129,53 +121,74 @@ export default async function handler(req, res) {
   const quando = new Date().toLocaleString('pt-PT', { timeZone: 'Europe/Lisbon' });
   const primeiro = nome.split(/\s+/)[0] || nome;
   const ultimo = nome.split(/\s+/).slice(1).join(' ');
+  const deQuem = remetente();
+  const responderA = process.env.MAIL_TO || enderecoRemetente();
 
-  /* ── 1. Aviso para nós. Se isto falhar, o pedido falha. ── */
+  /* Sair da lista tem de ser possível a partir do próprio cliente de
+     email, sem abrir nada. O Gmail e o Outlook passaram a exigi-lo a
+     quem envia em quantidade, e sem isto o correio vai para o lixo. */
+  const cabecalhosSaida = {
+    'List-Unsubscribe': '<mailto:' + enderecoRemetente() + '?subject=SAIR>',
+    'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click'
+  };
+
+  /* ── 1. Os relatórios, para a pessoa. É o que prometemos. ── */
+  let clienteOk = false;
   try {
+    const msg = paraCliente(nome, email);
     await resend('/emails', {
-      from: process.env.MAIL_FROM || 'Cortex Automation <onboarding@resend.dev>',
-      to: [process.env.MAIL_TO || 'bruno.miguel.martins.lopes@gmail.com'],
-      reply_to: email || undefined,
-      subject: 'Novo contacto: ' + nome + (email ? '' : ' (sem email)'),
-      html:
-        '<h2 style="margin:0 0 14px;font:600 18px system-ui">Pedido dos relatórios</h2>' +
-        '<table style="border-collapse:collapse;font:14px/1.6 system-ui">' +
-        '<tr><td style="padding:4px 14px 4px 0;color:#666">Nome</td><td><b>' + esc(nome) + '</b></td></tr>' +
-        '<tr><td style="padding:4px 14px 4px 0;color:#666">Telemóvel</td><td><b><a href="https://wa.me/' +
-          esc(telefone.replace(/[^\d]/g, '')) + '">' + esc(telefone) + '</a></b></td></tr>' +
-        '<tr><td style="padding:4px 14px 4px 0;color:#666">Email</td><td>' +
-          (email ? '<a href="mailto:' + esc(email) + '">' + esc(email) + '</a>' : '<i>não indicou</i>') + '</td></tr>' +
-        '<tr><td style="padding:4px 14px 4px 0;color:#666">Campanhas</td><td>' +
-          (consentimento ? 'autorizou' : 'não autorizou') + '</td></tr>' +
-        '<tr><td style="padding:4px 14px 4px 0;color:#666">Quando</td><td>' + esc(quando) + '</td></tr>' +
-        '<tr><td style="padding:4px 14px 4px 0;color:#666">Origem</td><td>' + esc(origem || 'directa') + '</td></tr>' +
-        '</table>' +
-        (email && consentimento
-          ? '<p style="font:13px system-ui;color:#0a7">Entrou na lista de campanhas.</p>'
-          : '<p style="font:13px system-ui;color:#a60">Não entra na lista de campanhas' +
-            (email ? ' — não autorizou.' : ' — não deixou email.') + '</p>')
+      from: deQuem,
+      to: [email],
+      reply_to: responderA,
+      subject: msg.subject,
+      html: msg.html,
+      text: msg.text,
+      headers: cabecalhosSaida
     }, chave);
+    clienteOk = true;
   } catch (e) {
-    console.error('aviso por email falhou:', e.message);
+    console.error('email para o cliente falhou:', e.message);
+  }
+
+  /* ── 2. O aviso para nós, com o estado do ponto 1. ── */
+  let avisoOk = false;
+  try {
+    const msg = avisoInterno({ nome, telefone, email, consentimento, quando, origem, clienteOk });
+    await resend('/emails', {
+      from: deQuem,
+      to: [process.env.MAIL_TO || 'bruno.miguel.martins.lopes@gmail.com'],
+      reply_to: email,
+      subject: msg.subject + (clienteOk ? '' : ' — RELATÓRIOS NÃO SAÍRAM'),
+      html: msg.html,
+      text: msg.text
+    }, chave);
+    avisoOk = true;
+  } catch (e) {
+    console.error('aviso interno falhou:', e.message);
+  }
+
+  /* Se nada saiu, o contacto perdia-se em silêncio. Melhor dizer ao
+     browser que falhou e deixá-lo abrir o WhatsApp. */
+  if (!clienteOk && !avisoOk) {
     return res.status(502).json({ ok: false, erro: 'envio' });
   }
 
-  /* ── 2. Guardar para o painel. Se falhar, não estragamos o pedido. ── */
+  /* ── 3. Guardar para o painel. Se falhar, não estragamos o pedido. ── */
   if (disponivel()) {
     try {
       await guardarLead({
         ts: Date.now(), nome, telefone, email, consentimento, origem,
-        pais: limpar(req.headers['x-vercel-ip-country'], 4)
+        pais: limpar(req.headers['x-vercel-ip-country'], 4),
+        entregue: clienteOk
       });
     } catch (e) {
       console.error('não consegui guardar o lead:', e.message);
     }
   }
 
-  /* ── 3. Lista de campanhas. Só com email E autorização.
-         Se falhar, não estragamos o pedido: o contacto já chegou acima. ── */
+  /* ── 4. Lista de campanhas. Só com autorização. ── */
   let naLista = false;
-  if (email && consentimento) {
+  if (consentimento) {
     try {
       const audiencia = await descobrirAudiencia(chave);
       if (audiencia) {
@@ -189,5 +202,5 @@ export default async function handler(req, res) {
     }
   }
 
-  return res.status(200).json({ ok: true, naLista });
+  return res.status(200).json({ ok: true, entregue: clienteOk, naLista });
 }
