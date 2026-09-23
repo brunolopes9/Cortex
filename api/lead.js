@@ -26,6 +26,8 @@
                           sozinha — o painel da Resend já não mostra o ID.
    ========================================================================== */
 
+import { disponivel, guardarLead } from './_store.js';
+
 const RESEND = 'https://api.resend.com';
 
 /* O ID da lista fica em memória entre pedidos quentes, para não andarmos
@@ -121,7 +123,7 @@ export default async function handler(req, res) {
   const falhas = [];
   if (nome.length < 2) falhas.push('nome');
   if (!telefoneValido(telefone)) falhas.push('telefone');
-  if (email && !emailValido(email)) falhas.push('email');
+  if (!emailValido(email)) falhas.push('email');
   if (falhas.length) return res.status(400).json({ ok: false, erro: 'validacao', campos: falhas });
 
   const quando = new Date().toLocaleString('pt-PT', { timeZone: 'Europe/Lisbon' });
@@ -158,7 +160,19 @@ export default async function handler(req, res) {
     return res.status(502).json({ ok: false, erro: 'envio' });
   }
 
-  /* ── 2. Lista de campanhas. Só com email E autorização.
+  /* ── 2. Guardar para o painel. Se falhar, não estragamos o pedido. ── */
+  if (disponivel()) {
+    try {
+      await guardarLead({
+        ts: Date.now(), nome, telefone, email, consentimento, origem,
+        pais: limpar(req.headers['x-vercel-ip-country'], 4)
+      });
+    } catch (e) {
+      console.error('não consegui guardar o lead:', e.message);
+    }
+  }
+
+  /* ── 3. Lista de campanhas. Só com email E autorização.
          Se falhar, não estragamos o pedido: o contacto já chegou acima. ── */
   let naLista = false;
   if (email && consentimento) {

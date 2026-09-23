@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Painel · Cortex Automation</title>
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="adm">
+
+<!-- ───────────── Entrada ───────────── -->
+<div class="adm-gate" id="gate">
+  <form class="adm-gate__box" id="gateForm">
+    <img src="assets/mark.png" width="44" height="44" alt="" aria-hidden="true">
+    <h1>Painel</h1>
+    <p>Área reservada da Cortex Automation.</p>
+    <label for="pw">Palavra-passe</label>
+    <input type="password" id="pw" autocomplete="current-password" required>
+    <p class="adm-erro" id="gateErro" hidden></p>
+    <button type="submit" class="btn btn--acc btn--wide" id="gateBtn">Entrar</button>
+  </form>
+</div>
+
+<!-- ───────────── Painel ───────────── -->
+<div class="adm-app" id="app" hidden>
+  <header class="adm-top">
+    <div class="adm-top__marca">
+      <img src="assets/mark.png" width="30" height="30" alt="" aria-hidden="true">
+      <b>Painel</b>
+    </div>
+    <nav class="adm-tabs" id="tabs">
+      <button class="is-on" data-aba="contactos">Contactos</button>
+      <button data-aba="visitas">Visitas</button>
+      <button data-aba="campanha">Campanha</button>
+    </nav>
+    <div class="adm-top__acc">
+      <button class="btn btn--ghost btn--sm" id="recarregar">Actualizar</button>
+      <button class="btn btn--ghost btn--sm" id="sair">Sair</button>
+    </div>
+  </header>
+
+  <p class="adm-aviso" id="aviso" hidden></p>
+
+  <!-- ── Contactos ── -->
+  <section class="adm-aba is-on" data-painel="contactos">
+    <div class="adm-cards" id="cardsLeads"></div>
+    <div class="adm-barra">
+      <input type="search" id="procurar" placeholder="Procurar por nome, telemóvel, email ou origem…">
+      <button class="btn btn--ghost btn--sm" id="csv">Exportar CSV</button>
+    </div>
+    <div class="adm-tabela-wrap">
+      <table class="adm-tabela" id="tabelaLeads">
+        <thead><tr>
+          <th>Quando</th><th>Nome</th><th>Telemóvel</th><th>Email</th><th>Campanhas</th><th>Origem</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="adm-vazio" id="vazioLeads" hidden>Ainda não há contactos.</p>
+  </section>
+
+  <!-- ── Visitas ── -->
+  <section class="adm-aba" data-painel="visitas">
+    <div class="adm-cards" id="cardsVisitas"></div>
+    <div class="adm-grelha">
+      <div class="adm-bloco"><h2>De onde vêm</h2><ul id="origens"></ul></div>
+      <div class="adm-bloco"><h2>Onde saem</h2><ul id="saidas"></ul></div>
+      <div class="adm-bloco"><h2>Secções que alcançam</h2><ul id="seccoes"></ul></div>
+      <div class="adm-bloco"><h2>Botões que carregam</h2><ul id="cliques"></ul></div>
+    </div>
+    <div class="adm-bloco adm-bloco--full">
+      <h2>Visitas por dia</h2>
+      <div class="adm-dias" id="dias"></div>
+    </div>
+  </section>
+
+  <!-- ── Campanha ── -->
+  <section class="adm-aba" data-painel="campanha">
+    <div class="adm-bloco adm-bloco--full">
+      <h2>Enviar campanha</h2>
+      <p class="adm-nota">Vai para quem deixou email <strong>e</strong> autorizou o contacto.
+        Cada pessoa recebe o seu email, com o primeiro nome, e ninguém vê o endereço de ninguém.
+        Segue automaticamente a nota de como deixar de receber — é obrigatória por lei.</p>
+      <form id="campForm">
+        <label for="assunto">Assunto</label>
+        <input type="text" id="assunto" placeholder="Resultados de Setembro" required>
+        <label for="corpo">Mensagem</label>
+        <textarea id="corpo" rows="12" placeholder="Escreva aqui.&#10;&#10;Deixe uma linha em branco entre parágrafos."required></textarea>
+        <div class="adm-camp-acc">
+          <span id="campAlvo"></span>
+          <button type="submit" class="btn btn--acc" id="campBtn">Enviar</button>
+        </div>
+        <p class="adm-erro" id="campErro" hidden></p>
+        <p class="adm-ok" id="campOk" hidden></p>
+      </form>
+    </div>
+  </section>
+</div>
+
+<script src="js/admin.js" defer></script>
+</body>
+</html>

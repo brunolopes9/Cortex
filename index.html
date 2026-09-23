@@ -141,6 +141,7 @@
   <a href="#investimento"><span>Investimento</span><i>09</i></a>
   <a href="#melhorias"><span>Bastidores</span><i>10</i></a>
   <a href="#faq"><span>FAQ</span><i>11</i></a>
+  <a href="#newsletter"><span>Newsletter</span><i>&#9993;</i></a>
   <a href="#" class="btn btn--acc btn--wide" data-wa style="font-family:var(--sans);font-size:.95rem;border-bottom:0">Falar connosco no WhatsApp</a>
 </nav>
 
@@ -1290,6 +1291,61 @@
   </div>
 </section>
 
+<!-- ═══════════════════════ NEWSLETTER ═══════════════════════ -->
+<section class="section news" id="newsletter">
+  <div class="wrap">
+    <div class="news__box reveal-l">
+      <div class="news__txt">
+        <span class="eyebrow"><i>&#9993;</i> Newsletter</span>
+        <h2 class="h2">Receba os resultados<br><em class="gilt">antes de toda a gente</em>.</h2>
+        <p class="lede">
+          Resultados semanais e mensais, actualizações ao sistema, melhorias implementadas e
+          condições reservadas a quem acompanha. <strong style="color:var(--fg);font-weight:600">Sem spam.</strong>
+          Sai quando há alguma coisa para dizer, e cancela num clique.
+        </p>
+        <ul class="news__itens">
+          <li>Resultados fechados de cada semana e de cada m&ecirc;s</li>
+          <li>O que mudou no sistema e porqu&ecirc;</li>
+          <li>Condi&ccedil;&otilde;es e b&oacute;nus reservados a subscritores</li>
+        </ul>
+      </div>
+
+      <form class="news__form" id="newsForm" novalidate>
+        <div class="f-field" id="nsName">
+          <label for="nsNome">Nome</label>
+          <input type="text" id="nsNome" placeholder="Como lhe chamamos" autocomplete="name" required>
+          <p class="f-err">Diga-nos o seu nome.</p>
+        </div>
+        <div class="f-field" id="nsTelF">
+          <label for="nsTel">Telem&oacute;vel</label>
+          <input type="tel" id="nsTel" placeholder="912 345 678" autocomplete="tel" inputmode="tel" required>
+          <p class="f-err">Indique um n&uacute;mero v&aacute;lido.</p>
+        </div>
+        <div class="f-field" id="nsMailF">
+          <label for="nsMail">Email</label>
+          <input type="email" id="nsMail" placeholder="para@onde.enviamos" autocomplete="email" required>
+          <p class="f-err">Verifique o endere&ccedil;o de email.</p>
+        </div>
+
+        <div class="f-hp" aria-hidden="true">
+          <label for="nsWeb">N&atilde;o preencher</label>
+          <input type="text" id="nsWeb" tabindex="-1" autocomplete="off">
+        </div>
+
+        <button type="submit" class="btn btn--acc btn--wide" id="nsBtn">
+          Subscrever
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+        </button>
+        <p class="micro news__nota" id="nsNota">
+          Ao subscrever autoriza o contacto e o envio de novidades. Cancela quando quiser.
+          <a href="privacidade.html">Como tratamos os dados</a>
+        </p>
+        <p class="news__ok" id="nsOk" hidden></p>
+      </form>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════════════════ CTA FINAL ═══════════════════════ -->
 <section class="section cta">
   <div class="wrap">
@@ -1338,6 +1394,7 @@
           <a href="#investimento">Investimento</a>
           <a href="#melhorias">Bastidores</a>
           <a href="#faq">FAQ</a>
+          <a href="#newsletter">Newsletter</a>
         </div>
       </div>
 
@@ -1432,12 +1489,12 @@
     <div class="modal__state is-on" id="rmForm">
       <span class="badge badge--acc" style="margin-bottom:16px">Relatórios completos</span>
       <h3 class="h3" id="rmTitle">Os três relatórios, no seu email.</h3>
-      <p class="modal__lede">Nome e telem&oacute;vel chegam. O email &eacute; opcional &mdash; mas &eacute; por a&iacute; que enviamos os resultados de cada m&ecirc;s.</p>
+      <p class="modal__lede">Tr&ecirc;s campos e tem os relat&oacute;rios &agrave; frente. Guardamos o contacto para lhe enviar os resultados de cada m&ecirc;s.</p>
 
       <ul class="modal__list">
         <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg><span><b>Performance Overview</b> — a tecnologia, os resultados ano a ano e a conta real</span></li>
         <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg><span><b>Resultados Trimestrais</b> — cada trimestre em detalhe, de 2024 a 2026</span></li>
-        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg><span><b>Histórico de Trades</b> — todas as operações, enviado a pedido</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg><span><b>Histórico de Trades</b> — todas as operações, uma a uma</span></li>
       </ul>
 
       <form id="rmFormEl" novalidate>
@@ -1455,8 +1512,8 @@
         </div>
 
         <div class="f-field" id="fMail">
-          <label for="rmEmail">Email <span class="f-opt">opcional</span></label>
-          <input type="email" id="rmEmail" name="email" placeholder="para@onde.enviamos" autocomplete="email">
+          <label for="rmEmail">Email</label>
+          <input type="email" id="rmEmail" name="email" placeholder="para@onde.enviamos" autocomplete="email" required>
           <p class="f-err">Verifique o endere&ccedil;o de email.</p>
         </div>
 
@@ -1502,11 +1559,16 @@
           <b>Resultados Trimestrais</b><span>Cada trimestre em detalhe &middot; PDF</span>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 11l5 5 5-5M5 21h14"/></svg>
         </a>
-        <a href="#" data-doc="trades" data-wa data-wa-msg="Olá! Queria receber o Histórico de Trades completo da Cortex Automation.">
-          <b>Histórico de Trades</b><span>Vários GB &middot; enviamos a pedido</span>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+        <a href="https://drive.google.com/file/d/1WOmFFLdu6T02zZPMgdrlaCQ1e_dKw8KH/view?usp=sharing" target="_blank" rel="noopener noreferrer" data-doc="trades">
+          <b>Hist&oacute;rico de Trades</b><span>Ficheiro grande, v&aacute;rios GB &middot; Google Drive</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
         </a>
       </div>
+      <p class="micro rmdl__aviso">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+        <span>O hist&oacute;rico de trades tem <strong>v&aacute;rios GB</strong> e abre no Google Drive. Em dados m&oacute;veis,
+        espere at&eacute; ter Wi-Fi. Os outros dois s&atilde;o leves e abrem logo.</span>
+      </p>
       <a href="#" class="btn btn--ghost btn--wide" data-wa data-wa-msg="Olá! Pedi o relatório de performance no site e queria tirar umas dúvidas.">
         Tenho uma pergunta — falar no WhatsApp
       </a>

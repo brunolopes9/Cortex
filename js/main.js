@@ -791,6 +791,178 @@
     });
   }
 
+  /* ─────────────────────────────────────────────────────────────
+     NEWSLETTER
+     Vai para o mesmo /api/lead dos relatórios. É a mesma coisa —
+     um contacto que autorizou ser contactado — e assim aparece na
+     mesma lista, sem duas tabelas para manter sincronizadas.
+     ───────────────────────────────────────────────────────────── */
+  function newsletter() {
+    var form = $('#newsForm');
+    if (!form) return;
+    var btn = $('#nsBtn'), ok = $('#nsOk'), nota = $('#nsNota');
+
+    function marcar(sel, mau) {
+      var el = $(sel);
+      if (el) el.classList.toggle('is-bad', mau);
+      return !mau;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var nome = $('#nsNome').value.trim();
+      var tel = $('#nsTel').value.trim();
+      var mail = $('#nsMail').value.trim();
+      var digitos = tel.replace(/[^\d]/g, '');
+
+      var okN = marcar('#nsName', nome.length < 2);
+      var okT = marcar('#nsTelF', digitos.length < 9 || digitos.length > 15);
+      var okM = marcar('#nsMailF', !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail));
+      if (!okN) { $('#nsNome').focus(); return; }
+      if (!okT) { $('#nsTel').focus(); return; }
+      if (!okM) { $('#nsMail').focus(); return; }
+
+      btn.disabled = true;
+      btn.setAttribute('aria-busy', 'true');
+
+      fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nome: nome, telefone: tel, email: mail,
+          consentimento: true,
+          origem: 'newsletter · ' + (visita.origem || 'directa'),
+          website: ($('#nsWeb') || {}).value || ''
+        })
+      }).then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        form.querySelectorAll('.f-field, #nsBtn').forEach(function (el) { el.hidden = true; });
+        if (nota) nota.hidden = true;
+        ok.hidden = false;
+        ok.textContent = 'Pronto, ' + nome.split(/\s+/)[0] + '. Está na lista.';
+        visita.cliques.push('newsletter');
+      }).catch(function () {
+        var t = 'Olá! Chamo-me ' + nome + ' e queria subscrever a newsletter da Cortex Automation.';
+        window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(t), '_blank', 'noopener');
+      }).then(function () {
+        btn.disabled = false;
+        btn.removeAttribute('aria-busy');
+      });
+    });
+  }
+
+  /* ─────────────────────────────────────────────────────────────
+     RASTREIO DE VISITA
+
+     Mede o que interessa para perceber o que funciona: de onde veio,
+     quanto tempo ficou, até onde desceu, em que secção estava quando
+     saiu, por onde passou e que botões carregou.
+
+     Não usa cookies nem guarda identificadores. Não há forma de ligar
+     duas visitas à mesma pessoa, nem esta visita a outro site. O
+     resumo só é enviado quando a pessoa sai — um pedido por visita.
+     ───────────────────────────────────────────────────────────── */
+  var visita = {
+    inicio: Date.now(),
+    origem: '',
+    scroll: 0,
+    seccoes: [],
+    cliques: [],
+    enviado: false
+  };
+
+  function rastrear() {
+    /* De onde veio: a etiqueta da campanha manda; a seguir o site que
+       a trouxe; se não houver nada, é tráfego directo. */
+    try {
+      var q = new URLSearchParams(location.search);
+      visita.origem = q.get('utm_source') || q.get('utm_campaign') || q.get('ref') ||
+        (document.referrer && document.referrer.indexOf(location.host) === -1
+          ? document.referrer.replace(/^https?:\/\//, '').split('/')[0]
+          : 'directa');
+    } catch (e) { visita.origem = 'directa'; }
+
+    var seccoes = $$('section[id]');
+    var atual = 'topo';
+
+    function medir() {
+      var h = document.documentElement;
+      var total = h.scrollHeight - h.clientHeight;
+      var pct = total > 0 ? Math.round((h.scrollTop || window.scrollY) / total * 100) : 100;
+      if (pct > visita.scroll) visita.scroll = Math.min(pct, 100);
+
+      /* A secção que ocupa o terço superior do ecrã é a que a pessoa
+         está a ler. É também a que fica registada como saída. */
+      for (var i = 0; i < seccoes.length; i++) {
+        var r = seccoes[i].getBoundingClientRect();
+        if (r.top <= h.clientHeight * 0.34 && r.bottom > h.clientHeight * 0.34) {
+          atual = seccoes[i].id;
+          if (visita.seccoes.indexOf(atual) === -1) visita.seccoes.push(atual);
+          break;
+        }
+      }
+    }
+
+    var pendente = false;
+    window.addEventListener('scroll', function () {
+      if (pendente) return;
+      pendente = true;
+      requestAnimationFrame(function () { medir(); pendente = false; });
+    }, { passive: true });
+    medir();
+
+    /* Que botões carregam. Só os que interessam, e pelo texto, não por
+       identificadores — assim continua a fazer sentido se o site mudar. */
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a, button');
+      if (!a) return;
+      var etiqueta =
+        a.hasAttribute('data-wa') ? 'WhatsApp' :
+        a.hasAttribute('data-tg') ? 'Telegram' :
+        a.hasAttribute('data-open-report') ? 'Pedir relatórios' :
+        a.hasAttribute('data-doc') ? 'Descarregar · ' + a.getAttribute('data-doc') :
+        a.id === 'vslPlay' ? 'Ver vídeo' :
+        (a.textContent || '').trim().slice(0, 40);
+      if (etiqueta && visita.cliques.length < 30) visita.cliques.push(etiqueta);
+    }, true);
+
+    function enviar() {
+      if (visita.enviado) return;
+      visita.enviado = true;
+      var corpo = JSON.stringify({
+        origem: visita.origem,
+        entrada: location.pathname + location.search,
+        duracao: Math.round((Date.now() - visita.inicio) / 1000),
+        scroll: visita.scroll,
+        saida: atual,
+        seccoes: visita.seccoes,
+        cliques: visita.cliques,
+        ecra: window.innerWidth,
+        lead: visita.cliques.indexOf('newsletter') !== -1
+      });
+      /* sendBeacon sobrevive ao fecho da aba; o fetch é a alternativa
+         para os browsers que não o tenham. */
+      try {
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon('/api/track', new Blob([corpo], { type: 'application/json' }));
+          return;
+        }
+      } catch (e) { /* segue para o fetch */ }
+      fetch('/api/track', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: corpo, keepalive: true
+      }).catch(function () {});
+    }
+
+    /* visibilitychange é o único evento fiável em telemóvel — o
+       beforeunload não dispara quando se muda de aplicação. */
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'hidden') enviar();
+    });
+    window.addEventListener('pagehide', enviar);
+  }
+
+
   function init() {
     wireLinks();
     nav();
@@ -802,6 +974,8 @@
     calculator();
     faq();
     reportModal();
+    newsletter();
+    rastrear();
     cookies();
   }
 
