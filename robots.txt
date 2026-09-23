@@ -8,3 +8,6 @@ Disallow: /404.html
 Disallow: /*.riv$
 
 Sitemap: https://cortexautomationai.com/sitemap.xml
+
+# O painel é área reservada — não faz sentido nos motores de busca
+Disallow: /admin.html
