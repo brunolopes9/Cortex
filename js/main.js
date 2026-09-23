@@ -18,12 +18,10 @@
     instagram: '',                                   // ex.: 'https://instagram.com/cortexautomation'
     analytics: '',                                   // ex.: 'G-XXXXXXXXXX' (Google Analytics 4)
 
-    // Para onde vão os pedidos de relatório (nome + email).
-    // Deixa vazio e o formulário passa a abrir o WhatsApp com a mensagem
-    // já escrita — funciona desde o primeiro dia, sem servidor nenhum.
-    // Com um endpoint (Formspree, Netlify Forms, Getform...), o contacto
-    // fica gravado e podes fazer follow-up por email.
-    formEndpoint: '',                                // ex.: 'https://formspree.io/f/xxxxxxxx'
+    // Os pedidos de relatório vão para /api/lead, que corre no servidor
+    // da Vercel. É lá que vive a chave da Resend — nunca aqui, que este
+    // ficheiro é público. Se a função falhar, o formulário cai para o
+    // WhatsApp e o contacto não se perde.
     reportFile: 'assets/relatorio-performance.pdf'
   };
 
@@ -615,54 +613,68 @@
       e.preventDefault();
 
       var nome = $('#rmName').value.trim();
+      var tel = $('#rmTel').value.trim();
       var email = $('#rmEmail').value.trim();
       var consent = $('#rmConsent').checked;
+      var hp = ($('#rmWebsite') || {}).value || '';
 
+      /* Nome e telemóvel são obrigatórios. O email é opcional, mas se
+         vier escrito tem de estar bem escrito — não vale a pena guardar
+         um endereço com gralha e nunca mais conseguir lá chegar. */
+      var soDigitos = tel.replace(/[^\d]/g, '');
       var okNome = bad('#fName', nome.length < 2);
-      var okMail = bad('#fMail', !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email));
-      if (!okNome || !okMail) {
-        $(okNome ? '#rmEmail' : '#rmName').focus();
-        return;
-      }
+      var okTel = bad('#fTel', soDigitos.length < 9 || soDigitos.length > 15);
+      var okMail = bad('#fMail', email !== '' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email));
+
+      if (!okNome) { $('#rmName').focus(); return; }
+      if (!okTel) { $('#rmTel').focus(); return; }
+      if (!okMail) { $('#rmEmail').focus(); return; }
 
       try {
-        localStorage.setItem(LEAD, JSON.stringify({ nome: nome, email: email, consent: consent, ts: Date.now() }));
+        localStorage.setItem(LEAD, JSON.stringify({
+          nome: nome, tel: tel, email: email, consent: consent, ts: Date.now()
+        }));
       } catch (err) { /* modo privado — segue na mesma */ }
 
-      // Sem endpoint configurado: abre o WhatsApp com tudo escrito.
-      // É a solução honesta para um site estático — nada se perde.
-      if (!CONFIG.formEndpoint) {
-        var texto = 'Olá! Chamo-me ' + nome + ' (' + email + ') e queria receber o relatório de performance da Cortex Automation.';
-        window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(texto), '_blank', 'noopener');
+      /* De onde veio a visita. Serve para saber o que está a dar
+         resultado: Instagram, campanha paga, pesquisa, link directo. */
+      var origem = location.href;
+      try {
+        var utm = new URLSearchParams(location.search);
+        var campanha = utm.get('utm_source') || utm.get('utm_campaign');
+        if (campanha) origem = campanha + ' · ' + origem;
+        else if (document.referrer) origem = document.referrer + ' → ' + origem;
+      } catch (err) { /* nada */ }
+
+      function pelaMao() {
+        /* Última linha de defesa: se o servidor não responder, o contacto
+           não se perde — vai para o WhatsApp já escrito. */
+        var t = 'Olá! Chamo-me ' + nome + ' (' + tel + ') e queria receber os relatórios da Cortex Automation.';
+        window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(t), '_blank', 'noopener');
         showDone(nome);
-        return;
       }
 
       submit.setAttribute('aria-busy', 'true');
-      fetch(CONFIG.formEndpoint, {
+      submit.disabled = true;
+
+      fetch('/api/lead', {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          nome: nome,
-          email: email,
-          consentimento_followup: consent ? 'sim' : 'nao',
-          origem: location.href,
-          pedido: 'Relatório de performance'
+          nome: nome, telefone: tel, email: email,
+          consentimento: consent, origem: origem, website: hp
         })
       }).then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
         showDone(nome);
       }).catch(function () {
-        // Se o envio falhar, não se perde o contacto: passa para o WhatsApp
-        var t2 = 'Olá! Chamo-me ' + nome + ' (' + email + ') e queria receber o relatório de performance da Cortex Automation.';
-        window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(t2), '_blank', 'noopener');
-        showDone(nome);
+        pelaMao();
       }).then(function () {
         submit.removeAttribute('aria-busy');
+        submit.disabled = false;
       });
     });
   }
-
   /* ══════════════════════ 10. Arranque ══════════════════════ */
   /* ─────────────────────────────────────────────────────────────
      VÍDEO DE APRESENTAÇÃO (VSL)

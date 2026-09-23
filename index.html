@@ -1432,7 +1432,7 @@
     <div class="modal__state is-on" id="rmForm">
       <span class="badge badge--acc" style="margin-bottom:16px">Relatórios completos</span>
       <h3 class="h3" id="rmTitle">Os três relatórios, no seu email.</h3>
-      <p class="modal__lede">Só precisamos de saber para quem enviar. Nada mais.</p>
+      <p class="modal__lede">Nome e telem&oacute;vel chegam. O email &eacute; opcional &mdash; mas &eacute; por a&iacute; que enviamos os resultados de cada m&ecirc;s.</p>
 
       <ul class="modal__list">
         <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg><span><b>Performance Overview</b> — a tecnologia, os resultados ano a ano e a conta real</span></li>
@@ -1444,24 +1444,37 @@
         <div class="f-row f-row--2">
           <div class="f-field" id="fName">
             <label for="rmName">Nome</label>
-            <input type="text" id="rmName" name="nome" placeholder="Como lhe chamamos" autocomplete="given-name" required>
+            <input type="text" id="rmName" name="nome" placeholder="Como lhe chamamos" autocomplete="name" required>
             <p class="f-err">Diga-nos o seu nome.</p>
           </div>
-          <div class="f-field" id="fMail">
-            <label for="rmEmail">Email</label>
-            <input type="email" id="rmEmail" name="email" placeholder="para@onde.enviamos" autocomplete="email" required>
-            <p class="f-err">Verifique o endereço de email.</p>
+          <div class="f-field" id="fTel">
+            <label for="rmTel">Telem&oacute;vel</label>
+            <input type="tel" id="rmTel" name="telefone" placeholder="912 345 678" autocomplete="tel" inputmode="tel" required>
+            <p class="f-err">Indique um n&uacute;mero v&aacute;lido.</p>
           </div>
+        </div>
+
+        <div class="f-field" id="fMail">
+          <label for="rmEmail">Email <span class="f-opt">opcional</span></label>
+          <input type="email" id="rmEmail" name="email" placeholder="para@onde.enviamos" autocomplete="email">
+          <p class="f-err">Verifique o endere&ccedil;o de email.</p>
+        </div>
+
+        <!-- Armadilha para robôs. Escondida de toda a gente, incluindo
+             leitores de ecrã. Se vier preenchida, é um robô. -->
+        <div class="f-hp" aria-hidden="true">
+          <label for="rmWebsite">N&atilde;o preencher</label>
+          <input type="text" id="rmWebsite" name="website" tabindex="-1" autocomplete="off">
         </div>
 
         <label class="f-check">
           <input type="checkbox" id="rmConsent" name="consentimento">
           <span class="box"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg></span>
-          <span>Autorizo que me contactem depois com informação sobre o serviço. Opcional — recebe o relatório de qualquer forma. <a href="privacidade.html" target="_blank" rel="noopener">Como tratamos os dados</a></span>
+          <span>Autorizo o contacto e o envio de resultados mensais e novidades. Opcional — recebe os relatórios de qualquer forma. <a href="privacidade.html" target="_blank" rel="noopener">Como tratamos os dados</a></span>
         </label>
 
         <button type="submit" class="btn btn--acc btn--wide" id="rmSubmit">
-          Enviar-me o relatório
+          Receber os relat&oacute;rios
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
         </button>
 
@@ -1512,6 +1525,11 @@
     <path d="M14 28l6-8 5 6 5-9" stroke-linejoin="round"/>
   </svg>
 </div>
+
+<!-- Vercel Web Analytics: de onde vêm as visitas, que páginas vêem, que país.
+     Não usa cookies nem guarda dados pessoais, por isso não precisa de
+     consentimento. Os números aparecem no painel da Vercel. -->
+<script defer src="/_vercel/insights/script.js"></script>
 
 <!-- Baseline: zero dependências, garante que o site funciona sempre -->
 <script src="js/main.js" defer></script>
