@@ -3813,3 +3813,11 @@ html.lenis { scroll-behavior: auto !important; }
   .bars { padding-bottom: 62px; }
   .bar__lbl { bottom: -44px; }
 }
+
+/* Ligação para o MyFxBook dentro da nota de Agosto */
+.agosto__fx a {
+  color: var(--acc);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.agosto__fx a:hover { color: var(--acc-hi); }

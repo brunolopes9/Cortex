@@ -385,7 +385,7 @@
        a partir de Fevereiro de 2026, conta real.
        Não é um campo à escolha do visitante — se fosse, o simulador
        deixava de dizer alguma coisa sobre o sistema. */
-    var TAXA = 0.0419;
+    var TAXA = 0.0438;
 
     var oCap = $('#oCap'), oMon = $('#oMon');
     var oFinal = $('#oFinal'), oGain = $('#oGain');
