@@ -195,3 +195,128 @@
   .adm-diag__l { grid-template-columns: 18px 1fr; }
   .adm-diag__l i { grid-column: 2; }
 }
+
+/* ══════════════════════ Funil ══════════════════════
+   A barra é a percentagem do total. A queda vem a vermelho à direita
+   porque é o número que interessa — não quantos passaram, quantos se
+   perderam ali. */
+.adm-funil { display: grid; gap: 8px; margin-top: 4px; }
+.adm-funil__l {
+  display: grid;
+  grid-template-columns: minmax(130px, 200px) 1fr 46px 92px;
+  gap: 12px;
+  align-items: center;
+  font-size: .84rem;
+}
+.adm-funil__n { color: var(--fg); }
+.adm-funil__b {
+  height: 26px;
+  border-radius: 6px;
+  background: rgba(237, 234, 227, .04);
+  overflow: hidden;
+}
+.adm-funil__b i {
+  display: block;
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--acc-deep), var(--acc));
+  transition: width .5s var(--ease);
+}
+.adm-funil__l b { font-family: var(--mono); text-align: right; }
+.adm-funil__p {
+  font-family: var(--mono);
+  font-size: .74rem;
+  color: var(--fg-dim);
+  display: flex;
+  gap: 7px;
+  justify-content: flex-end;
+}
+.adm-funil__perda { color: var(--loss); }
+
+/* ══════════════════════ Sessões ══════════════════════ */
+.adm-sess { display: grid; gap: 6px; }
+.adm-sess__i {
+  border: 1px solid var(--line-soft);
+  border-radius: 9px;
+  overflow: hidden;
+}
+.adm-sess__i.is-lead { border-color: var(--acc-line); }
+.adm-sess__i > summary {
+  display: grid;
+  grid-template-columns: 130px 1fr 130px 62px 48px 110px;
+  gap: 12px;
+  align-items: center;
+  padding: 11px 15px;
+  cursor: pointer;
+  font-size: .8rem;
+  list-style: none;
+}
+.adm-sess__i > summary::-webkit-details-marker { display: none; }
+.adm-sess__i > summary:hover { background: rgba(237, 234, 227, .025); }
+.adm-sess__i[open] > summary { border-bottom: 1px solid var(--line-soft); }
+
+.adm-passos { list-style: none; margin: 0; padding: 14px 16px; display: grid; gap: 6px; }
+.adm-passos li {
+  display: grid;
+  grid-template-columns: 62px 120px 1fr;
+  gap: 12px;
+  font-size: .78rem;
+  color: var(--fg-dim);
+}
+.adm-passos li b { color: var(--fg); font-weight: 500; }
+
+/* ══════════════════════ Estado do contacto ══════════════════════ */
+.adm-estado {
+  appearance: none;
+  border: 1px solid var(--line-soft);
+  border-radius: 20px;
+  padding: 4px 11px;
+  font: 500 .74rem var(--sans);
+  background: transparent;
+  color: var(--fg-dim);
+  cursor: pointer;
+}
+.adm-estado--contactado { color: #8FB4FF; border-color: rgba(143, 180, 255, .3); }
+.adm-estado--interessado { color: var(--acc-hi); border-color: var(--acc-line); }
+.adm-estado--cliente { color: var(--acc); border-color: var(--acc-line); background: rgba(46, 224, 138, .07); }
+.adm-estado--perdido { color: var(--loss); border-color: rgba(255, 106, 85, .28); }
+
+.adm-nota-btn {
+  border: 1px solid var(--line-soft);
+  border-radius: 7px;
+  width: 26px; height: 26px;
+  background: transparent;
+  color: var(--fg-dim);
+  cursor: pointer;
+  font-size: .8rem;
+}
+.adm-nota-btn:hover { color: var(--acc); border-color: var(--acc-line); }
+.adm-nota-linha td { padding: 0 12px 12px !important; }
+.adm-nota-linha textarea {
+  width: 100%;
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  padding: 9px 11px;
+  background: var(--ink);
+  color: var(--fg);
+  font: .8rem/1.5 var(--sans);
+  resize: vertical;
+}
+.adm-nota-linha textarea:focus { outline: none; border-color: var(--acc-line); }
+
+/* As tabelas pequenas vivem dentro de uma grelha de duas colunas, onde
+   os 780px da tabela grande não cabem — e o que ficava cortado era a
+   taxa de conversão, que é a coluna que interessa. */
+.adm-tabela--mini { min-width: 0; }
+.adm-tabela--mini th, .adm-tabela--mini td { padding: 8px 10px; font-size: .79rem; }
+.adm-tabela--mini th:not(:first-child),
+.adm-tabela--mini td:not(:first-child) { text-align: right; white-space: nowrap; }
+.adm-tabela--mini td:first-child { word-break: break-word; }
+
+@media (max-width: 860px) {
+  .adm-funil__l { grid-template-columns: 1fr 44px 78px; }
+  .adm-funil__n { grid-column: 1 / -1; }
+  .adm-sess__i > summary { grid-template-columns: 1fr 1fr; gap: 6px 12px; }
+  .adm-passos li { grid-template-columns: 54px 1fr; }
+  .adm-passos li span:last-child { grid-column: 2; }
+}

@@ -475,6 +475,14 @@
 
     [cap, mon].forEach(function (el) { el.addEventListener('input', render); });
     render();
+
+    /* Só se regista quando a pessoa larga o cursor, e não a cada pixel
+       que arrasta: o que interessa é o valor em que parou. */
+    [cap, mon].forEach(function (el) {
+      el.addEventListener('change', function () {
+        marcar('simulador', cap.value + '€ · ' + mon.value + ' meses');
+      });
+    });
   }
 
   /* ══════════════════════ 8. FAQ ══════════════════════ */
@@ -555,8 +563,10 @@
       var saved = null;
       try { saved = JSON.parse(localStorage.getItem(LEAD) || 'null'); } catch (e) { saved = null; }
       if (saved && saved.nome) {
+        marcar('form', 'já tinha pedido');
         showDone(saved.nome, true);
       } else {
+        marcar('form', 'aberto');
         setTimeout(function () { var n = $('#rmName'); if (n) n.focus(); }, 340);
       }
     }
@@ -610,6 +620,17 @@
 
     if (!form) return;
 
+    /* Abrir o formulário e começar a escrevê-lo são coisas diferentes.
+       Quem abre e não escreve nada estava só curioso; quem escreve o
+       nome e desiste a meio encontrou algum obstáculo — e é essa
+       distinção que diz se o problema é de interesse ou de desenho. */
+    var comecou = false;
+    form.addEventListener('input', function () {
+      if (comecou) return;
+      comecou = true;
+      marcar('form', 'começou a preencher');
+    }, { once: false });
+
     var estado = $('#rmEstado');
 
     function dizer(texto, tipo) {
@@ -648,6 +669,7 @@
       var okMail = bad('#fMail', !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email));
 
       if (!okNome || !okTel || !okMail) {
+        marcar('form', 'erro de validação');
         dizer('Falta preencher alguma coisa. Veja os campos assinalados.', 'erro');
         $(!okNome ? '#rmName' : !okTel ? '#rmTel' : '#rmEmail').focus();
         return;
@@ -662,6 +684,7 @@
         else if (document.referrer) origem = document.referrer + ' → ' + origem;
       } catch (err) { /* nada */ }
 
+      marcar('form', 'enviado');
       dizer('A enviar…', 'ok');
       submit.setAttribute('aria-busy', 'true');
       submit.disabled = true;
@@ -692,6 +715,7 @@
               nome: nome, tel: tel, email: email, consent: consent, ts: Date.now()
             }));
           } catch (err) { /* modo privado — segue na mesma */ }
+          marcar('lead', 'relatórios pedidos');
           dizer('', '');
           showDone(nome);
           return;
@@ -705,6 +729,7 @@
           r.dados.campos.forEach(function (c) {
             bad(c === 'nome' ? '#fName' : c === 'telefone' ? '#fTel' : '#fMail', true);
           });
+          marcar('form', 'recusado pelo servidor');
           dizer('Verifique ' + quais + '.', 'erro');
           submit.removeAttribute('aria-busy');
           submit.disabled = false;
@@ -716,6 +741,7 @@
         clearTimeout(relogio);
         /* Última linha de defesa: o contacto não se perde, vai para o
            WhatsApp já escrito. Mas dizemos à pessoa o que aconteceu. */
+        marcar('form', 'falhou o envio');
         dizer('Não consegui enviar daqui. Abri o WhatsApp com a mensagem escrita — é só carregar em enviar.', 'erro');
         var t = 'Olá! Chamo-me ' + nome + ' (' + tel + ', ' + email + ') e queria receber os relatórios da Cortex Automation.';
         window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(t), '_blank', 'noopener');
@@ -790,6 +816,7 @@
 
     function start() {
       if (started && !v.paused) return;
+      if (!started) marcar('video', 'inicio');
       started = true;
       desistiu = false;
       if (fb) fb.hidden = true;
@@ -826,6 +853,22 @@
 
     btn.addEventListener('click', start);
     v.addEventListener('play', function () { box.classList.add('is-playing'); });
+
+    /* Quanto do vídeo chegou a ser visto. Quem desiste aos vinte
+       segundos e quem vê até ao fim são duas pessoas diferentes, e o
+       painel não tem outra maneira de as distinguir. */
+    var marcos = [25, 50, 75, 100], vistos = {};
+    v.addEventListener('timeupdate', function () {
+      if (!v.duration) return;
+      var pct = Math.round(v.currentTime / v.duration * 100);
+      for (var i = 0; i < marcos.length; i++) {
+        if (pct >= marcos[i] && !vistos[marcos[i]]) {
+          vistos[marcos[i]] = true;
+          marcar('video', marcos[i] + '%');
+        }
+      }
+    });
+
     v.addEventListener('pause', function () {
       /* Só voltamos ao poster se o vídeo estiver mesmo no início —
          uma pausa a meio deve continuar a mostrar o fotograma. */
@@ -890,7 +933,7 @@
         ok.hidden = false;
         ok.className = 'news__ok';
         ok.textContent = 'Pronto, ' + nome.split(/\s+/)[0] + '. Está na lista.';
-        visita.cliques.push('newsletter');
+        marcar('lead', 'newsletter');
       }).catch(function () {
         /* Dizer o que aconteceu, em vez de abrir o WhatsApp sem explicação
            e deixar a pessoa sem saber se ficou ou não inscrita. */
@@ -919,28 +962,103 @@
      duas visitas à mesma pessoa, nem esta visita a outro site. O
      resumo só é enviado quando a pessoa sai — um pedido por visita.
      ───────────────────────────────────────────────────────────── */
+  /* ─────────────────────────────────────────────────────────────
+     O QUE SE REGISTA DE CADA VISITA
+
+     Duas perguntas, e só duas: de onde veio esta pessoa, e onde é que
+     a perdemos. Tudo o que está aqui serve uma delas.
+
+     O identificador é um número ao acaso guardado no browser dela.
+     Serve para distinguir sete visitas de sete pessoas de sete visitas
+     da mesma pessoa — que é uma diferença que muda tudo na leitura dos
+     números. Não diz quem é, não atravessa para outros sites e não se
+     cruza com o email de ninguém: é um número e mais nada.
+     ───────────────────────────────────────────────────────────── */
+  var VID = 'cortex.vid.v1';
+
+  function visitante() {
+    var v = { id: '', visitas: 1, novo: true };
+    try {
+      var g = JSON.parse(localStorage.getItem(VID) || 'null');
+      if (g && g.id) {
+        v.id = g.id;
+        v.visitas = (Number(g.visitas) || 1) + 1;
+        v.novo = false;
+      } else {
+        v.id = (Date.now().toString(36) + Math.random().toString(36).slice(2, 10));
+      }
+      localStorage.setItem(VID, JSON.stringify({ id: v.id, visitas: v.visitas }));
+    } catch (e) {
+      /* Modo privado ou armazenamento bloqueado: conta como visita nova
+         e sem identificador. Perde-se a distinção, não se perde a visita. */
+      v.id = '';
+    }
+    return v;
+  }
+
+  var quem = visitante();
+
   var visita = {
     inicio: Date.now(),
     origem: '',
+    utm: {},
     scroll: 0,
     seccoes: [],
+    tempos: {},          /* segundos passados em cada secção */
     cliques: [],
-    enviado: false
+    eventos: [],         /* o percurso, por ordem e com a hora */
+    enviado: false,
+    vid: quem.id,
+    visitas: quem.visitas,
+    novo: quem.novo
   };
 
+  /* O registo de um momento do percurso. O tempo é relativo ao início
+     da visita: é o que permite reconstruir a sequência depois. */
+  function marcar(evento, detalhe) {
+    if (visita.eventos.length >= 60) return;
+    visita.eventos.push({
+      t: Math.round((Date.now() - visita.inicio) / 1000),
+      e: String(evento).slice(0, 40),
+      d: detalhe == null ? '' : String(detalhe).slice(0, 60)
+    });
+  }
+
   function rastrear() {
-    /* De onde veio: a etiqueta da campanha manda; a seguir o site que
-       a trouxe; se não houver nada, é tráfego directo. */
+    /* ── De onde veio ──────────────────────────────────────────────
+       As etiquetas de campanha mandam sobre tudo o resto: são as
+       únicas que dizem qual anúncio trouxe a pessoa, e não apenas
+       qual site. Sem etiquetas, fica o site de origem. Sem nada,
+       é tráfego directo. */
     try {
       var q = new URLSearchParams(location.search);
-      visita.origem = q.get('utm_source') || q.get('utm_campaign') || q.get('ref') ||
+      var campos = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+      for (var i = 0; i < campos.length; i++) {
+        var v = q.get(campos[i]);
+        if (v) visita.utm[campos[i].replace('utm_', '')] = v.slice(0, 60);
+      }
+      visita.origem = visita.utm.source || q.get('ref') ||
         (document.referrer && document.referrer.indexOf(location.host) === -1
           ? document.referrer.replace(/^https?:\/\//, '').split('/')[0]
           : 'directa');
     } catch (e) { visita.origem = 'directa'; }
 
+    marcar('entrada', visita.origem);
+
+    /* ── Onde está a ler, e durante quanto tempo ───────────────────
+       Saber que alguém passou pela secção do risco diz pouco. Saber
+       que lá ficou quarenta segundos diz que a leu. */
     var seccoes = $$('section[id]');
     var atual = 'topo';
+    var desde = Date.now();
+
+    function contarTempo() {
+      var passou = Math.round((Date.now() - desde) / 1000);
+      if (passou > 0 && passou < 3600) {
+        visita.tempos[atual] = (visita.tempos[atual] || 0) + passou;
+      }
+      desde = Date.now();
+    }
 
     function medir() {
       var h = document.documentElement;
@@ -953,8 +1071,14 @@
       for (var i = 0; i < seccoes.length; i++) {
         var r = seccoes[i].getBoundingClientRect();
         if (r.top <= h.clientHeight * 0.34 && r.bottom > h.clientHeight * 0.34) {
-          atual = seccoes[i].id;
-          if (visita.seccoes.indexOf(atual) === -1) visita.seccoes.push(atual);
+          if (seccoes[i].id !== atual) {
+            contarTempo();
+            atual = seccoes[i].id;
+            if (visita.seccoes.indexOf(atual) === -1) {
+              visita.seccoes.push(atual);
+              marcar('seccao', atual);
+            }
+          }
           break;
         }
       }
@@ -968,8 +1092,9 @@
     }, { passive: true });
     medir();
 
-    /* Que botões carregam. Só os que interessam, e pelo texto, não por
-       identificadores — assim continua a fazer sentido se o site mudar. */
+    /* ── Que botões carregam ───────────────────────────────────────
+       Pelo atributo quando existe, pelo texto quando não existe: assim
+       continua a fazer sentido depois de o site mudar de palavras. */
     document.addEventListener('click', function (e) {
       var a = e.target.closest('a, button');
       if (!a) return;
@@ -979,24 +1104,42 @@
         a.hasAttribute('data-open-report') ? 'Pedir relatórios' :
         a.hasAttribute('data-doc') ? 'Descarregar · ' + a.getAttribute('data-doc') :
         a.id === 'vslPlay' ? 'Ver vídeo' :
+        /myfxbook/i.test(a.href || '') ? 'MyFxBook' :
         (a.textContent || '').trim().slice(0, 40);
-      if (etiqueta && visita.cliques.length < 30) visita.cliques.push(etiqueta);
+      if (!etiqueta) return;
+      if (visita.cliques.length < 30) visita.cliques.push(etiqueta);
+      marcar('clique', etiqueta);
     }, true);
 
+    /* ── Fechar as contas e enviar ─────────────────────────────────
+       O ecrã é enviado em largura e altura: é o que permite separar
+       telemóvel de tablet de computador, e depois comparar a conversão
+       de cada um. Não vai nada que identifique o aparelho. */
     function enviar() {
       if (visita.enviado) return;
       visita.enviado = true;
+      contarTempo();
+      marcar('saida', atual);
+
       var corpo = JSON.stringify({
+        vid: visita.vid,
+        visitas: visita.visitas,
+        novo: visita.novo,
         origem: visita.origem,
+        utm: visita.utm,
         entrada: location.pathname + location.search,
         duracao: Math.round((Date.now() - visita.inicio) / 1000),
         scroll: visita.scroll,
         saida: atual,
         seccoes: visita.seccoes,
+        tempos: visita.tempos,
         cliques: visita.cliques,
+        eventos: visita.eventos,
         ecra: window.innerWidth,
-        lead: visita.cliques.indexOf('newsletter') !== -1
+        altura: window.innerHeight,
+        lead: visita.eventos.some(function (x) { return x.e === 'lead'; })
       });
+
       /* sendBeacon sobrevive ao fecho da aba; o fetch é a alternativa
          para os browsers que não o tenham. */
       try {
@@ -1018,7 +1161,6 @@
     });
     window.addEventListener('pagehide', enviar);
   }
-
 
   function init() {
     wireLinks();

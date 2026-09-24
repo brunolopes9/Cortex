@@ -37,6 +37,7 @@
     <nav class="adm-tabs" id="tabs">
       <button class="is-on" data-aba="contactos">Contactos</button>
       <button data-aba="visitas">Visitas</button>
+      <button data-aba="sessoes">Sessões</button>
       <button data-aba="campanha">Campanha</button>
     </nav>
     <div class="adm-top__acc">
@@ -61,7 +62,7 @@
     <div class="adm-tabela-wrap">
       <table class="adm-tabela" id="tabelaLeads">
         <thead><tr>
-          <th>Quando</th><th>Nome</th><th>Telemóvel</th><th>Email</th><th>Campanhas</th><th>Origem</th>
+          <th>Quando</th><th>Nome</th><th>Telemóvel</th><th>Email</th><th>Estado</th><th>Origem</th><th></th>
         </tr></thead>
         <tbody></tbody>
       </table>
@@ -72,15 +73,61 @@
   <!-- ── Visitas ── -->
   <section class="adm-aba" data-painel="visitas">
     <div class="adm-cards" id="cardsVisitas"></div>
-    <div class="adm-grelha">
-      <div class="adm-bloco"><h2>De onde vêm</h2><ul id="origens"></ul></div>
-      <div class="adm-bloco"><h2>Onde saem</h2><ul id="saidas"></ul></div>
-      <div class="adm-bloco"><h2>Secções que alcançam</h2><ul id="seccoes"></ul></div>
-      <div class="adm-bloco"><h2>Botões que carregam</h2><ul id="cliques"></ul></div>
+
+    <div class="adm-bloco adm-bloco--full">
+      <h2>Onde se perdem as pessoas</h2>
+      <p class="adm-nota">Cada degrau mostra quantos lá chegaram. A percentagem é sobre o degrau
+        anterior — é a queda maior que diz onde está o problema.</p>
+      <div class="adm-funil" id="funil"></div>
     </div>
+
+    <div class="adm-grelha">
+      <div class="adm-bloco"><h2>De onde vêm</h2><div class="adm-tabela-wrap">
+        <table class="adm-tabela adm-tabela--mini"><thead><tr>
+          <th>Origem</th><th>Visitas</th><th>Contactos</th><th>Taxa</th>
+        </tr></thead><tbody id="origens"></tbody></table></div></div>
+
+      <div class="adm-bloco"><h2>Por aparelho</h2><div class="adm-tabela-wrap">
+        <table class="adm-tabela adm-tabela--mini"><thead><tr>
+          <th>Aparelho</th><th>Visitas</th><th>Contactos</th><th>Taxa</th>
+        </tr></thead><tbody id="aparelhos"></tbody></table></div></div>
+    </div>
+
+    <div class="adm-bloco adm-bloco--full">
+      <h2>Campanhas</h2>
+      <p class="adm-nota">Só aparecem aqui as visitas que trouxeram etiqueta no link.
+        Para etiquetar, acrescente <code>?utm_source=instagram&amp;utm_campaign=setembro</code> ao endereço.</p>
+      <div class="adm-tabela-wrap">
+        <table class="adm-tabela adm-tabela--mini"><thead><tr>
+          <th>Campanha</th><th>Meio</th><th>Visitas</th><th>Contactos</th><th>Taxa</th>
+        </tr></thead><tbody id="campanhas"></tbody></table>
+      </div>
+      <p class="adm-vazio" id="vazioCamp" hidden>Ainda não chegou ninguém por um link etiquetado.</p>
+    </div>
+
+    <div class="adm-grelha">
+      <div class="adm-bloco"><h2>Até onde descem</h2><ul id="seccoes"></ul></div>
+      <div class="adm-bloco"><h2>Onde passam mais tempo</h2><ul id="tempoSeccao"></ul></div>
+      <div class="adm-bloco"><h2>Onde saem</h2><ul id="saidas"></ul></div>
+      <div class="adm-bloco"><h2>Botões que carregam</h2><ul id="cliques"></ul></div>
+      <div class="adm-bloco"><h2>Quanto vêem do vídeo</h2><ul id="video"></ul></div>
+      <div class="adm-bloco"><h2>O que simulam</h2><ul id="simulacoes"></ul></div>
+    </div>
+
     <div class="adm-bloco adm-bloco--full">
       <h2>Visitas por dia</h2>
       <div class="adm-dias" id="dias"></div>
+    </div>
+  </section>
+
+  <!-- ── Sessões ── -->
+  <section class="adm-aba" data-painel="sessoes">
+    <div class="adm-bloco adm-bloco--full">
+      <h2>Visita a visita</h2>
+      <p class="adm-nota">O percurso de cada pessoa pelo site, por ordem e com o tempo de cada passo.
+        Carregue numa linha para abrir.</p>
+      <div class="adm-sess" id="sessoes"></div>
+      <p class="adm-vazio" id="vazioSess" hidden>Ainda não há visitas registadas.</p>
     </div>
   </section>
 

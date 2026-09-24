@@ -71,10 +71,12 @@
       if (r.http === 401) { location.reload(); return; }
       if (!r.dados || !r.dados.ok) return;
       estado.leads = r.dados.leads || [];
+      estado.sessoes = r.dados.sessoes || [];
       estado.resumo = r.dados.resumo || null;
       mostrarErro($('#aviso'), r.dados.aviso || '');
       pintarLeads();
       pintarVisitas();
+      pintarSessoes();
     });
   }
 
@@ -95,9 +97,10 @@
   }
 
   /* ── Contactos ─────────────────────────────────────────────────── */
-  function pintarLeads() {
+  var ESTADOS = ['Novo', 'Contactado', 'Interessado', 'Cliente', 'Perdido'];
+
+  function pintarCartoesLeads() {
     var l = estado.leads;
-    var comEmail = l.filter(function (x) { return x.email; }).length;
     var autorizados = l.filter(function (x) { return x.email && x.consentimento; }).length;
     var hoje = new Date().toDateString();
     var deHoje = l.filter(function (x) { return new Date(x.ts).toDateString() === hoje; }).length;
@@ -105,10 +108,14 @@
     $('#cardsLeads').innerHTML =
       cartao(l.length, 'Contactos') +
       cartao(deHoje, 'Hoje') +
-      cartao(comEmail, 'Com email') +
-      cartao(autorizados, 'Autorizaram campanhas');
+      cartao(l.filter(function (x) { return x.estado === 'Novo'; }).length, 'Por contactar') +
+      cartao(l.filter(function (x) { return x.estado === 'Cliente'; }).length, 'Clientes');
 
     $('#campAlvo').textContent = autorizados + (autorizados === 1 ? ' pessoa vai receber' : ' pessoas vão receber');
+  }
+
+  function pintarLeads() {
+    pintarCartoesLeads();
     filtrar();
   }
 
@@ -116,7 +123,8 @@
     var q = ($('#procurar').value || '').toLowerCase().trim();
     var linhas = estado.leads.filter(function (x) {
       if (!q) return true;
-      return [x.nome, x.telefone, x.email, x.origem].join(' ').toLowerCase().indexOf(q) !== -1;
+      return [x.nome, x.telefone, x.email, x.origem, x.estado, x.nota]
+        .join(' ').toLowerCase().indexOf(q) !== -1;
     });
 
     $('#vazioLeads').hidden = linhas.length > 0;
@@ -124,25 +132,66 @@
 
     $('#tabelaLeads tbody').innerHTML = linhas.map(function (x) {
       var tel = String(x.telefone || '').replace(/[^\d]/g, '');
-      return '<tr>' +
+      var sel = ESTADOS.map(function (e) {
+        return '<option' + (e === x.estado ? ' selected' : '') + '>' + e + '</option>';
+      }).join('');
+      return '<tr data-chave="' + seguro(x.chave) + '">' +
         '<td class="adm-mono">' + dataHora(x.ts) + '</td>' +
         '<td><b>' + seguro(x.nome) + '</b></td>' +
         '<td><a href="https://wa.me/' + seguro(tel) + '" target="_blank" rel="noopener">' + seguro(x.telefone) + '</a></td>' +
         '<td>' + (x.email ? '<a href="mailto:' + seguro(x.email) + '">' + seguro(x.email) + '</a>' : '<i>—</i>') + '</td>' +
-        '<td>' + (x.consentimento ? '<span class="adm-sim">sim</span>' : '<span class="adm-nao">não</span>') + '</td>' +
+        '<td><select class="adm-estado adm-estado--' + x.estado.toLowerCase() + '">' + sel + '</select></td>' +
         '<td class="adm-origem">' + seguro(x.origem || 'directa') + '</td>' +
-        '</tr>';
+        '<td><button class="adm-nota-btn" title="Nota">' + (x.nota ? '✎' : '+') + '</button></td>' +
+        '</tr>' +
+        '<tr class="adm-nota-linha" data-nota="' + seguro(x.chave) + '" hidden><td colspan="7">' +
+        '<textarea rows="2" placeholder="O que ficou combinado com esta pessoa">' + seguro(x.nota) + '</textarea>' +
+        '</td></tr>';
     }).join('');
   }
   $('#procurar').addEventListener('input', filtrar);
 
+  /* O estado e a nota gravam-se sozinhos: obrigar a carregar em Guardar
+     só serve para se perder o que se escreveu. */
+  function gravar(chave, tr) {
+    var sel = $('select', tr);
+    var nota = $('textarea', $('[data-nota="' + chave.replace(/"/g, '\\"') + '"]') || document.createElement('div'));
+    var item = estado.leads.filter(function (x) { return x.chave === chave; })[0];
+    if (!item) return;
+    item.estado = sel ? sel.value : item.estado;
+    item.nota = nota ? nota.value : item.nota;
+    if (sel) sel.className = 'adm-estado adm-estado--' + item.estado.toLowerCase();
+    pintarCartoesLeads();
+    api({ accao: 'estado', chave: chave, estado: item.estado, nota: item.nota }).catch(function () {});
+  }
+
+  $('#tabelaLeads').addEventListener('change', function (e) {
+    var tr = e.target.closest('tr[data-chave]');
+    if (tr && e.target.tagName === 'SELECT') gravar(tr.getAttribute('data-chave'), tr);
+  });
+
+  $('#tabelaLeads').addEventListener('click', function (e) {
+    if (!e.target.classList.contains('adm-nota-btn')) return;
+    var tr = e.target.closest('tr[data-chave]');
+    var linha = tr.nextElementSibling;
+    linha.hidden = !linha.hidden;
+    if (!linha.hidden) $('textarea', linha).focus();
+  });
+
+  $('#tabelaLeads').addEventListener('blur', function (e) {
+    if (e.target.tagName !== 'TEXTAREA') return;
+    var chave = e.target.closest('tr').getAttribute('data-nota');
+    var tr = $('tr[data-chave="' + chave.replace(/"/g, '\\"') + '"]');
+    if (tr) gravar(chave, tr);
+  }, true);
+
   /* ── CSV ───────────────────────────────────────────────────────── */
   $('#csv').addEventListener('click', function () {
-    var cab = ['Data', 'Nome', 'Telemovel', 'Email', 'Campanhas', 'Origem', 'Pais'];
+    var cab = ['Data', 'Nome', 'Telemovel', 'Email', 'Campanhas', 'Estado', 'Nota', 'Origem', 'Pais'];
     var celula = function (v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; };
     var linhas = estado.leads.map(function (x) {
-      return [dataHora(x.ts), x.nome, x.telefone, x.email, x.consentimento ? 'sim' : 'nao', x.origem, x.pais]
-        .map(celula).join(',');
+      return [dataHora(x.ts), x.nome, x.telefone, x.email, x.consentimento ? 'sim' : 'nao',
+        x.estado, x.nota, x.origem, x.pais].map(celula).join(',');
     });
     /* BOM à frente para o Excel abrir os acentos como deve ser */
     var blob = new Blob(['﻿' + cab.map(celula).join(',') + '\n' + linhas.join('\n')],
@@ -164,28 +213,101 @@
     }).join('') : '<li class="adm-vaziol">Sem dados ainda.</li>';
   }
 
+  function tabela(el, linhas, vazio) {
+    el.innerHTML = linhas.length ? linhas.map(function (x) {
+      return '<tr><td>' + seguro(x.nome) + '</td>' +
+        (x.medium !== undefined ? '<td class="adm-origem">' + seguro(x.medium || '—') + '</td>' : '') +
+        '<td class="adm-mono">' + x.visitas + '</td>' +
+        '<td class="adm-mono">' + x.leads + '</td>' +
+        '<td class="adm-mono' + (x.taxa >= 10 ? ' adm-sim' : '') + '">' + x.taxa + '%</td></tr>';
+    }).join('') : '<tr><td colspan="5" class="adm-vaziol">' + (vazio || 'Sem dados ainda.') + '</td></tr>';
+  }
+
+  function duracao(s) {
+    var m = Math.floor(s / 60);
+    return (m ? m + 'm ' : '') + (s % 60) + 's';
+  }
+
   function pintarVisitas() {
     var r = estado.resumo;
     if (!r) return;
-    var m = Math.floor(r.tempoMedio / 60), s = r.tempoMedio % 60;
 
     $('#cardsVisitas').innerHTML =
       cartao(r.visitas, 'Visitas') +
-      cartao((m ? m + 'm ' : '') + s + 's', 'Tempo médio') +
-      cartao(r.scrollMedio + '%', 'Scroll médio') +
+      cartao(r.pessoas == null ? '—' : r.pessoas, 'Pessoas') +
+      cartao(duracao(r.tempoMedio), 'Tempo médio') +
       cartao(r.telemovelPct + '%', 'Em telemóvel');
 
-    lista($('#origens'), r.origens);
-    lista($('#saidas'), r.saidas);
-    lista($('#seccoes'), r.seccoes);
-    lista($('#cliques'), r.cliques);
+    /* O funil. A largura de cada degrau é a percentagem do total, para
+       a queda se ver antes de se ler o número. */
+    $('#funil').innerHTML = (r.funil || []).map(function (f, i) {
+      var queda = f.daAnterior != null && f.daAnterior < 100
+        ? '<span class="adm-funil__perda">−' + (100 - f.daAnterior) + '%</span>' : '';
+      return '<div class="adm-funil__l">' +
+        '<span class="adm-funil__n">' + f.nome + '</span>' +
+        '<span class="adm-funil__b"><i style="width:' + Math.max(f.doTotal, 1) + '%"></i></span>' +
+        '<b>' + f.quantos + '</b>' +
+        '<span class="adm-funil__p">' + (i === 0 ? '' : f.daAnterior + '%') + queda + '</span>' +
+        '</div>';
+    }).join('');
 
-    var max = r.dias.reduce(function (m2, d) { return Math.max(m2, d[1]); }, 0) || 1;
-    $('#dias').innerHTML = r.dias.length ? r.dias.map(function (d) {
+    tabela($('#origens'), r.origens || []);
+    tabela($('#aparelhos'), r.aparelhos || []);
+    tabela($('#campanhas'), r.campanhas || [], 'Nenhuma visita com etiqueta ainda.');
+    $('#vazioCamp').hidden = (r.campanhas || []).length > 0;
+
+    lista($('#saidas'), r.saidas || []);
+    lista($('#seccoes'), r.seccoes || []);
+    lista($('#cliques'), r.cliques || []);
+    lista($('#tempoSeccao'), r.tempoSeccao || [], 's');
+    lista($('#video'), r.video || []);
+
+    /* As simulações vêm em bruto; contamo-las aqui para ver que valores
+       as pessoas escolhem mais. */
+    var contas = {};
+    (r.simulacoes || []).forEach(function (x) { contas[x] = (contas[x] || 0) + 1; });
+    lista($('#simulacoes'), Object.entries(contas)
+      .sort(function (a, b) { return b[1] - a[1]; }).slice(0, 12));
+
+    var max = (r.dias || []).reduce(function (m2, d) { return Math.max(m2, d[1]); }, 0) || 1;
+    $('#dias').innerHTML = (r.dias || []).length ? r.dias.map(function (d) {
       return '<div class="adm-dia" title="' + d[0] + ': ' + d[1] + '">' +
         '<i style="height:' + Math.max(4, Math.round(d[1] / max * 100)) + '%"></i>' +
         '<span>' + d[0].slice(8) + '</span></div>';
     }).join('') : '<p class="adm-vaziol">Sem dados ainda.</p>';
+  }
+
+  /* ── Sessões, uma a uma ────────────────────────────────────────── */
+  function aparelho(w) {
+    if (!w) return '?';
+    return w < 640 ? 'Telemóvel' : w < 1024 ? 'Tablet' : 'Computador';
+  }
+
+  function pintarSessoes() {
+    var s = estado.sessoes || [];
+    $('#vazioSess').hidden = s.length > 0;
+
+    $('#sessoes').innerHTML = s.map(function (x, i) {
+      var virouLead = x.lead || (x.eventos || []).some(function (e) { return e.e === 'lead'; });
+      var passos = (x.eventos || []).map(function (e) {
+        return '<li><span class="adm-mono">' + duracao(e.t) + '</span>' +
+          '<b>' + seguro(e.e) + '</b>' +
+          '<span>' + seguro(e.d) + '</span></li>';
+      }).join('') || '<li class="adm-vaziol">Sem passos registados.</li>';
+
+      return '<details class="adm-sess__i' + (virouLead ? ' is-lead' : '') + '">' +
+        '<summary>' +
+        '<span class="adm-mono">' + dataHora(x.ts) + '</span>' +
+        '<span>' + seguro(x.origem || 'directa') + '</span>' +
+        '<span>' + aparelho(x.ecra) + (x.pais ? ' · ' + seguro(x.pais) : '') + '</span>' +
+        '<span class="adm-mono">' + duracao(x.duracao || 0) + '</span>' +
+        '<span class="adm-mono">' + (x.scroll || 0) + '%</span>' +
+        '<span>' + (virouLead ? '<b class="adm-sim">contacto</b>' :
+          (x.novo ? 'nova' : 'volta ' + (x.visitas || 1) + 'ª vez')) + '</span>' +
+        '</summary>' +
+        '<ol class="adm-passos">' + passos + '</ol>' +
+        '</details>';
+    }).join('');
   }
 
   /* ── Campanha ──────────────────────────────────────────────────── */
