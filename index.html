@@ -536,12 +536,12 @@
     <div class="sec-hd">
       <div>
         <span class="eyebrow reveal"><i>04</i> Simulador</span>
-        <h2 class="h2 reveal" style="--rd:.06s">O que o <em class="gilt">juro composto</em><br>faz ao longo do tempo.</h2>
+        <h2 class="h2 reveal" style="--rd:.06s">Como funciona o<br><em class="gilt">juro composto</em>.</h2>
       </div>
       <p class="lede reveal" style="--rd:.12s">
-        Veja a diferença entre o seu dinheiro parado — ou investido no nosso sistema, a fazer a
-        <strong style="color:var(--fg);font-weight:600">média de lucro mensal de +4,38%</strong>, com juros
-        compostos, ao longo do tempo.
+        Simule cenários usando a média histórica de <strong style="color:var(--fg);font-weight:600">+4,38% ao mês</strong>.
+        É uma <strong style="color:var(--fg);font-weight:600">conta matemática, não uma previsão</strong>: assume que todos
+        os meses correm na média, o que nunca acontece. Nos 32 meses reais, sete fecharam negativos.
       </p>
     </div>
 
@@ -554,7 +554,7 @@
 
         <div class="field">
           <div class="field__top"><label for="cMon">Prazo</label><output id="oMon" for="cMon">24 meses</output></div>
-          <input type="range" id="cMon" min="3" max="60" step="1" value="24">
+          <input type="range" id="cMon" min="3" max="32" step="1" value="24">
         </div>
 
         <div class="rate-fix">
@@ -564,18 +564,19 @@
           </div>
           <b class="rate-fix__n c-gain">+4,38%</b>
           <p class="rate-fix__note">
-            M&eacute;dia dos 32 meses entre Janeiro de 2024 e Agosto de 2026, aplicada com juros compostos.
+            M&eacute;dia dos 32 meses entre Janeiro de 2024 e Agosto de 2026. O prazo do simulador p&aacute;ra nos
+            32 meses porque &eacute; at&eacute; a&iacute; que h&aacute; hist&oacute;rico &mdash; projectar mais longe seria inventar.
           </p>
         </div>
       </div>
       <div class="calc__out">
         <div class="calc__figs">
           <div>
-            <span class="calc__lbl">Valor estimado no fim</span>
+            <span class="calc__lbl">Cenário no fim do prazo</span>
             <div class="calc__big num" id="oFinal">13 989 €</div>
           </div>
           <div>
-            <span class="calc__lbl">Ganho estimado</span>
+            <span class="calc__lbl">Diferença face ao capital inicial</span>
             <div class="calc__delta" id="oGain">+8 989 € · +179,8%</div>
           </div>
         </div>
@@ -599,9 +600,13 @@
         <div class="calc__axis"><span>Mês 0</span><span id="oAxisMid">Mês 12</span><span id="oAxisEnd">Mês 24</span></div>
 
         <p class="micro" id="calcNote" style="margin-top:18px">
-          Projecção de juro composto aplicando a média de lucro mensal de +4,38% dos 32 meses entre Janeiro
-          de 2024 e Agosto de 2026, com 1% de risco por operação. Resultados passados não garantem
-          resultados futuros.
+          Conta de juro composto sobre a média de lucro mensal de +4,38% dos 32 meses entre Janeiro de 2024
+          e Agosto de 2026, com 1% de risco por operação.
+          <b style="color:var(--fg);font-weight:600">Esta conta dá mais do que a realidade deu:</b>
+          compor a média durante os 32 meses resulta em +294%, quando o acumulado verdadeiro no mesmo
+          período foi <b style="color:var(--fg);font-weight:600">+271,95%</b>. A diferença é a variação —
+          uma média esconde que os meses maus pesam mais do que os bons compensam.
+          Rentabilidade passada não garante rentabilidade futura.
         </p>
       </div>
     </div>
