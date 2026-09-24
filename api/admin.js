@@ -85,8 +85,8 @@ const chegouA = function (id) {
 const ETAPAS = [
   ['Entrou no site', function () { return true; }],
   ['Passou do vídeo', chegouA('realidade')],
-  ['Chegou ao simulador', chegouA('simulador')],
   ['Chegou à Performance', chegouA('performance')],
+  ['Chegou ao simulador', chegouA('simulador')],
   ['Chegou ao investimento', chegouA('investimento')],
   ['Abriu o formulário', function (s) { return temEvento(s, 'form', 'aberto') || clicou(s, 'Pedir relatórios'); }],
   ['Começou a preencher', function (s) { return temEvento(s, 'form', 'começou'); }],
@@ -107,6 +107,24 @@ const DESTINOS = [
   ['MyFxBook', 'MyFxBook'],
   ['Relatórios (pedido)', 'Pedir relatórios'],
   ['Relatórios (descarregados)', 'Descarregar']
+];
+
+/* O percurso comercial de um contacto, da primeira conversa até estar
+   a operar. Os quatro do meio não se podem adivinhar pelo site: abrir
+   conta na corretora, depositar e ligar a Cortex acontecem fora daqui.
+   São marcados à mão, ou por integração da corretora se um dia existir.
+
+   Deduzir "depositou" porque alguém visitou uma página seria inventar,
+   e um sistema que finge saber coisas é pior do que um que não sabe. */
+const ESTADOS = [
+  'Novo',
+  'Contactado',
+  'Interessado',
+  'Conta criada',
+  'Depósito feito',
+  'Cortex ligada',
+  'Cliente activo',
+  'Perdido'
 ];
 
 /* Acções que não pertencem ao caminho: acontecem quando acontecem. */
@@ -371,8 +389,10 @@ export default async function handler(req, res) {
         const e = estados[chaveLead(l)] || {};
         return Object.assign({}, l, {
           chave: chaveLead(l),
-          estado: e.estado || 'Novo',
-          nota: e.nota || ''
+          estado: ESTADOS.indexOf(e.estado) === -1 ? 'Novo' : e.estado,
+          nota: e.nota || '',
+          historico: Array.isArray(e.historico) ? e.historico : [],
+          mudou: e.ts || null
         });
       });
 
@@ -386,6 +406,9 @@ export default async function handler(req, res) {
         ok: true,
         leads: comEstado,
         filtro: { periodo, origem, origensExistentes },
+        /* A lista de estados vem daqui para nao haver duas versoes dela:
+           o painel desenha o que o servidor aceita, e mais nada. */
+        estados: ESTADOS,
         /* As sessões completas só das mais recentes: são para ver o
            percurso de cada uma, e ninguém percorre quinhentas. */
         sessoes: agora.slice(0, 120),
@@ -400,20 +423,28 @@ export default async function handler(req, res) {
 
   /* ── estado de um contacto ── */
   if (accao === 'estado') {
-    const permitidos = ['Novo', 'Contactado', 'Interessado', 'Cliente', 'Perdido'];
     const chave = String(d.chave || '').slice(0, 220);
     const estado = String(d.estado || 'Novo');
     if (!chave) return res.status(400).json({ ok: false, erro: 'Falta o contacto.' });
-    if (permitidos.indexOf(estado) === -1) {
+    if (ESTADOS.indexOf(estado) === -1) {
       return res.status(400).json({ ok: false, erro: 'Estado desconhecido.' });
     }
     try {
+      /* O histórico é o que permite saber quanto tempo alguém ficou
+         parado em "Conta criada" à espera de depositar. Sem ele só se
+         sabe onde está, não há quanto tempo. */
+      const anteriores = await lerEstados();
+      const antigo = anteriores[chave] || {};
+      const historico = Array.isArray(antigo.historico) ? antigo.historico.slice(-19) : [];
+      if (antigo.estado !== estado) historico.push({ estado, ts: Date.now() });
+
       await guardarEstado(chave, {
         estado,
         nota: String(d.nota == null ? '' : d.nota).slice(0, 600),
-        ts: Date.now()
+        ts: Date.now(),
+        historico
       });
-      return res.status(200).json({ ok: true });
+      return res.status(200).json({ ok: true, historico });
     } catch (e) {
       console.error('estado:', e.message);
       return res.status(500).json({ ok: false, erro: 'Não consegui guardar.' });

@@ -79,6 +79,7 @@
       estado.sessoes = r.dados.sessoes || [];
       estado.resumo = r.dados.resumo || null;
       estado.anterior = r.dados.resumoAnterior || null;
+      if (Array.isArray(r.dados.estados) && r.dados.estados.length) ESTADOS = r.dados.estados;
       mostrarErro($('#aviso'), r.dados.aviso || '');
       encherOrigens((r.dados.filtro || {}).origensExistentes || []);
       pintarLeads();
@@ -127,20 +128,36 @@
     return d.innerHTML;
   }
 
-  /* ── Contactos ─────────────────────────────────────────────────── */
-  var ESTADOS = ['Novo', 'Contactado', 'Interessado', 'Cliente', 'Perdido'];
+  /* ── Contactos ───────────────────────────────────────────────────
+     A lista de estados vem do servidor. Tê-la aqui também significava
+     duas versões da verdade, e o dia em que divergissem o painel
+     oferecia estados que a gravação recusava. */
+  var ESTADOS = [];
+
+  /* O nome do estado também serve de classe CSS. Acentos e espaços não
+     servem, por isso passa-se por aqui. */
+  function classeEstado(e) {
+    return String(e || '').toLowerCase()
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^a-z]+/g, '-');
+  }
 
   function pintarCartoesLeads() {
     var l = estado.leads;
     var autorizados = l.filter(function (x) { return x.email && x.consentimento; }).length;
-    var hoje = new Date().toDateString();
-    var deHoje = l.filter(function (x) { return new Date(x.ts).toDateString() === hoje; }).length;
+
+    /* "Em curso" é toda a gente que já foi tocada e ainda não fechou
+       nem se perdeu. É o número que diz quanto trabalho está em cima
+       da mesa neste momento. */
+    var emCurso = l.filter(function (x) {
+      return x.estado !== 'Novo' && x.estado !== 'Cliente activo' && x.estado !== 'Perdido';
+    }).length;
 
     $('#cardsLeads').innerHTML =
       cartao(l.length, 'Contactos') +
-      cartao(deHoje, 'Hoje') +
       cartao(l.filter(function (x) { return x.estado === 'Novo'; }).length, 'Por contactar') +
-      cartao(l.filter(function (x) { return x.estado === 'Cliente'; }).length, 'Clientes');
+      cartao(emCurso, 'Em curso') +
+      cartao(l.filter(function (x) { return x.estado === 'Cliente activo'; }).length, 'Clientes activos');
 
     $('#campAlvo').textContent = autorizados + (autorizados === 1 ? ' pessoa vai receber' : ' pessoas vão receber');
   }
@@ -148,6 +165,18 @@
   function pintarLeads() {
     pintarCartoesLeads();
     filtrar();
+  }
+
+  /* O percurso do contacto, para se ver quanto tempo ficou parado em
+     cada etapa. É o que distingue "ainda não depositou" de "está há
+     três semanas sem depositar". */
+  function historico(x) {
+    var h = x.historico || [];
+    if (!h.length) return '';
+    return '<ol class="adm-hist">' + h.map(function (p) {
+      return '<li><span class="adm-mono">' + dataHora(p.ts) + '</span>' +
+        '<b class="adm-estado--' + classeEstado(p.estado) + '">' + seguro(p.estado) + '</b></li>';
+    }).join('') + '</ol>';
   }
 
   function filtrar() {
@@ -171,12 +200,13 @@
         '<td><b>' + seguro(x.nome) + '</b></td>' +
         '<td><a href="https://wa.me/' + seguro(tel) + '" target="_blank" rel="noopener">' + seguro(x.telefone) + '</a></td>' +
         '<td>' + (x.email ? '<a href="mailto:' + seguro(x.email) + '">' + seguro(x.email) + '</a>' : '<i>—</i>') + '</td>' +
-        '<td><select class="adm-estado adm-estado--' + x.estado.toLowerCase() + '">' + sel + '</select></td>' +
+        '<td><select class="adm-estado adm-estado--' + classeEstado(x.estado) + '">' + sel + '</select></td>' +
         '<td class="adm-origem">' + seguro(x.origem || 'directa') + '</td>' +
         '<td><button class="adm-nota-btn" title="Nota">' + (x.nota ? '✎' : '+') + '</button></td>' +
         '</tr>' +
         '<tr class="adm-nota-linha" data-nota="' + seguro(x.chave) + '" hidden><td colspan="7">' +
         '<textarea rows="2" placeholder="O que ficou combinado com esta pessoa">' + seguro(x.nota) + '</textarea>' +
+        historico(x) +
         '</td></tr>';
     }).join('');
   }
@@ -191,7 +221,7 @@
     if (!item) return;
     item.estado = sel ? sel.value : item.estado;
     item.nota = nota ? nota.value : item.nota;
-    if (sel) sel.className = 'adm-estado adm-estado--' + item.estado.toLowerCase();
+    if (sel) sel.className = 'adm-estado adm-estado--' + classeEstado(item.estado);
     pintarCartoesLeads();
     api({ accao: 'estado', chave: chave, estado: item.estado, nota: item.nota }).catch(function () {});
   }

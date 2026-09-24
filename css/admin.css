@@ -423,3 +423,26 @@
 }
 .adm-hesita b { font-family: var(--mono); color: var(--acc); }
 .adm-hesita span { color: var(--fg-faint); font-size: .78rem; }
+
+/* ══════════════════════ Estados do percurso comercial ══════════════════════
+   A cor acompanha o avanço: cinzento no início, azul enquanto se fala,
+   verde a partir do momento em que há dinheiro na conta. */
+.adm-estado--contactado    { color: #8FB4FF; border-color: rgba(143, 180, 255, .30); }
+.adm-estado--interessado   { color: #8FB4FF; border-color: rgba(143, 180, 255, .30); }
+.adm-estado--conta-criada  { color: var(--acc-hi); border-color: var(--acc-line); }
+.adm-estado--deposito-feito{ color: var(--acc-hi); border-color: var(--acc-line); }
+.adm-estado--cortex-ligada { color: var(--acc); border-color: var(--acc-line); }
+.adm-estado--cliente-activo{ color: var(--acc); border-color: var(--acc-line); background: rgba(46, 224, 138, .08); }
+.adm-estado--perdido       { color: var(--loss); border-color: rgba(255, 106, 85, .28); }
+
+/* Histórico de mudanças, dentro da linha da nota */
+.adm-hist {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 12px 0 0;
+  border-top: 1px solid var(--line-soft);
+  display: grid;
+  gap: 5px;
+}
+.adm-hist li { display: flex; align-items: center; gap: 12px; font-size: .78rem; }
+.adm-hist b { font-weight: 500; }

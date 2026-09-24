@@ -109,8 +109,8 @@
 
     <nav class="nav__links" id="navlinks" aria-label="Navegação principal">
       <a href="#realidade">Realidade</a>
-      <a href="#simulador">Simulador</a>
       <a href="#performance">Performance</a>
+      <a href="#simulador">Simulador</a>
       <a href="#sistema">Como funciona</a>
       <a href="#risco">Risco</a>
       <a href="#investimento">Investimento</a>
@@ -133,8 +133,8 @@
   <a href="#video"><span>Vídeo · 1 min</span><i>▸</i></a>
   <a href="#realidade"><span>Realidade</span><i>01</i></a>
   <a href="#paraquem"><span>Para quem é</span><i>02</i></a>
-  <a href="#simulador"><span>Simulador</span><i>03</i></a>
-  <a href="#performance"><span>Performance</span><i>04</i></a>
+  <a href="#performance"><span>Performance</span><i>03</i></a>
+  <a href="#simulador"><span>Simulador</span><i>04</i></a>
   <a href="#sistema"><span>Como funciona</span><i>05</i></a>
   <a href="#algoritmo"><span>O algoritmo</span><i>06</i></a>
   <a href="#porque"><span>Porquê a Cortex</span><i>07</i></a>
@@ -357,90 +357,12 @@
   </div>
 </section>
 
-<!-- ═══════════════════════ 03 · SIMULADOR ═══════════════════════ -->
-<section class="section" id="simulador">
-  <div class="wrap">
-    <div class="sec-hd">
-      <div>
-        <span class="eyebrow reveal"><i>03</i> Simulador</span>
-        <h2 class="h2 reveal" style="--rd:.06s">O que o <em class="gilt">juro composto</em><br>faz ao longo do tempo.</h2>
-      </div>
-      <p class="lede reveal" style="--rd:.12s">
-        Veja a diferença entre o seu dinheiro parado — ou investido no nosso sistema, a fazer a
-        <strong style="color:var(--fg);font-weight:600">média de lucro mensal de +4,38%</strong>, com juros
-        compostos, ao longo do tempo.
-      </p>
-    </div>
-
-    <div class="calc reveal-l">
-      <div class="calc__ctrl">
-        <div class="field">
-          <div class="field__top"><label for="cCap">Capital inicial</label><output id="oCap" for="cCap">5 000 €</output></div>
-          <input type="range" id="cCap" min="500" max="100000" step="500" value="5000" aria-describedby="calcNote">
-        </div>
-
-        <div class="field">
-          <div class="field__top"><label for="cMon">Prazo</label><output id="oMon" for="cMon">24 meses</output></div>
-          <input type="range" id="cMon" min="3" max="60" step="1" value="24">
-        </div>
-
-        <div class="rate-fix">
-          <div class="rate-fix__top">
-            <span>M&eacute;dia de lucro mensal</span>
-            <span class="badge badge--real">Hist&oacute;rico verific&aacute;vel</span>
-          </div>
-          <b class="rate-fix__n c-gain">+4,38%</b>
-          <p class="rate-fix__note">
-            M&eacute;dia dos 32 meses entre Janeiro de 2024 e Agosto de 2026, aplicada com juros compostos.
-          </p>
-        </div>
-      </div>
-      <div class="calc__out">
-        <div class="calc__figs">
-          <div>
-            <span class="calc__lbl">Valor estimado no fim</span>
-            <div class="calc__big num" id="oFinal">13 989 €</div>
-          </div>
-          <div>
-            <span class="calc__lbl">Ganho estimado</span>
-            <div class="calc__delta" id="oGain">+8 989 € · +179,8%</div>
-          </div>
-        </div>
-
-        <div class="calc__chart">
-          <svg id="calcChart" viewBox="0 0 600 200" preserveAspectRatio="none" role="img" aria-labelledby="calcChartTitle">
-            <title id="calcChartTitle">Curva de crescimento do capital ao longo do prazo escolhido</title>
-            <defs>
-              <linearGradient id="areaG" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#2EE08A" stop-opacity=".34"/>
-                <stop offset="100%" stop-color="#2EE08A" stop-opacity="0"/>
-              </linearGradient>
-            </defs>
-            <g id="calcGrid" stroke="rgba(237,234,227,.06)" stroke-width="1"></g>
-            <path id="calcArea" fill="url(#areaG)" d=""></path>
-            <path id="calcLine" fill="none" stroke="#2EE08A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d=""></path>
-            <circle id="calcDot" r="4.5" fill="#2EE08A" stroke="#0E1011" stroke-width="2.5" cx="0" cy="0"></circle>
-          </svg>
-        </div>
-
-        <div class="calc__axis"><span>Mês 0</span><span id="oAxisMid">Mês 12</span><span id="oAxisEnd">Mês 24</span></div>
-
-        <p class="micro" id="calcNote" style="margin-top:18px">
-          Projecção de juro composto aplicando a média de lucro mensal de +4,38% dos 32 meses entre Janeiro
-          de 2024 e Agosto de 2026, com 1% de risco por operação. Resultados passados não garantem
-          resultados futuros.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════ 04 · PERFORMANCE ═══════════════════════ -->
+<!-- ═══════════════════════ 03 · PERFORMANCE ═══════════════════════ -->
 <section class="section" id="performance">
   <div class="wrap">
     <div class="sec-hd">
       <div>
-        <span class="eyebrow reveal"><i>04</i> Performance</span>
+        <span class="eyebrow reveal"><i>03</i> Performance</span>
         <h2 class="h2 reveal" style="--rd:.06s">Resultados reais.<br>Hist&oacute;rico <em class="gilt">verific&aacute;vel</em>.</h2>
       </div>
       <p class="lede reveal" style="--rd:.12s">
@@ -584,6 +506,84 @@
             </p>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ 04 · SIMULADOR ═══════════════════════ -->
+<section class="section" id="simulador">
+  <div class="wrap">
+    <div class="sec-hd">
+      <div>
+        <span class="eyebrow reveal"><i>04</i> Simulador</span>
+        <h2 class="h2 reveal" style="--rd:.06s">O que o <em class="gilt">juro composto</em><br>faz ao longo do tempo.</h2>
+      </div>
+      <p class="lede reveal" style="--rd:.12s">
+        Veja a diferença entre o seu dinheiro parado — ou investido no nosso sistema, a fazer a
+        <strong style="color:var(--fg);font-weight:600">média de lucro mensal de +4,38%</strong>, com juros
+        compostos, ao longo do tempo.
+      </p>
+    </div>
+
+    <div class="calc reveal-l">
+      <div class="calc__ctrl">
+        <div class="field">
+          <div class="field__top"><label for="cCap">Capital inicial</label><output id="oCap" for="cCap">5 000 €</output></div>
+          <input type="range" id="cCap" min="500" max="100000" step="500" value="5000" aria-describedby="calcNote">
+        </div>
+
+        <div class="field">
+          <div class="field__top"><label for="cMon">Prazo</label><output id="oMon" for="cMon">24 meses</output></div>
+          <input type="range" id="cMon" min="3" max="60" step="1" value="24">
+        </div>
+
+        <div class="rate-fix">
+          <div class="rate-fix__top">
+            <span>M&eacute;dia de lucro mensal</span>
+            <span class="badge badge--real">Hist&oacute;rico verific&aacute;vel</span>
+          </div>
+          <b class="rate-fix__n c-gain">+4,38%</b>
+          <p class="rate-fix__note">
+            M&eacute;dia dos 32 meses entre Janeiro de 2024 e Agosto de 2026, aplicada com juros compostos.
+          </p>
+        </div>
+      </div>
+      <div class="calc__out">
+        <div class="calc__figs">
+          <div>
+            <span class="calc__lbl">Valor estimado no fim</span>
+            <div class="calc__big num" id="oFinal">13 989 €</div>
+          </div>
+          <div>
+            <span class="calc__lbl">Ganho estimado</span>
+            <div class="calc__delta" id="oGain">+8 989 € · +179,8%</div>
+          </div>
+        </div>
+
+        <div class="calc__chart">
+          <svg id="calcChart" viewBox="0 0 600 200" preserveAspectRatio="none" role="img" aria-labelledby="calcChartTitle">
+            <title id="calcChartTitle">Curva de crescimento do capital ao longo do prazo escolhido</title>
+            <defs>
+              <linearGradient id="areaG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#2EE08A" stop-opacity=".34"/>
+                <stop offset="100%" stop-color="#2EE08A" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <g id="calcGrid" stroke="rgba(237,234,227,.06)" stroke-width="1"></g>
+            <path id="calcArea" fill="url(#areaG)" d=""></path>
+            <path id="calcLine" fill="none" stroke="#2EE08A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d=""></path>
+            <circle id="calcDot" r="4.5" fill="#2EE08A" stroke="#0E1011" stroke-width="2.5" cx="0" cy="0"></circle>
+          </svg>
+        </div>
+
+        <div class="calc__axis"><span>Mês 0</span><span id="oAxisMid">Mês 12</span><span id="oAxisEnd">Mês 24</span></div>
+
+        <p class="micro" id="calcNote" style="margin-top:18px">
+          Projecção de juro composto aplicando a média de lucro mensal de +4,38% dos 32 meses entre Janeiro
+          de 2024 e Agosto de 2026, com 1% de risco por operação. Resultados passados não garantem
+          resultados futuros.
+        </p>
       </div>
     </div>
   </div>
@@ -1417,8 +1417,8 @@
         <div class="foot__list">
           <a href="#realidade">A realidade</a>
           <a href="#paraquem">Para quem é</a>
-          <a href="#simulador">Simulador</a>
           <a href="#performance">Performance</a>
+          <a href="#simulador">Simulador</a>
           <a href="#sistema">Como funciona</a>
           <a href="#porque">Porquê a Cortex</a>
           <a href="#risco">Gestão de risco</a>
