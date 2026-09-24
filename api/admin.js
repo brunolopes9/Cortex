@@ -93,6 +93,22 @@ const ETAPAS = [
   ['Deixou o contacto', function (s) { return temEvento(s, 'lead') || s.lead === true; }]
 ];
 
+/* Para onde saem do site. É diferente de "botões que carregam": uma
+   pergunta da FAQ aberta é um clique, mas não é uma saída. Estes são os
+   destinos que tiram a pessoa daqui — e são os que dizem se o Instagram
+   e o Telegram estão a receber gente vinda do site ou não.
+
+   Conta-se por visita e não por clique: quem carrega três vezes no
+   WhatsApp continua a ser uma pessoa. */
+const DESTINOS = [
+  ['WhatsApp', 'WhatsApp'],
+  ['Telegram', 'Telegram'],
+  ['Instagram', 'Instagram'],
+  ['MyFxBook', 'MyFxBook'],
+  ['Relatórios (pedido)', 'Pedir relatórios'],
+  ['Relatórios (descarregados)', 'Descarregar']
+];
+
 /* Acções que não pertencem ao caminho: acontecem quando acontecem. */
 const ACCOES = [
   ['Começou o vídeo', function (s) { return temEvento(s, 'video', 'inicio') || clicou(s, 'Ver vídeo'); }],
@@ -102,6 +118,40 @@ const ACCOES = [
   ['Abriu o MyFxBook', function (s) { return clicou(s, 'MyFxBook'); }],
   ['Falou no WhatsApp', function (s) { return clicou(s, 'WhatsApp'); }]
 ];
+
+/* Separa as visitas em dois baldes: o período pedido e o período
+   imediatamente anterior, do mesmo tamanho.
+
+   Um número sozinho não diz nada — 39 visitas é bom ou mau? Só se sabe
+   contra o período anterior. É por isso que se devolvem sempre os dois.
+
+   Fica à parte da função que responde ao pedido para poder ser testada
+   sem base de dados nem sessão: as contas com datas são o sítio onde um
+   erro de um dia passa despercebido durante semanas. */
+export const JANELAS = { hoje: 1, '7d': 7, '30d': 30, tudo: 0 };
+
+export function filtrarSessoes(sessoes, periodoPedido, origemPedida, agoraMs) {
+  const periodo = JANELAS[periodoPedido] !== undefined ? periodoPedido : '7d';
+  const dias = JANELAS[periodo];
+  const origem = String(origemPedida || '').trim();
+  const fim = agoraMs || Date.now();
+
+  const porOrigem = function (lista) {
+    return origem ? lista.filter(function (s) { return familiaDe(s.origem) === origem; }) : lista;
+  };
+
+  if (!dias) return { periodo, origem, agora: porOrigem(sessoes), antes: [] };
+
+  const janela = dias * 86400000;
+  const inicio = fim - janela;
+  return {
+    periodo, origem,
+    agora: porOrigem(sessoes.filter(function (s) { return (s.ts || 0) >= inicio; })),
+    antes: porOrigem(sessoes.filter(function (s) {
+      return (s.ts || 0) >= inicio - janela && (s.ts || 0) < inicio;
+    }))
+  };
+}
 
 export function resumir(sessoes) {
   const origens = {}, saidas = {}, seccoes = {}, cliques = {}, dias = {};
@@ -192,6 +242,15 @@ export function resumir(sessoes) {
     };
   });
 
+  const destinos = DESTINOS.map(function (par) {
+    const quantos = sessoes.filter(function (s) { return clicou(s, par[1]); }).length;
+    return {
+      nome: par[0],
+      quantos,
+      doTotal: sessoes.length ? Math.round(quantos / sessoes.length * 100) : 0
+    };
+  }).sort(function (a, b) { return b.quantos - a.quantos; });
+
   const comTaxa = function (o) {
     return Object.entries(o).map(function (par) {
       const v = par[1];
@@ -217,6 +276,7 @@ export function resumir(sessoes) {
     telemovelPct: Math.round((aparelhos['Telemóvel'] ? aparelhos['Telemóvel'].visitas : 0) / n * 100),
     funil,
     accoes,
+    destinos,
     origens: comTaxa(origens),
     campanhas: comTaxa(campanhas),
     aparelhos: comTaxa(aparelhos),
@@ -291,13 +351,21 @@ export default async function handler(req, res) {
         });
       });
 
+      const { periodo, origem, agora, antes } = filtrarSessoes(sessoes, d.periodo, d.origem);
+
+      /* As origens que existem de facto, para o painel montar a lista
+         sem ter de adivinhar nem trazer todas as sessões. */
+      const origensExistentes = [...new Set(sessoes.map(function (s) { return familiaDe(s.origem); }))].sort();
+
       return res.status(200).json({
         ok: true,
         leads: comEstado,
+        filtro: { periodo, origem, origensExistentes },
         /* As sessões completas só das mais recentes: são para ver o
            percurso de cada uma, e ninguém percorre quinhentas. */
-        sessoes: sessoes.slice(0, 120),
-        resumo: resumir(sessoes)
+        sessoes: agora.slice(0, 120),
+        resumo: resumir(agora),
+        resumoAnterior: antes.length ? resumir(antes) : null
       });
     } catch (e) {
       console.error('dados:', e.message);

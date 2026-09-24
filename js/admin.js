@@ -66,19 +66,50 @@
   });
 
   /* ── Dados ─────────────────────────────────────────────────────── */
+  /* Os filtros vivem aqui e vão com cada pedido: filtrar no servidor
+     evita trazer milhares de visitas para o browser só para as deitar
+     fora a seguir. */
+  var filtro = { periodo: '7d', origem: '' };
+
   function carregar() {
-    api({ accao: 'dados' }).then(function (r) {
+    api({ accao: 'dados', periodo: filtro.periodo, origem: filtro.origem }).then(function (r) {
       if (r.http === 401) { location.reload(); return; }
       if (!r.dados || !r.dados.ok) return;
       estado.leads = r.dados.leads || [];
       estado.sessoes = r.dados.sessoes || [];
       estado.resumo = r.dados.resumo || null;
+      estado.anterior = r.dados.resumoAnterior || null;
       mostrarErro($('#aviso'), r.dados.aviso || '');
+      encherOrigens((r.dados.filtro || {}).origensExistentes || []);
       pintarLeads();
       pintarVisitas();
       pintarSessoes();
     });
   }
+
+  /* A lista de origens vem do servidor, com o que existe mesmo. Inventá-la
+     aqui daria opções que nunca devolvem nada. */
+  function encherOrigens(lista) {
+    var sel = $('#filtroOrigem');
+    if (!sel || sel.dataset.cheio === lista.join('|')) return;
+    sel.dataset.cheio = lista.join('|');
+    sel.innerHTML = '<option value="">Todas</option>' + lista.map(function (o) {
+      return '<option' + (o === filtro.origem ? ' selected' : '') + '>' + seguro(o) + '</option>';
+    }).join('');
+  }
+
+  $$('#periodo button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      $$('#periodo button').forEach(function (x) { x.classList.toggle('is-on', x === b); });
+      filtro.periodo = b.getAttribute('data-p');
+      carregar();
+    });
+  });
+
+  $('#filtroOrigem').addEventListener('change', function () {
+    filtro.origem = this.value;
+    carregar();
+  });
 
   function dataHora(ts) {
     var d = new Date(ts);
@@ -232,10 +263,21 @@
     var r = estado.resumo;
     if (!r) return;
 
+    /* 39 visitas é bom ou mau? Sozinho não quer dizer nada. A seta diz
+       como está em relação ao período anterior do mesmo tamanho. */
+    var a = estado.anterior;
+    function delta(agora, antes) {
+      if (!a || antes == null || !antes) return '';
+      var pct = Math.round((agora - antes) / antes * 100);
+      if (pct === 0) return '<i class="adm-delta">igual</i>';
+      return '<i class="adm-delta adm-delta--' + (pct > 0 ? 'sobe' : 'desce') + '">' +
+        (pct > 0 ? '↑' : '↓') + ' ' + Math.abs(pct) + '%</i>';
+    }
+
     $('#cardsVisitas').innerHTML =
-      cartao(r.visitas, 'Visitas') +
-      cartao(r.pessoas == null ? '—' : r.pessoas, 'Pessoas') +
-      cartao(duracao(r.tempoMedio), 'Tempo médio') +
+      cartao(r.visitas + delta(r.visitas, a && a.visitas), 'Visitas') +
+      cartao((r.pessoas == null ? '—' : r.pessoas) + delta(r.pessoas, a && a.pessoas), 'Pessoas') +
+      cartao(duracao(r.tempoMedio) + delta(r.tempoMedio, a && a.tempoMedio), 'Tempo médio') +
       cartao(r.telemovelPct + '%', 'Em telemóvel');
 
     /* O funil. A largura de cada degrau é a percentagem do total, para
@@ -258,14 +300,18 @@
 
     /* As acções não têm ordem entre si: mostram-se como percentagem do
        total de visitas, nunca como queda em relação à anterior. */
-    $('#accoes').innerHTML = (r.accoes || []).map(function (a) {
-      return '<div class="adm-funil__l">' +
-        '<span class="adm-funil__n">' + a.nome + '</span>' +
-        '<span class="adm-funil__b adm-funil__b--n"><i style="width:' + Math.max(a.doTotal, 1) + '%"></i></span>' +
-        '<b>' + a.quantos + '</b>' +
-        '<span class="adm-funil__p">' + a.doTotal + '%</span>' +
-        '</div>';
-    }).join('');
+    var barras = function (lista) {
+      return (lista || []).map(function (x) {
+        return '<div class="adm-funil__l">' +
+          '<span class="adm-funil__n">' + seguro(x.nome) + '</span>' +
+          '<span class="adm-funil__b adm-funil__b--n"><i style="width:' + Math.max(x.doTotal, 1) + '%"></i></span>' +
+          '<b>' + x.quantos + '</b>' +
+          '<span class="adm-funil__p">' + x.doTotal + '%</span>' +
+          '</div>';
+      }).join('');
+    };
+    $('#accoes').innerHTML = barras(r.accoes);
+    $('#destinos').innerHTML = barras(r.destinos);
 
     tabela($('#origens'), r.origens || []);
     tabela($('#aparelhos'), r.aparelhos || []);

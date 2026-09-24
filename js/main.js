@@ -14,7 +14,7 @@
   var CONFIG = {
     whatsapp:  '351933938716',                       // indicativo + número, sem espaços nem "+"
     waMessage: 'Olá! Vi o site da Cortex Automation e queria saber mais sobre o sistema.',
-    telegram:  'https://t.me/+QadwFS41SooxYTBk',      // canal VIP Club
+    telegram:  'https://t.me/+5GKz16du3AA1NTE0',      // canal da Cortex Automation
     instagram: 'https://instagram.com/brunolopes_36', // acompanhamento diário: resultados e novidades
     analytics: '',                                   // ex.: 'G-XXXXXXXXXX' (Google Analytics 4)
 

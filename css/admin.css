@@ -330,3 +330,69 @@
 /* A mensagem de "sem passos" não é um passo: não deve ser espremida
    pelas colunas da timeline. */
 .adm-passos li.adm-vaziol { display: block; grid-column: 1 / -1; text-align: left; padding: 4px 0; }
+
+/* ══════════════════════ Filtros das visitas ══════════════════════ */
+.adm-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.adm-periodo { display: flex; gap: 3px; background: rgba(237, 234, 227, .03); padding: 3px; border-radius: 10px; }
+.adm-periodo button {
+  padding: 7px 14px;
+  border: 0;
+  border-radius: 7px;
+  font: inherit;
+  font-size: .8rem;
+  font-weight: 500;
+  color: var(--fg-dim);
+  background: none;
+  cursor: pointer;
+  transition: background .25s var(--ease), color .25s var(--ease);
+}
+.adm-periodo button:hover { color: var(--fg); }
+.adm-periodo button.is-on { background: var(--acc); color: #04180E; font-weight: 600; }
+
+.adm-origem-f { display: flex; align-items: center; gap: 9px; }
+.adm-origem-f span {
+  font-family: var(--mono);
+  font-size: .64rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.adm-origem-f select {
+  appearance: none;
+  padding: 8px 32px 8px 13px;
+  border: 1px solid var(--line-soft);
+  border-radius: 9px;
+  background: var(--ink) url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%237A8088' stroke-width='2'%3E%3Cpath d='m2 4 4 4 4-4'/%3E%3C/svg%3E") no-repeat right 11px center;
+  color: var(--fg);
+  font: inherit;
+  font-size: .82rem;
+  cursor: pointer;
+}
+.adm-origem-f select:focus { outline: none; border-color: var(--acc-line); }
+
+/* A variação face ao período anterior, dentro do cartão */
+.adm-delta {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--sans);
+  font-size: .72rem;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--fg-faint);
+}
+.adm-delta--sobe { color: var(--acc); }
+.adm-delta--desce { color: var(--loss); }
+
+@media (max-width: 620px) {
+  .adm-filtros { flex-direction: column; align-items: stretch; }
+  .adm-periodo { justify-content: space-between; }
+  .adm-periodo button { flex: 1; padding: 8px 4px; }
+}

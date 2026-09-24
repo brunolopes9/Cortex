@@ -72,6 +72,18 @@
 
   <!-- ── Visitas ── -->
   <section class="adm-aba" data-painel="visitas">
+    <div class="adm-filtros">
+      <div class="adm-periodo" id="periodo">
+        <button data-p="hoje">Hoje</button>
+        <button data-p="7d" class="is-on">7 dias</button>
+        <button data-p="30d">30 dias</button>
+        <button data-p="tudo">Tudo</button>
+      </div>
+      <label class="adm-origem-f">
+        <span>Origem</span>
+        <select id="filtroOrigem"><option value="">Todas</option></select>
+      </label>
+    </div>
     <div class="adm-cards" id="cardsVisitas"></div>
 
     <div class="adm-bloco adm-bloco--full">
@@ -86,6 +98,14 @@
       <p class="adm-nota">Não fazem parte do funil: acontecem quando acontecem, e quem não as faz continua
         a descer a página. A percentagem é sobre o total de visitas.</p>
       <div class="adm-funil" id="accoes"></div>
+    </div>
+
+    <div class="adm-bloco adm-bloco--full">
+      <h2>Para onde saem do site</h2>
+      <p class="adm-nota">Contado por visita, não por clique: quem carrega três vezes no WhatsApp
+        continua a ser uma pessoa. Abrir uma pergunta da FAQ é um clique, mas não é uma saída — por
+        isso não aparece aqui.</p>
+      <div class="adm-funil" id="destinos"></div>
     </div>
 
     <div class="adm-grelha">
