@@ -242,6 +242,24 @@ export function resumir(sessoes) {
     };
   });
 
+  /* ── Onde tropeçam ────────────────────────────────────────────────
+     O que uma gravação de ecrã mostraria, em números. Por secção, para
+     se saber onde ir corrigir e não só que há um problema algures. */
+  const raiva = {}, morto = {}, desistencias = {};
+  let hesitacaoTotal = 0, hesitacaoN = 0;
+
+  for (const s of sessoes) {
+    for (const ev of s.eventos || []) {
+      if (ev.e === 'raiva' && ev.d) raiva[ev.d] = (raiva[ev.d] || 0) + 1;
+      if (ev.e === 'morto' && ev.d) morto[ev.d] = (morto[ev.d] || 0) + 1;
+      if (ev.e === 'form-desistiu' && ev.d) desistencias[ev.d] = (desistencias[ev.d] || 0) + 1;
+      if (ev.e === 'primeiro-scroll' && ev.d) {
+        const seg = parseInt(ev.d, 10);
+        if (!isNaN(seg) && seg < 600) { hesitacaoTotal += seg; hesitacaoN++; }
+      }
+    }
+  }
+
   const destinos = DESTINOS.map(function (par) {
     const quantos = sessoes.filter(function (s) { return clicou(s, par[1]); }).length;
     return {
@@ -277,6 +295,13 @@ export function resumir(sessoes) {
     funil,
     accoes,
     destinos,
+    tropecos: {
+      raiva: ordenar(raiva),
+      morto: ordenar(morto),
+      desistencias: ordenar(desistencias),
+      hesitacao: hesitacaoN ? Math.round(hesitacaoTotal / hesitacaoN) : null,
+      hesitacaoN
+    },
     origens: comTaxa(origens),
     campanhas: comTaxa(campanhas),
     aparelhos: comTaxa(aparelhos),

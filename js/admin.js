@@ -313,6 +313,24 @@
     $('#accoes').innerHTML = barras(r.accoes);
     $('#destinos').innerHTML = barras(r.destinos);
 
+    /* Onde tropeçam. Quando não há nada, dizemos que não há nada — é
+       uma boa notícia, não um bloco vazio que parece avariado. */
+    var t = r.tropecos || {};
+    lista($('#raiva'), t.raiva || [], '×');
+    lista($('#morto'), t.morto || [], '×');
+    lista($('#desistencias'), t.desistencias || [], '×');
+
+    var h = $('#hesitacao');
+    if (t.hesitacao == null) {
+      h.textContent = '';
+      h.hidden = true;
+    } else {
+      h.hidden = false;
+      h.innerHTML = 'Entre entrar e começar a descer a página passam em média ' +
+        '<b>' + t.hesitacao + ' segundos</b>' +
+        '<span> · medido em ' + t.hesitacaoN + ' visita' + (t.hesitacaoN === 1 ? '' : 's') + '</span>';
+    }
+
     tabela($('#origens'), r.origens || []);
     tabela($('#aparelhos'), r.aparelhos || []);
     tabela($('#campanhas'), r.campanhas || [], 'Nenhuma visita com etiqueta ainda.');

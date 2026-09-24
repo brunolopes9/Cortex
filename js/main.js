@@ -1161,6 +1161,75 @@
       marcar('clique', etiqueta);
     }, true);
 
+    /* ── Onde as pessoas tropeçam ──────────────────────────────────
+
+       Isto dá o mesmo que uma gravação de ecrã dá, sem gravar nada.
+       Guardam-se contadores: quantas vezes alguém carregou três vezes
+       seguidas no mesmo sítio, quantas vezes carregou numa coisa que
+       não é botão, em que campo desistiu do formulário. São números,
+       não é filmar ninguém — e por isso também não precisa de mais
+       consentimento do que o que já existe.
+
+       O que cada um diz:
+         raiva    carregou e não aconteceu nada. Está partido, ou
+                  parece que faz uma coisa que não faz.
+         morto    carregou numa coisa que não é clicável. Parece um
+                  botão e não é — normalmente é o desenho a enganar. */
+    var ultimoAlvo = null, repeticoes = 0, quandoUltimo = 0;
+
+    function ondeEstou(el) {
+      var sec = el.closest && el.closest('section[id]');
+      return sec ? sec.id : atual;
+    }
+
+    document.addEventListener('click', function (e) {
+      var el = e.target;
+      var agora = Date.now();
+
+      /* Três cliques no mesmo sítio em menos de dois segundos é alguém
+         a insistir porque não aconteceu nada. */
+      if (el === ultimoAlvo && agora - quandoUltimo < 2000) {
+        repeticoes++;
+        if (repeticoes === 2) marcar('raiva', ondeEstou(el));
+      } else {
+        repeticoes = 0;
+      }
+      ultimoAlvo = el;
+      quandoUltimo = agora;
+
+      /* Clique em coisa nenhuma. Ignoram-se os sítios onde é normal
+         carregar sem que aconteça nada: fundos, espaçadores e o modal.
+
+         Só conta o primeiro da série: quem carrega três vezes seguidas
+         já está contado como raiva, e contá-lo outras três vezes aqui
+         punha a mesma frustração a pesar quatro vezes. */
+      var clicavel = el.closest('a, button, input, label, select, textarea, summary, [role="button"], [data-open-report], .faq__q');
+      if (!clicavel && !repeticoes && !el.closest('#cookies, .modal__back')) {
+        marcar('morto', ondeEstou(el));
+      }
+    }, true);
+
+    /* Em que campo é que desistem. Sem isto sabemos que abandonaram o
+       formulário, mas não onde — e é o onde que se corrige. */
+    var NOMES = {
+      rmName: 'Nome', rmTel: 'Telemóvel', rmEmail: 'Email',
+      nsNome: 'Nome (newsletter)', nsTel: 'Telemóvel (newsletter)', nsMail: 'Email (newsletter)'
+    };
+    var ultimoCampo = '';
+    document.addEventListener('focusin', function (e) {
+      var campo = e.target.closest('#rmFormEl input, #newsForm input');
+      if (campo) ultimoCampo = NOMES[campo.id] || campo.id || campo.type;
+    }, true);
+
+    /* ── Quanto tempo hesitam antes de descer ──────────────────────
+       Muito tempo parado no topo sem descer é o hero a não convencer. */
+    var desceu = false;
+    window.addEventListener('scroll', function () {
+      if (desceu) return;
+      desceu = true;
+      marcar('primeiro-scroll', Math.round((Date.now() - visita.inicio) / 1000) + 's');
+    }, { passive: true, once: true });
+
     /* ── Fechar as contas e enviar ─────────────────────────────────
        O ecrã é enviado em largura e altura: é o que permite separar
        telemóvel de tablet de computador, e depois comparar a conversão
@@ -1168,6 +1237,13 @@
     function enviar() {
       if (visita.enviado) return;
       visita.enviado = true;
+
+      /* Quem começou a preencher e se foi embora sem deixar contacto
+         desistiu nalgum campo. Dizer qual é o que permite corrigi-lo. */
+      var comecou = visita.eventos.some(function (x) { return x.e === 'form' && /começou/.test(x.d); });
+      var deixou = visita.eventos.some(function (x) { return x.e === 'lead'; });
+      if (comecou && !deixou) marcar('form-desistiu', ultimoCampo || 'desconhecido');
+
       marcar('saida', atual);
 
       var corpo = JSON.stringify({
