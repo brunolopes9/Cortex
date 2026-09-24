@@ -320,3 +320,13 @@
   .adm-passos li { grid-template-columns: 54px 1fr; }
   .adm-passos li span:last-child { grid-column: 2; }
 }
+
+/* As acções não são degraus de um funil, por isso não usam o mesmo
+   verde: se usassem, leriam-se como uma sequência que não existe. */
+.adm-funil__b--n i { background: linear-gradient(90deg, #3E4A55, #6B7A88); }
+.adm-fraco { color: var(--fg-faint); }
+.adm-sess__i.is-robo > summary { opacity: .55; }
+
+/* A mensagem de "sem passos" não é um passo: não deve ser espremida
+   pelas colunas da timeline. */
+.adm-passos li.adm-vaziol { display: block; grid-column: 1 / -1; text-align: left; padding: 4px 0; }

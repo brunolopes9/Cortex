@@ -64,17 +64,29 @@ function clicou(s, texto) {
   return (s.cliques || []).some(function (c) { return String(c).indexOf(texto) !== -1; });
 }
 
-/* As etapas por onde uma visita passa até virar contacto. A ordem é a
-   da página, e é por isso que a queda entre duas etapas seguidas diz
-   onde é que o site está a perder gente. */
+/* As etapas por onde uma visita passa até virar contacto.
+
+   Só entra aqui o caminho que toda a gente percorre pela mesma ordem.
+   O vídeo ficou de fora: vê-se ou não se vê, e quem não vê continua a
+   descer a página na mesma. Tratá-lo como degrau fazia o funil subir
+   depois de descer — zero no vídeo e quatro na Performance — e uma
+   coisa dessas não se lê. Vídeo e WhatsApp contam-se à parte. */
 const ETAPAS = [
   ['Entrou no site', function () { return true; }],
   ['Passou do topo', function (s) { return (Number(s.scroll) || 0) >= 20; }],
-  ['Começou o vídeo', function (s) { return temEvento(s, 'video', 'inicio'); }],
   ['Chegou à Performance', function (s) { return (s.seccoes || []).indexOf('performance') !== -1; }],
-  ['Abriu o formulário', function (s) { return temEvento(s, 'form', 'aberto'); }],
+  ['Abriu o formulário', function (s) { return temEvento(s, 'form', 'aberto') || clicou(s, 'Pedir relatórios'); }],
   ['Começou a preencher', function (s) { return temEvento(s, 'form', 'começou'); }],
-  ['Deixou o contacto', function (s) { return temEvento(s, 'lead') || s.lead === true; }],
+  ['Deixou o contacto', function (s) { return temEvento(s, 'lead') || s.lead === true; }]
+];
+
+/* Acções que não pertencem ao caminho: acontecem quando acontecem. */
+const ACCOES = [
+  ['Começou o vídeo', function (s) { return temEvento(s, 'video', 'inicio') || clicou(s, 'Ver vídeo'); }],
+  ['Viu metade do vídeo', function (s) { return temEvento(s, 'video', '50%'); }],
+  ['Viu o vídeo até ao fim', function (s) { return temEvento(s, 'video', '100%'); }],
+  ['Mexeu no simulador', function (s) { return temEvento(s, 'simulador'); }],
+  ['Abriu o MyFxBook', function (s) { return clicou(s, 'MyFxBook'); }],
   ['Falou no WhatsApp', function (s) { return clicou(s, 'WhatsApp'); }]
 ];
 
@@ -137,21 +149,35 @@ export function resumir(sessoes) {
     return Object.entries(o).sort(function (a, b) { return b[1] - a[1]; }).slice(0, 14);
   };
 
-  /* O funil. Cada etapa traz quantos lá chegaram e que percentagem dos
-     da etapa anterior isso representa — é a queda entre duas etapas
-     seguidas que aponta o problema, não o número absoluto. */
+  /* O funil. Cada etapa conta só quem passou por ela E por todas as
+     anteriores: sem isso, uma medição falhada a meio faz o funil voltar
+     a subir e a queda entre degraus deixa de querer dizer nada.
+
+     A percentagem é sobre o degrau anterior — é a queda entre dois
+     degraus seguidos que aponta o problema, não o número absoluto. */
   const funil = [];
-  let anterior = 0;
+  let restantes = sessoes;
+  let anterior = sessoes.length;
   for (const [nome, passa] of ETAPAS) {
-    const quantos = sessoes.filter(passa).length;
+    restantes = restantes.filter(passa);
+    const quantos = restantes.length;
     funil.push({
       nome,
       quantos,
       doTotal: sessoes.length ? Math.round(quantos / sessoes.length * 100) : 0,
-      daAnterior: anterior ? Math.round(quantos / anterior * 100) : null
+      daAnterior: funil.length === 0 ? null : (anterior ? Math.round(quantos / anterior * 100) : 0)
     });
     anterior = quantos;
   }
+
+  const accoes = ACCOES.map(function (par) {
+    const quantos = sessoes.filter(par[1]).length;
+    return {
+      nome: par[0],
+      quantos,
+      doTotal: sessoes.length ? Math.round(quantos / sessoes.length * 100) : 0
+    };
+  });
 
   const comTaxa = function (o) {
     return Object.entries(o).map(function (par) {
@@ -177,6 +203,7 @@ export function resumir(sessoes) {
     scrollMedio: Math.round(scrollTotal / n),
     telemovelPct: Math.round((aparelhos['Telemóvel'] ? aparelhos['Telemóvel'].visitas : 0) / n * 100),
     funil,
+    accoes,
     origens: comTaxa(origens),
     campanhas: comTaxa(campanhas),
     aparelhos: comTaxa(aparelhos),

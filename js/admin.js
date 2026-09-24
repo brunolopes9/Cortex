@@ -240,14 +240,30 @@
 
     /* O funil. A largura de cada degrau é a percentagem do total, para
        a queda se ver antes de se ler o número. */
-    $('#funil').innerHTML = (r.funil || []).map(function (f, i) {
-      var queda = f.daAnterior != null && f.daAnterior < 100
-        ? '<span class="adm-funil__perda">−' + (100 - f.daAnterior) + '%</span>' : '';
+    $('#funil').innerHTML = (r.funil || []).map(function (f) {
+      var p = '';
+      if (f.daAnterior != null) {
+        p = f.daAnterior + '%';
+        if (f.daAnterior < 100) {
+          p += '<span class="adm-funil__perda">−' + (100 - f.daAnterior) + '%</span>';
+        }
+      }
       return '<div class="adm-funil__l">' +
         '<span class="adm-funil__n">' + f.nome + '</span>' +
         '<span class="adm-funil__b"><i style="width:' + Math.max(f.doTotal, 1) + '%"></i></span>' +
         '<b>' + f.quantos + '</b>' +
-        '<span class="adm-funil__p">' + (i === 0 ? '' : f.daAnterior + '%') + queda + '</span>' +
+        '<span class="adm-funil__p">' + p + '</span>' +
+        '</div>';
+    }).join('');
+
+    /* As acções não têm ordem entre si: mostram-se como percentagem do
+       total de visitas, nunca como queda em relação à anterior. */
+    $('#accoes').innerHTML = (r.accoes || []).map(function (a) {
+      return '<div class="adm-funil__l">' +
+        '<span class="adm-funil__n">' + a.nome + '</span>' +
+        '<span class="adm-funil__b adm-funil__b--n"><i style="width:' + Math.max(a.doTotal, 1) + '%"></i></span>' +
+        '<b>' + a.quantos + '</b>' +
+        '<span class="adm-funil__p">' + a.doTotal + '%</span>' +
         '</div>';
     }).join('');
 
@@ -287,23 +303,40 @@
     var s = estado.sessoes || [];
     $('#vazioSess').hidden = s.length > 0;
 
-    $('#sessoes').innerHTML = s.map(function (x, i) {
+    $('#sessoes').innerHTML = s.map(function (x) {
       var virouLead = x.lead || (x.eventos || []).some(function (e) { return e.e === 'lead'; });
-      var passos = (x.eventos || []).map(function (e) {
-        return '<li><span class="adm-mono">' + duracao(e.t) + '</span>' +
-          '<b>' + seguro(e.e) + '</b>' +
-          '<span>' + seguro(e.d) + '</span></li>';
-      }).join('') || '<li class="adm-vaziol">Sem passos registados.</li>';
 
-      return '<details class="adm-sess__i' + (virouLead ? ' is-lead' : '') + '">' +
+      /* As visitas anteriores à actualização do rastreio não têm passos
+         nem identificador. Dizê-lo é melhor do que mostrar uma lista
+         vazia, que se lê como avaria. */
+      var antiga = !x.eventos;
+
+      var passos = antiga
+        ? '<li class="adm-vaziol">Visita registada antes de o percurso passar a ser guardado.</li>'
+        : ((x.eventos || []).map(function (e) {
+            return '<li><span class="adm-mono">' + duracao(e.t) + '</span>' +
+              '<b>' + seguro(e.e) + '</b>' +
+              '<span>' + seguro(e.d) + '</span></li>';
+          }).join('') || '<li class="adm-vaziol">Sem passos registados.</li>');
+
+      /* Uma visita de segundos que aparece a ter descido a página toda
+         não é gente: é um robô a ler o HTML de uma vez. */
+      var robo = (x.duracao || 0) < 10 && (x.scroll || 0) > 90;
+
+      var quem = virouLead ? '<b class="adm-sim">contacto</b>'
+        : robo ? '<span class="adm-fraco">provável robô</span>'
+        : x.novo === true ? 'primeira vez'
+        : x.novo === false ? (x.visitas || 2) + '.ª visita'
+        : '<span class="adm-fraco">—</span>';
+
+      return '<details class="adm-sess__i' + (virouLead ? ' is-lead' : '') + (robo ? ' is-robo' : '') + '">' +
         '<summary>' +
         '<span class="adm-mono">' + dataHora(x.ts) + '</span>' +
         '<span>' + seguro(x.origem || 'directa') + '</span>' +
         '<span>' + aparelho(x.ecra) + (x.pais ? ' · ' + seguro(x.pais) : '') + '</span>' +
         '<span class="adm-mono">' + duracao(x.duracao || 0) + '</span>' +
         '<span class="adm-mono">' + (x.scroll || 0) + '%</span>' +
-        '<span>' + (virouLead ? '<b class="adm-sim">contacto</b>' :
-          (x.novo ? 'nova' : 'volta ' + (x.visitas || 1) + 'ª vez')) + '</span>' +
+        '<span>' + quem + '</span>' +
         '</summary>' +
         '<ol class="adm-passos">' + passos + '</ol>' +
         '</details>';

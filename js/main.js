@@ -1098,6 +1098,12 @@
     document.addEventListener('click', function (e) {
       var a = e.target.closest('a, button');
       if (!a) return;
+
+      /* O banner de cookies e o menu não são escolhas sobre o produto.
+         Contá-los punha "Aceitar todos" no topo da lista dos botões mais
+         carregados, a empurrar para baixo os que interessam. */
+      if (a.closest('#cookies, #mnav, #burger, [data-close-report]')) return;
+
       var etiqueta =
         a.hasAttribute('data-wa') ? 'WhatsApp' :
         a.hasAttribute('data-tg') ? 'Telegram' :
