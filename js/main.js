@@ -15,7 +15,7 @@
     whatsapp:  '351933938716',                       // indicativo + número, sem espaços nem "+"
     waMessage: 'Olá! Vi o site da Cortex Automation e queria saber mais sobre o sistema.',
     telegram:  'https://t.me/+QadwFS41SooxYTBk',      // canal VIP Club
-    instagram: '',                                   // ex.: 'https://instagram.com/cortexautomation'
+    instagram: 'https://instagram.com/brunolopes_36', // acompanhamento diário: resultados e novidades
     analytics: '',                                   // ex.: 'G-XXXXXXXXXX' (Google Analytics 4)
 
     // Os pedidos de relatório vão para /api/lead, que corre no servidor
@@ -40,6 +40,7 @@
 
     // O bloco da comunidade só faz sentido com um link de Telegram a sério
     $$('[data-tg-block]').forEach(function (el) { el.hidden = !CONFIG.telegram; });
+    $$('[data-ig-block]').forEach(function (el) { el.hidden = !CONFIG.instagram; });
 
     [['[data-tg]', CONFIG.telegram], ['[data-ig]', CONFIG.instagram]].forEach(function (pair) {
       $$(pair[0]).forEach(function (el) {
@@ -1075,15 +1076,33 @@
        que lá ficou quarenta segundos diz que a leu. */
     var seccoes = $$('section[id]');
     var atual = 'topo';
-    var desde = Date.now();
 
-    function contarTempo() {
-      var passou = Math.round((Date.now() - desde) / 1000);
-      if (passou > 0 && passou < 3600) {
-        visita.tempos[atual] = (visita.tempos[atual] || 0) + passou;
-      }
-      desde = Date.now();
-    }
+    /* ── Tempo a sério, não tempo de relógio ──────────────────────
+
+       Media-se o tempo com atenção, não o tempo com o separador aberto.
+       A diferença não é académica: bastou uma visita esquecida no fundo
+       da página para a newsletter aparecer com 234 segundos de média,
+       mais do que a visita inteira, que era de 141. Todo o tempo morto
+       caía na última secção vista.
+
+       Conta-se um segundo de cada vez, e só se a página estiver à vista
+       e tiver havido sinal de vida há menos de trinta segundos. Quem
+       vai fazer café deixa de contar, e volta a contar quando regressa. */
+    var PARADO = 30000;
+    var ultimoSinal = Date.now();
+    var activo = 0;
+
+    ['scroll', 'mousemove', 'keydown', 'touchstart', 'click', 'wheel'].forEach(function (ev) {
+      window.addEventListener(ev, function () { ultimoSinal = Date.now(); }, { passive: true });
+    });
+
+    setInterval(function () {
+      if (document.visibilityState !== 'visible') return;
+      if (Date.now() - ultimoSinal > PARADO) return;
+      activo++;
+      visita.tempos[atual] = (visita.tempos[atual] || 0) + 1;
+    }, 1000);
+
 
     function medir() {
       var h = document.documentElement;
@@ -1097,7 +1116,6 @@
         var r = seccoes[i].getBoundingClientRect();
         if (r.top <= h.clientHeight * 0.34 && r.bottom > h.clientHeight * 0.34) {
           if (seccoes[i].id !== atual) {
-            contarTempo();
             atual = seccoes[i].id;
             if (visita.seccoes.indexOf(atual) === -1) {
               visita.seccoes.push(atual);
@@ -1132,6 +1150,7 @@
       var etiqueta =
         a.hasAttribute('data-wa') ? 'WhatsApp' :
         a.hasAttribute('data-tg') ? 'Telegram' :
+        a.hasAttribute('data-ig') ? 'Instagram' :
         a.hasAttribute('data-open-report') ? 'Pedir relatórios' :
         a.hasAttribute('data-doc') ? 'Descarregar · ' + a.getAttribute('data-doc') :
         a.id === 'vslPlay' ? 'Ver vídeo' :
@@ -1149,7 +1168,6 @@
     function enviar() {
       if (visita.enviado) return;
       visita.enviado = true;
-      contarTempo();
       marcar('saida', atual);
 
       var corpo = JSON.stringify({
@@ -1159,7 +1177,7 @@
         origem: visita.origem,
         utm: visita.utm,
         entrada: location.pathname + location.search,
-        duracao: Math.round((Date.now() - visita.inicio) / 1000),
+        duracao: activo,
         scroll: visita.scroll,
         saida: atual,
         seccoes: visita.seccoes,

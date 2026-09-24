@@ -4071,3 +4071,8 @@ html.lenis { scroll-behavior: auto !important; }
   .inv-cta { padding: 20px; }
   .inv-cta .btn { width: 100%; justify-content: center; }
 }
+
+/* O bloco do Instagram herda o do Telegram e só troca a cor do ícone,
+   para os dois se lerem como o mesmo tipo de convite. */
+.tg--ig { margin-top: 14px; }
+.tg--ig .tg__ico { color: #E1517F; background: rgba(225, 81, 127, .1); border-color: rgba(225, 81, 127, .26); }
