@@ -549,7 +549,13 @@
       <div class="calc__ctrl">
         <div class="field">
           <div class="field__top"><label for="cCap">Capital inicial</label><output id="oCap" for="cCap">5 000 €</output></div>
-          <input type="range" id="cCap" min="500" max="100000" step="500" value="5000" aria-describedby="calcNote">
+          <!-- O cursor acaba nos 10.000 €, que é onde começa o escalão VIP.
+               Ia até 100.000 e ninguém precisava disso: dez das quinze
+               simulações registadas ficaram até aqui, e as que iam mais
+               longe eram o cursor arrastado até ao fim, a produzir números
+               que só tiravam credibilidade ao resto. -->
+          <input type="range" id="cCap" min="500" max="10000" step="500" value="5000" aria-describedby="calcNote">
+          <p class="field__nota">Acima de 10.000 € é escalão VIP — <a href="#" data-wa data-wa-msg="Olá! Queria simular um valor acima de 10.000 € e perceber as condições do escalão VIP.">fale connosco</a>.</p>
         </div>
 
         <div class="field">

@@ -4037,3 +4037,23 @@ html.lenis { scroll-behavior: auto !important; }
 @media (max-width: 560px) {
   .year-hd h4 .badge { display: block; margin: 8px 0 0; width: fit-content; }
 }
+
+/* A nota por baixo do cursor do capital: o limite passa a ser um convite
+   a falar connosco em vez de uma parede. */
+.field__nota {
+  margin: 10px 0 0;
+  font-size: .76rem;
+  line-height: 1.55;
+  color: var(--fg-faint);
+}
+.field__nota a { color: var(--acc); border-bottom: 1px solid var(--acc-line); }
+.field__nota a:hover { border-bottom-color: var(--acc); }
+
+/* "Média de lucro mensal" e a etiqueta ficavam apertados lado a lado: o
+   rótulo partia em duas linhas encostado ao badge.
+
+   A primeira tentativa foi uma media query, mas a largura que aperta é a
+   da coluna do simulador, não a da janela — a regra nunca disparava.
+   Empilham sempre: o rótulo em cima, a etiqueta por baixo. */
+.rate-fix__top { flex-wrap: wrap; gap: 8px; }
+.rate-fix__top span:first-child { flex: 1 1 100%; }
