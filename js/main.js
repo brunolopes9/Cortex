@@ -59,6 +59,28 @@
     if (yr) yr.textContent = new Date().getFullYear();
   }
 
+  /* ══════════════════════ 1b. Cartões inteiros clicáveis ══════════════════════
+     O painel registou sete cliques em cima dos cartões dos escalões que
+     não davam em nada. Faz sentido: o cartão parece uma opção a escolher,
+     e as pessoas carregam nele, não no botão lá dentro.
+
+     Em vez de mudar o desenho para parecer menos clicável, torna-se
+     clicável — que é o que quem lá carrega já estava à espera. O botão
+     continua lá e continua a ser o que o teclado e os leitores de ecrã
+     seguem; isto é só um atalho para o rato. */
+  function cartoesClicaveis() {
+    $$('.tier').forEach(function (cartao) {
+      var accao = $('.btn', cartao);
+      if (!accao) return;
+      cartao.style.cursor = 'pointer';
+      cartao.addEventListener('click', function (e) {
+        /* Quem carregou mesmo num link ou botão já foi servido. */
+        if (e.target.closest('a, button')) return;
+        accao.click();
+      });
+    });
+  }
+
   /* ══════════════════════ 2. Navegação ══════════════════════ */
   function nav() {
     var bar = $('#nav');
@@ -164,7 +186,7 @@
 
   /* ══════════════════════ 3. Revelações ao scroll ══════════════════════ */
   function reveals() {
-    var items = $$('.reveal, .reveal-l, .bars, .dd, .algo__viz');
+    var items = $$('.reveal, .reveal-l, .bars, .dd');
     if (reduced || !('IntersectionObserver' in window)) {
       items.forEach(function (el) { el.classList.add('is-visible'); });
       return;
@@ -1289,6 +1311,7 @@
 
   function init() {
     wireLinks();
+    cartoesClicaveis();
     nav();
     trustLoop();
     reveals();

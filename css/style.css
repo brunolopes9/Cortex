@@ -1153,78 +1153,6 @@ body::after {
 /* --------------------------------------------------------------------------
    15. Algoritmo — diagrama de estrutura de mercado
    -------------------------------------------------------------------------- */
-.algo {
-  display: grid;
-  grid-template-columns: minmax(0, .92fr) minmax(0, 1.08fr);
-  gap: clamp(30px, 4.4vw, 68px);
-  align-items: start;
-}
-/* O diagrama acompanha a leitura da lista em vez de deixar um vazio ao lado */
-@media (min-width: 941px) {
-  .algo__viz { position: sticky; top: 108px; }
-}
-@media (max-width: 940px) { .algo { grid-template-columns: 1fr; } }
-
-.algo__viz {
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: var(--ink-2);
-  padding: 20px;
-  position: relative;
-  overflow: hidden;
-}
-.algo__viz::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(var(--line-soft) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-  mask-image: radial-gradient(ellipse at 50% 50%, #000 30%, transparent 78%);
-  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 30%, transparent 78%);
-}
-.algo__viz svg { position: relative; z-index: 1; width: 100%; height: auto; }
-.algo__tag {
-  position: absolute;
-  z-index: 2;
-  top: 18px;
-  right: 18px;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-family: var(--mono);
-  font-size: .64rem;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--gain);
-}
-.algo__tag::before {
-  content: "";
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--gain);
-  animation: blip 1.8s var(--ease) infinite;
-}
-
-/* Traço a desenhar-se */
-.draw {
-  stroke-dasharray: var(--len, 1400);
-  stroke-dashoffset: var(--len, 1400);
-}
-.is-visible .draw { animation: draw 2.4s var(--ease-out) forwards; }
-@keyframes draw { to { stroke-dashoffset: 0; } }
-
-.algo__pt { opacity: 0; }
-.is-visible .algo__pt { animation: pop .5s var(--ease-out) forwards; }
-.is-visible .algo__pt:nth-of-type(1) { animation-delay: .8s; }
-.is-visible .algo__pt:nth-of-type(2) { animation-delay: 1.05s; }
-.is-visible .algo__pt:nth-of-type(3) { animation-delay: 1.3s; }
-.is-visible .algo__pt:nth-of-type(4) { animation-delay: 1.55s; }
-.is-visible .algo__pt:nth-of-type(5) { animation-delay: 1.8s; }
-@keyframes pop { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-
 .algo__list { display: grid; gap: 2px; margin-top: 32px; }
 .algo__li {
   display: grid;
@@ -4076,3 +4004,36 @@ html.lenis { scroll-behavior: auto !important; }
    para os dois se lerem como o mesmo tipo de convite. */
 .tg--ig { margin-top: 14px; }
 .tg--ig .tg__ico { color: #E1517F; background: rgba(225, 81, 127, .1); border-color: rgba(225, 81, 127, .26); }
+
+/* ══════════════════════ Avisos junto aos números ══════════════════════
+   Discretos mas legíveis. Um aviso em cinzento claro sobre fundo escuro
+   é o mesmo que não ter aviso nenhum. */
+.proof__aviso {
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line-soft);
+  font-size: .76rem;
+  line-height: 1.6;
+  color: var(--fg-dim);
+  text-align: center;
+}
+
+.perf-aviso {
+  margin: 30px 0 0;
+  padding: 18px 20px;
+  border: 1px solid var(--line-soft);
+  border-left: 3px solid var(--acc-deep);
+  border-radius: 12px;
+  background: rgba(237, 234, 227, .022);
+  font-size: .84rem;
+  line-height: 1.7;
+  color: var(--fg-dim);
+}
+.perf-aviso b { color: var(--fg); font-weight: 600; }
+
+/* A etiqueta dentro do título do ano acompanha o texto em vez de saltar
+   para a linha seguinte. */
+.year-hd h4 .badge { margin-left: 10px; vertical-align: middle; }
+@media (max-width: 560px) {
+  .year-hd h4 .badge { display: block; margin: 8px 0 0; width: fit-content; }
+}
