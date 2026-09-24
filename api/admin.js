@@ -70,11 +70,24 @@ function clicou(s, texto) {
    O vídeo ficou de fora: vê-se ou não se vê, e quem não vê continua a
    descer a página na mesma. Tratá-lo como degrau fazia o funil subir
    depois de descer — zero no vídeo e quatro na Performance — e uma
-   coisa dessas não se lê. Vídeo e WhatsApp contam-se à parte. */
+   coisa dessas não se lê. Vídeo e WhatsApp contam-se à parte.
+
+   Os degraus são secções da página, não percentagens de scroll. Antes
+   era 'passou dos 20%', que numa página de 20.000 píxeis cai depois do
+   simulador — quatro secções abaixo do hero. Dizia 'não passaram do
+   topo' sobre gente que tinha lido meia página, e mandava procurar o
+   problema no sítio errado. Uma secção é sempre a mesma coisa, mesmo
+   que a página cresça. */
+const chegouA = function (id) {
+  return function (s) { return (s.seccoes || []).indexOf(id) !== -1; };
+};
+
 const ETAPAS = [
   ['Entrou no site', function () { return true; }],
-  ['Passou do topo', function (s) { return (Number(s.scroll) || 0) >= 20; }],
-  ['Chegou à Performance', function (s) { return (s.seccoes || []).indexOf('performance') !== -1; }],
+  ['Passou do vídeo', chegouA('realidade')],
+  ['Chegou ao simulador', chegouA('simulador')],
+  ['Chegou à Performance', chegouA('performance')],
+  ['Chegou ao investimento', chegouA('investimento')],
   ['Abriu o formulário', function (s) { return temEvento(s, 'form', 'aberto') || clicou(s, 'Pedir relatórios'); }],
   ['Começou a preencher', function (s) { return temEvento(s, 'form', 'começou'); }],
   ['Deixou o contacto', function (s) { return temEvento(s, 'lead') || s.lead === true; }]
