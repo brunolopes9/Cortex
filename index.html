@@ -1468,7 +1468,7 @@
 
 <aside class="cookies" id="cookies" role="dialog" aria-live="polite" aria-label="Preferências de cookies">
   <h4 class="h4">Cookies</h4>
-  <p>Usamos apenas o essencial para o site funcionar. Só carregamos estatísticas de utilização se você aceitar. Detalhes na <a href="privacidade.html">Política de Privacidade</a>.</p>
+  <p>Não usamos cookies de publicidade nem partilhamos nada com terceiros. Se aceitar, guardamos um número no seu browser só para sabermos se já cá esteve. Detalhes na <a href="privacidade.html">Política de Privacidade</a>.</p>
   <div class="cookies__btns">
     <button class="btn btn--ghost btn--sm" id="ckNo">Só essenciais</button>
     <button class="btn btn--acc btn--sm" id="ckYes">Aceitar todos</button>
@@ -1590,10 +1590,15 @@
   </svg>
 </div>
 
-<!-- Vercel Web Analytics: de onde vêm as visitas, que páginas vêem, que país.
-     Não usa cookies nem guarda dados pessoais, por isso não precisa de
-     consentimento. Os números aparecem no painel da Vercel. -->
-<script defer src="/_vercel/insights/script.js"></script>
+<!-- Aqui esteve o Vercel Web Analytics. Saiu porque o produto não está
+     ligado no projecto: o pedido dava 404 em todos os carregamentos, e o
+     404 devolve HTML, que o browser recusa executar como script. Um erro
+     na consola de toda a gente para não receber nada em troca.
+
+     As estatísticas que usamos são as nossas, em /api/track, e dizem
+     bastante mais: percurso, secções, tempo em cada uma e funil. Para
+     voltar a ter também as da Vercel, é ligá-lo no painel do projecto
+     (Analytics → Enable) e repor esta linha. -->
 
 <!-- Baseline: zero dependências, garante que o site funciona sempre -->
 <script src="js/main.js" defer></script>

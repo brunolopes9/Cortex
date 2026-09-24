@@ -530,7 +530,14 @@
     function decide(val) {
       try { localStorage.setItem(KEY, val); } catch (e) { /* ignora */ }
       box.classList.remove('is-on');
-      if (val === 'all') loadAnalytics();
+      if (val !== 'all') return;
+      loadAnalytics();
+      /* Quem aceita a meio da visita passa a contar a partir daqui: o
+         identificador é criado agora e vale já para esta visita. */
+      var novo = visitante();
+      visita.vid = novo.id;
+      visita.visitas = novo.visitas;
+      visita.novo = novo.novo;
     }
     $('#ckYes').addEventListener('click', function () { decide('all'); });
     $('#ckNo').addEventListener('click', function () { decide('essential'); });
@@ -976,8 +983,24 @@
      ───────────────────────────────────────────────────────────── */
   var VID = 'cortex.vid.v1';
 
+  /* O consentimento não é pedido para contarmos a visita — é pedido para
+     escrevermos no aparelho de quem nos visita. É essa a distinção que a
+     lei faz, e é a que respeitamos aqui:
+
+       sem consentimento   o resumo da visita segue na mesma, sem nada
+                           gravado no browser. Não se sabe se é a mesma
+                           pessoa a voltar, sabe-se tudo o resto.
+
+       com consentimento   guardamos um número ao acaso, que só serve
+                           para separar visitas repetidas de pessoas
+                           diferentes. Nada mais. */
+  function autorizou() {
+    try { return localStorage.getItem(KEY) === 'all'; } catch (e) { return false; }
+  }
+
   function visitante() {
-    var v = { id: '', visitas: 1, novo: true };
+    var v = { id: '', visitas: 1, novo: null };
+    if (!autorizou()) return v;
     try {
       var g = JSON.parse(localStorage.getItem(VID) || 'null');
       if (g && g.id) {
@@ -986,12 +1009,14 @@
         v.novo = false;
       } else {
         v.id = (Date.now().toString(36) + Math.random().toString(36).slice(2, 10));
+        v.novo = true;
       }
       localStorage.setItem(VID, JSON.stringify({ id: v.id, visitas: v.visitas }));
     } catch (e) {
-      /* Modo privado ou armazenamento bloqueado: conta como visita nova
-         e sem identificador. Perde-se a distinção, não se perde a visita. */
+      /* Modo privado ou armazenamento bloqueado: perde-se a distinção,
+         não se perde a visita. */
       v.id = '';
+      v.novo = null;
     }
     return v;
   }
