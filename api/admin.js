@@ -104,7 +104,6 @@ const DESTINOS = [
   ['WhatsApp', 'WhatsApp'],
   ['Telegram', 'Telegram'],
   ['Instagram', 'Instagram'],
-  ['MyFxBook', 'MyFxBook'],
   ['Relatórios (pedido)', 'Pedir relatórios'],
   ['Relatórios (descarregados)', 'Descarregar']
 ];
@@ -133,7 +132,6 @@ const ACCOES = [
   ['Viu metade do vídeo', function (s) { return temEvento(s, 'video', '50%'); }],
   ['Viu o vídeo até ao fim', function (s) { return temEvento(s, 'video', '100%'); }],
   ['Mexeu no simulador', function (s) { return temEvento(s, 'simulador'); }],
-  ['Abriu o MyFxBook', function (s) { return clicou(s, 'MyFxBook'); }],
   ['Falou no WhatsApp', function (s) { return clicou(s, 'WhatsApp'); }]
 ];
 

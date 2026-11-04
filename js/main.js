@@ -398,15 +398,14 @@
     var cap = $('#cCap'), mon = $('#cMon');
     if (!cap || !mon) return;
 
-    /* A taxa é fixa: é a média mensal COMPOSTA dos 32 meses fechados
-       entre Janeiro de 2024 e Agosto de 2026, à escala de 1% de risco
-       por operação (+285,13% no total).
-         (1 + 2,8513) ^ (1/32) − 1 = 0,04297…
+    /* A taxa é fixa: é a média mensal dos 34 meses fechados
+       entre Janeiro de 2024 e Outubro de 2026, à escala de 1% de risco
+       por operação (+136,49% somados ÷ 34 = 4,01%).
        Até Janeiro de 2026 são resultados de teste sobre dados históricos;
        a partir de Fevereiro de 2026, conta real.
        Não é um campo à escolha do visitante — se fosse, o simulador
        deixava de dizer alguma coisa sobre o sistema. */
-    var TAXA = 0.0438;
+    var TAXA = 0.0401;
 
     var oCap = $('#oCap'), oMon = $('#oMon');
     var oFinal = $('#oFinal'), oGain = $('#oGain');
@@ -1176,7 +1175,6 @@
         a.hasAttribute('data-open-report') ? 'Pedir relatórios' :
         a.hasAttribute('data-doc') ? 'Descarregar · ' + a.getAttribute('data-doc') :
         a.id === 'vslPlay' ? 'Ver vídeo' :
-        /myfxbook/i.test(a.href || '') ? 'MyFxBook' :
         (a.textContent || '').trim().slice(0, 40);
       if (!etiqueta) return;
       if (visita.cliques.length < 30) visita.cliques.push(etiqueta);

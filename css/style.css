@@ -3743,17 +3743,6 @@ html.lenis { scroll-behavior: auto !important; }
   .bar__lbl { bottom: -44px; }
 }
 
-/* Ligação para o MyFxBook dentro da nota de Agosto */
-.agosto__fx a {
-  color: var(--acc);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.agosto__fx a:hover { color: var(--acc-hi); }
-
-/* Botão do MyFxBook dentro da nota de Agosto */
-.agosto__cta { margin-top: 14px; }
-
 /* "Para quem é" passou de quatro cartões para três */
 .grid-4--three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (max-width: 980px) { .grid-4--three { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
