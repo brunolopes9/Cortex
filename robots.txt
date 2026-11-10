@@ -15,4 +15,4 @@ Disallow: /api/
 # Ficheiros de trabalho que não devem ir para o índice
 Disallow: /*.riv$
 
-Sitemap: https://cortexautomationai.com/sitemap.xml
+Sitemap: https://www.cortexautomationai.com/sitemap.xml

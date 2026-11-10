@@ -372,7 +372,7 @@ async function initRive() {
   // Verifica se o ficheiro existe antes de puxar o runtime (~200 KB)
   let ok = false;
   try {
-    const res = await fetch('assets/hero.riv', { method: 'HEAD' });
+    const res = await fetch('/assets/hero.riv', { method: 'HEAD' });
     ok = res.ok;
   } catch (e) { ok = false; }
   if (!ok) return;
@@ -381,7 +381,7 @@ async function initRive() {
   if (!mod || !mod.Rive) return;
 
   const r = new mod.Rive({
-    src: 'assets/hero.riv',
+    src: '/assets/hero.riv',
     canvas,
     autoplay: true,
     stateMachines: 'State Machine 1',

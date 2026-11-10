@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>document.documentElement.classList.add('js');</script>
+
+<title>Page not found | Cortex Automation</title>
+<meta name="description" content="The page you are looking for does not exist or has been moved.">
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#0A0B0C">
+
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/favicon-64.png" sizes="64x64" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="/css/style.css">
+
+<style>
+  /* Small chart that "falls" — this house's 404 had to be a drawdown */
+  .dd404 { width: min(560px, 100%); margin: 0 auto 34px; }
+  .dd404 svg { width: 100%; height: auto; overflow: visible; }
+  .dd404 path.p { stroke-dasharray: 900; stroke-dashoffset: 900; animation: d404 2s cubic-bezier(.16,1,.3,1) .25s forwards; }
+  @keyframes d404 { to { stroke-dashoffset: 0; } }
+  .e404 { position: relative; }
+  .e404__glow {
+    position: absolute; left: 50%; top: 38%;
+    transform: translate(-50%, -50%);
+    width: min(760px, 120vw); aspect-ratio: 1; pointer-events: none; z-index: 0;
+    background: radial-gradient(circle, rgba(255,106,85,.13), transparent 62%);
+  }
+  /* The content is raised by its own class. A `.e404 > *` rule
+     would also catch the glow and cancel its position:absolute — it would
+     then take up 760px of height in the flow and push everything off screen. */
+  .e404__body { position: relative; z-index: 1; }
+</style>
+</head>
+<body>
+
+<header class="nav is-stuck">
+  <div class="wrap nav__in">
+    <a href="/en/" class="logo" aria-label="Cortex Automation — home">
+      <img class="logo__mark" src="/assets/mark.png" width="38" height="38" alt="" aria-hidden="true">
+      <span class="logo__txt"><b>Cortex</b><span>Automation</span></span>
+    </a>
+    <div class="nav__cta">
+      <!-- seo:lang --><div class="langsel" role="navigation" aria-label="Language"><a href="/" hreflang="pt-PT" lang="pt-PT" title="Português" data-lang="pt">PT</a><a href="/en/" hreflang="en" lang="en" title="English" data-lang="en" aria-current="true">EN</a><a href="/fr/" hreflang="fr" lang="fr" title="Français" data-lang="fr">FR</a><a href="/es/" hreflang="es" lang="es" title="Español" data-lang="es">ES</a></div><!-- /seo:lang -->
+      <a href="/en/" class="btn btn--acc btn--sm">Go to home page</a>
+    </div>
+  </div>
+</header>
+
+<main class="e404">
+  <div class="e404__glow" aria-hidden="true"></div>
+  <div class="e404__body">
+    <div class="dd404" aria-hidden="true">
+      <svg viewBox="0 0 560 150">
+        <line x1="0" y1="30" x2="560" y2="30" stroke="rgba(237,234,227,.09)" stroke-dasharray="4 5"/>
+        <path class="p" d="M0 34 L70 26 L118 44 L172 22 L228 40 L268 30 L300 62 L340 96 L392 84 L440 122 L500 112 L560 140"
+              fill="none" stroke="#FF6A55" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="560" cy="140" r="4" fill="#FF6A55"/>
+      </svg>
+    </div>
+
+    <div class="e404__code">404</div>
+    <h1 class="h2">This page has gone into <span class="gilt">drawdown</span>.</h1>
+    <p class="lede">
+      The address you are looking for does not exist, has moved or was typed incorrectly.
+      It happens — and, unlike the market, this can be fixed with a single click.
+    </p>
+    <div class="btn-row">
+      <a href="/en/" class="btn btn--acc">
+        Back to home page
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="/en/#performance" class="btn btn--ghost">View performance</a>
+      <a href="#" class="btn btn--ghost" data-wa>Contact us</a>
+    </div>
+    <p class="micro" style="max-width:52ch;margin:32px auto 0">
+      If you got here from one of our links, let us know via WhatsApp — we will fix it.
+    </p>
+  </div>
+</main>
+
+<script src="/js/main.js" defer></script>
+<!-- seo:langjs --><script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('.langsel a');if(a)try{localStorage.setItem('lang',a.getAttribute('data-lang'))}catch(x){}});</script><!-- /seo:langjs -->
+</body>
+</html>

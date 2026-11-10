@@ -22,8 +22,48 @@
     // da Vercel. É lá que vive a chave da Resend — nunca aqui, que este
     // ficheiro é público. Se a função falhar, o formulário cai para o
     // WhatsApp e o contacto não se perde.
-    reportFile: 'assets/relatorio-performance.pdf'
+    reportFile: '/assets/relatorio-performance.pdf'
   };
+
+  /* Textos do JavaScript nas 4 línguas do site (a língua vem do <html lang>). */
+  var LANG = (document.documentElement.lang || 'pt').slice(0, 2);
+  var LOCALE = { pt: 'pt-PT', en: 'en-GB', fr: 'fr-FR', es: 'es-ES' }[LANG] || 'pt-PT';
+  var TXT = {
+    pt: { wa: 'Olá! Vi o site da Cortex Automation e queria saber mais sobre o sistema.', mes: ' mês', meses: ' meses', Mes: 'Mês ',
+          ja: 'Já nos tinha deixado o contacto. O relatório está aqui sempre que precisar.', falta: 'Falta preencher alguma coisa. Veja os campos assinalados.',
+          enviar: 'A enviar…', verifique: 'Verifique ', e: ' e ', nome: 'o nome', tel: 'o telemóvel', email: 'o email',
+          falhou: 'Não consegui enviar daqui. Abri o WhatsApp com a mensagem escrita — é só carregar em enviar.',
+          waRel: function (n, t, m) { return 'Olá! Chamo-me ' + n + ' (' + t + ', ' + m + ') e queria receber os relatórios da Cortex Automation.'; },
+          pronto: function (n) { return 'Pronto, ' + n + '. Está na lista.'; },
+          nsFalhou: 'Não consegui inscrever daqui. Abri o WhatsApp com a mensagem escrita — é só carregar em enviar.',
+          waNs: function (n) { return 'Olá! Chamo-me ' + n + ' e queria subscrever a newsletter da Cortex Automation.'; } },
+    en: { wa: 'Hi! I saw the Cortex Automation website and would like to know more about the system.', mes: ' month', meses: ' months', Mes: 'Month ',
+          ja: 'You had already left us your contact. The report is here whenever you need it.', falta: 'Something is missing. Please check the highlighted fields.',
+          enviar: 'Sending…', verifique: 'Please check ', e: ' and ', nome: 'the name', tel: 'the phone number', email: 'the email',
+          falhou: 'I could not send it from here. I opened WhatsApp with the message ready — just tap send.',
+          waRel: function (n, t, m) { return 'Hi! My name is ' + n + ' (' + t + ', ' + m + ') and I would like to receive the Cortex Automation reports.'; },
+          pronto: function (n) { return 'Done, ' + n + '. You are on the list.'; },
+          nsFalhou: 'I could not subscribe you from here. I opened WhatsApp with the message ready — just tap send.',
+          waNs: function (n) { return 'Hi! My name is ' + n + ' and I would like to subscribe to the Cortex Automation newsletter.'; } },
+    fr: { wa: 'Bonjour ! J’ai vu le site de Cortex Automation et j’aimerais en savoir plus sur le système.', mes: ' mois', meses: ' mois', Mes: 'Mois ',
+          ja: 'Vous nous aviez déjà laissé vos coordonnées. Le rapport est ici quand vous en avez besoin.', falta: 'Il manque quelque chose. Vérifiez les champs signalés.',
+          enviar: 'Envoi…', verifique: 'Vérifiez ', e: ' et ', nome: 'le nom', tel: 'le téléphone', email: 'l’e-mail',
+          falhou: 'Je n’ai pas pu envoyer d’ici. J’ai ouvert WhatsApp avec le message prêt — il suffit d’appuyer sur envoyer.',
+          waRel: function (n, t, m) { return 'Bonjour ! Je m’appelle ' + n + ' (' + t + ', ' + m + ') et je souhaite recevoir les rapports de Cortex Automation.'; },
+          pronto: function (n) { return 'C’est fait, ' + n + '. Vous êtes sur la liste.'; },
+          nsFalhou: 'Je n’ai pas pu vous inscrire d’ici. J’ai ouvert WhatsApp avec le message prêt — il suffit d’appuyer sur envoyer.',
+          waNs: function (n) { return 'Bonjour ! Je m’appelle ' + n + ' et je souhaite m’abonner à la newsletter de Cortex Automation.'; } },
+    es: { wa: '¡Hola! He visto la web de Cortex Automation y me gustaría saber más sobre el sistema.', mes: ' mes', meses: ' meses', Mes: 'Mes ',
+          ja: 'Ya nos había dejado su contacto. El informe está aquí siempre que lo necesite.', falta: 'Falta rellenar algo. Revise los campos señalados.',
+          enviar: 'Enviando…', verifique: 'Revise ', e: ' y ', nome: 'el nombre', tel: 'el teléfono', email: 'el email',
+          falhou: 'No he podido enviarlo desde aquí. He abierto WhatsApp con el mensaje escrito — solo tiene que pulsar enviar.',
+          waRel: function (n, t, m) { return '¡Hola! Me llamo ' + n + ' (' + t + ', ' + m + ') y me gustaría recibir los informes de Cortex Automation.'; },
+          pronto: function (n) { return 'Listo, ' + n + '. Ya está en la lista.'; },
+          nsFalhou: 'No he podido suscribirle desde aquí. He abierto WhatsApp con el mensaje escrito — solo tiene que pulsar enviar.',
+          waNs: function (n) { return '¡Hola! Me llamo ' + n + ' y me gustaría suscribirme a la newsletter de Cortex Automation.'; } }
+  };
+  var T = TXT[LANG] || TXT.pt;
+  CONFIG.waMessage = T.wa;
 
   var $  = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
@@ -412,8 +452,8 @@
     var oAxisMid = $('#oAxisMid'), oAxisEnd = $('#oAxisEnd');
     var line = $('#calcLine'), area = $('#calcArea'), dot = $('#calcDot'), grid = $('#calcGrid');
 
-    var eur0 = new Intl.NumberFormat('pt-PT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
-    var pct = function (v) { return v.toLocaleString('pt-PT', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%'; };
+    var eur0 = new Intl.NumberFormat(LOCALE, { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+    var pct = function (v) { return v.toLocaleString(LOCALE, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%'; };
 
     function fill(el) {
       var p = (el.value - el.min) / (el.max - el.min) * 100;
@@ -468,11 +508,11 @@
       var ganhoPct = c0 > 0 ? (ganho / c0) * 100 : 0;
 
       oCap.textContent = eur0.format(c0);
-      oMon.textContent = n + (n === 1 ? ' mês' : ' meses');
+      oMon.textContent = n + (n === 1 ? T.mes : T.meses);
       oFinal.textContent = eur0.format(fin);
       oGain.textContent = '+' + eur0.format(ganho) + ' · +' + pct(ganhoPct);
-      oAxisMid.textContent = 'Mês ' + Math.round(n / 2);
-      oAxisEnd.textContent = 'Mês ' + n;
+      oAxisMid.textContent = T.Mes + Math.round(n / 2);
+      oAxisEnd.textContent = T.Mes + n;
 
       var W = 600, H = 200, pad = 8;
       var min = Math.min.apply(null, osc.concat([c0]));
@@ -614,7 +654,7 @@
       if (who) who.textContent = nome ? nome.split(' ')[0] : 'obrigado';
       if (again) {
         var msg = $('#rmMsg');
-        if (msg) msg.textContent = 'Já nos tinha deixado o contacto. O relatório está aqui sempre que precisar.';
+        if (msg) msg.textContent = T.ja;
       }
     }
 
@@ -699,7 +739,7 @@
 
       if (!okNome || !okTel || !okMail) {
         marcar('form', 'erro de validação');
-        dizer('Falta preencher alguma coisa. Veja os campos assinalados.', 'erro');
+        dizer(T.falta, 'erro');
         $(!okNome ? '#rmName' : !okTel ? '#rmTel' : '#rmEmail').focus();
         return;
       }
@@ -714,7 +754,7 @@
       } catch (err) { /* nada */ }
 
       marcar('form', 'enviado');
-      dizer('A enviar…', 'ok');
+      dizer(T.enviar, 'ok');
       submit.setAttribute('aria-busy', 'true');
       submit.disabled = true;
 
@@ -753,13 +793,13 @@
         /* Validação recusada pelo servidor: dizemos qual campo, em vez
            de mandar a pessoa para o WhatsApp sem perceber porquê. */
         if (r.http === 400 && r.dados.campos) {
-          var nomes = { nome: 'o nome', telefone: 'o telemóvel', email: 'o email' };
-          var quais = r.dados.campos.map(function (c) { return nomes[c] || c; }).join(' e ');
+          var nomes = { nome: T.nome, telefone: T.tel, email: T.email };
+          var quais = r.dados.campos.map(function (c) { return nomes[c] || c; }).join(T.e);
           r.dados.campos.forEach(function (c) {
             bad(c === 'nome' ? '#fName' : c === 'telefone' ? '#fTel' : '#fMail', true);
           });
           marcar('form', 'recusado pelo servidor');
-          dizer('Verifique ' + quais + '.', 'erro');
+          dizer(T.verifique + quais + '.', 'erro');
           submit.removeAttribute('aria-busy');
           submit.disabled = false;
           return;
@@ -771,8 +811,8 @@
         /* Última linha de defesa: o contacto não se perde, vai para o
            WhatsApp já escrito. Mas dizemos à pessoa o que aconteceu. */
         marcar('form', 'falhou o envio');
-        dizer('Não consegui enviar daqui. Abri o WhatsApp com a mensagem escrita — é só carregar em enviar.', 'erro');
-        var t = 'Olá! Chamo-me ' + nome + ' (' + tel + ', ' + email + ') e queria receber os relatórios da Cortex Automation.';
+        dizer(T.falhou, 'erro');
+        var t = T.waRel(nome, tel, email);
         window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(t), '_blank', 'noopener');
         submit.removeAttribute('aria-busy');
         submit.disabled = false;
@@ -961,7 +1001,7 @@
         if (nota) nota.hidden = true;
         ok.hidden = false;
         ok.className = 'news__ok';
-        ok.textContent = 'Pronto, ' + nome.split(/\s+/)[0] + '. Está na lista.';
+        ok.textContent = T.pronto(nome.split(/\s+/)[0]);
         marcar('lead', 'newsletter');
       }).catch(function () {
         /* Dizer o que aconteceu, em vez de abrir o WhatsApp sem explicação
@@ -969,9 +1009,9 @@
         if (ok) {
           ok.hidden = false;
           ok.className = 'news__ok news__ok--erro';
-          ok.textContent = 'Não consegui inscrever daqui. Abri o WhatsApp com a mensagem escrita — é só carregar em enviar.';
+          ok.textContent = T.nsFalhou;
         }
-        var t = 'Olá! Chamo-me ' + nome + ' e queria subscrever a newsletter da Cortex Automation.';
+        var t = T.waNs(nome);
         window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(t), '_blank', 'noopener');
       }).then(function () {
         btn.disabled = false;

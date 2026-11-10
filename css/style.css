@@ -4046,3 +4046,12 @@ html.lenis { scroll-behavior: auto !important; }
    Empilham sempre: o rótulo em cima, a etiqueta por baixo. */
 .rate-fix__top { flex-wrap: wrap; gap: 8px; }
 .rate-fix__top span:first-child { flex: 1 1 100%; }
+
+/* ── Seletor de língua (PT · EN · FR · ES) ── */
+.langsel { display: inline-flex; gap: 2px; margin-right: 10px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; font-family: var(--mono); font-size: .72rem; letter-spacing: .04em; }
+.langsel a { padding: 4px 7px; border-radius: 999px; color: inherit; opacity: .6; text-decoration: none; line-height: 1; }
+.langsel a:hover { opacity: 1; }
+.langsel a[aria-current="true"] { opacity: 1; background: var(--line); }
+.langsel--m { display: flex; justify-content: center; margin: 0 0 14px; font-size: .85rem; border: 0; }
+.langsel--m a { padding: 8px 12px; }
+@media (max-width: 860px) { .nav__cta > .langsel { display: none; } }

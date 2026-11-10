@@ -1,20 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://cortexautomationai.com/</loc>
-    <lastmod>2026-09-12</lastmod>
+    <loc>https://www.cortexautomationai.com/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://www.cortexautomationai.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.cortexautomationai.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.cortexautomationai.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.cortexautomationai.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.cortexautomationai.com/"/>
+    <lastmod>2026-11-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://cortexautomationai.com/termos.html</loc>
-    <lastmod>2026-09-12</lastmod>
+    <loc>https://www.cortexautomationai.com/en/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://www.cortexautomationai.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.cortexautomationai.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.cortexautomationai.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.cortexautomationai.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.cortexautomationai.com/"/>
+    <lastmod>2026-11-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.cortexautomationai.com/fr/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://www.cortexautomationai.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.cortexautomationai.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.cortexautomationai.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.cortexautomationai.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.cortexautomationai.com/"/>
+    <lastmod>2026-11-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.cortexautomationai.com/es/</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://www.cortexautomationai.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.cortexautomationai.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.cortexautomationai.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.cortexautomationai.com/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.cortexautomationai.com/"/>
+    <lastmod>2026-11-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://www.cortexautomationai.com/privacidade.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://www.cortexautomationai.com/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.cortexautomationai.com/en/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.cortexautomationai.com/fr/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.cortexautomationai.com/es/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.cortexautomationai.com/privacidade.html"/>
+    <lastmod>2026-11-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://cortexautomationai.com/privacidade.html</loc>
-    <lastmod>2026-09-12</lastmod>
+    <loc>https://www.cortexautomationai.com/en/privacidade.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://www.cortexautomationai.com/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.cortexautomationai.com/en/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.cortexautomationai.com/fr/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.cortexautomationai.com/es/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.cortexautomationai.com/privacidade.html"/>
+    <lastmod>2026-11-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.cortexautomationai.com/fr/privacidade.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://www.cortexautomationai.com/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.cortexautomationai.com/en/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.cortexautomationai.com/fr/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.cortexautomationai.com/es/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.cortexautomationai.com/privacidade.html"/>
+    <lastmod>2026-11-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.cortexautomationai.com/es/privacidade.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://www.cortexautomationai.com/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.cortexautomationai.com/en/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.cortexautomationai.com/fr/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.cortexautomationai.com/es/privacidade.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.cortexautomationai.com/privacidade.html"/>
+    <lastmod>2026-11-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.cortexautomationai.com/termos.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://www.cortexautomationai.com/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.cortexautomationai.com/en/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.cortexautomationai.com/fr/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.cortexautomationai.com/es/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.cortexautomationai.com/termos.html"/>
+    <lastmod>2026-11-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.cortexautomationai.com/en/termos.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://www.cortexautomationai.com/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.cortexautomationai.com/en/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.cortexautomationai.com/fr/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.cortexautomationai.com/es/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.cortexautomationai.com/termos.html"/>
+    <lastmod>2026-11-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.cortexautomationai.com/fr/termos.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://www.cortexautomationai.com/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.cortexautomationai.com/en/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.cortexautomationai.com/fr/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.cortexautomationai.com/es/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.cortexautomationai.com/termos.html"/>
+    <lastmod>2026-11-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://www.cortexautomationai.com/es/termos.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt-PT" href="https://www.cortexautomationai.com/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.cortexautomationai.com/en/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.cortexautomationai.com/fr/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.cortexautomationai.com/es/termos.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.cortexautomationai.com/termos.html"/>
+    <lastmod>2026-11-10</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
