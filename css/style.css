@@ -4055,3 +4055,7 @@ html.lenis { scroll-behavior: auto !important; }
 .langsel--m { display: flex; justify-content: center; margin: 0 0 14px; font-size: .85rem; border: 0; }
 .langsel--m a { padding: 8px 12px; }
 @media (max-width: 860px) { .nav__cta > .langsel { display: none; } }
+.langsel a { display: inline-flex; align-items: center; padding: 5px 6px; }
+.langsel a img { display: block; width: 22px; height: 15px; border-radius: 2px; box-shadow: 0 0 0 1px rgba(255,255,255,.15); }
+.langsel a[aria-current="true"] { opacity: 1; background: var(--line); }
+.langsel--m a img { width: 30px; height: 20px; }

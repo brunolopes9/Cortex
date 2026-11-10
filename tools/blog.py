@@ -200,7 +200,7 @@ def seletor(lang, caminhos):
         destino = f"{base(l)}{caminhos[l]}" if l in caminhos else f"{base(l)}/blog/"
         cur = ' aria-current="true"' if l == lang else ""
         itens += (f'<a href="{destino}" hreflang="{HTML_LANG[l]}" lang="{HTML_LANG[l]}" title="{nomes[l]}" '
-                  f'data-lang="{l}"{cur}>{l.upper()}</a>')
+                  f'data-lang="{l}"{cur}><img src="/assets/flags/{l}.svg" width="22" height="15" alt="{nomes[l]}"></a>')
     return f'<div class="langsel" role="navigation" aria-label="Language">{itens}</div>'
 
 

@@ -55,7 +55,7 @@ def seletor(lang, caminho):
     for l in LINGUAS:
         cur = ' aria-current="true"' if l == lang else ""
         itens.append(f'<a href="{url(l, caminho).replace(DOM, "") or "/"}" hreflang="{HTML_LANG[l]}" lang="{HTML_LANG[l]}"'
-                     f' title="{NOME[l]}" data-lang="{l}"{cur}>{ROTULO[l]}</a>')
+                     f' title="{NOME[l]}" data-lang="{l}"{cur}><img src="/assets/flags/{l}.svg" width="22" height="15" alt="{NOME[l]}"></a>')
     return ('<!-- seo:lang --><div class="langsel" role="navigation" aria-label="Language">'
             + "".join(itens) + "</div><!-- /seo:lang -->")
 
