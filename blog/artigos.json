@@ -33,7 +33,10 @@
   "id": "trading-automatico",
   "data": "2026-11-10",
   "slugs": {
-   "pt": "trading-automatico-como-funciona-riscos"
+   "pt": "trading-automatico-como-funciona-riscos",
+   "en": "automated-trading-how-it-works-risks",
+   "fr": "trading-automatique-guide-risques",
+   "es": "trading-automatico-que-es-como-funciona"
   }
  },
  {
@@ -57,6 +60,16 @@
   }
  },
  {
+  "id": "juro-composto",
+  "data": "2026-11-10",
+  "slugs": {
+   "pt": "juro-composto-formula-exemplos",
+   "en": "compound-interest-explained-formula-examples",
+   "fr": "interets-composes-formule-exemples",
+   "es": "interes-compuesto-formula-ejemplos"
+  }
+ },
+ {
   "id": "investimentos-alternativos",
   "data": "2026-11-10",
   "slugs": {
@@ -74,6 +87,26 @@
    "en": "passive-income-investments-realistic-guide",
    "fr": "revenus-passifs-investissement-guide-realiste",
    "es": "ingresos-pasivos-guia-realista-inversiones"
+  }
+ },
+ {
+  "id": "ouro-e-bitcoin-diversificar",
+  "data": "2026-11-10",
+  "slugs": {
+   "pt": "investir-em-ouro-e-bitcoin",
+   "en": "investing-in-gold-and-bitcoin",
+   "fr": "investir-or-et-bitcoin-diversifier",
+   "es": "invertir-en-oro-y-bitcoin"
+  }
+ },
+ {
+  "id": "o-que-e-drawdown",
+  "data": "2026-11-10",
+  "slugs": {
+   "pt": "o-que-e-drawdown-maximo",
+   "en": "what-is-drawdown-maximum-drawdown",
+   "fr": "drawdown-definition-et-calcul",
+   "es": "que-es-el-drawdown"
   }
  }
 ]

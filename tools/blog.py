@@ -11,7 +11,9 @@ os índices do blog e blog/artigos.json (que o seo.py usa no sitemap).
 
 import html
 import json
+import os
 import re
+import subprocess
 import sys
 from datetime import date
 from pathlib import Path
@@ -47,6 +49,8 @@ TEMAS = [
      "angulo": "Alternative investments beyond stocks and bonds: real estate, commodities/gold, crypto, private equity, P2P lending, managed/algorithmic strategies; liquidity, fees, risk, how much to allocate."},
     {"id": "rendimento-passivo", "kw": "rendimento passivo",
      "angulo": "Realistic guide to passive income from investments: dividends, interest, ETFs, real estate, automated strategies; why 'guaranteed' returns are a red flag; time and capital required."},
+    {"id": "ouro-e-bitcoin-diversificar", "kw": "investir em ouro e bitcoin",
+     "angulo": "Real change at Cortex Automation (confirmed in the account history): the algorithm traded only Bitcoin (BTC/USD) and, since the end of October 2026, it also trades gold (XAU/USD). Explain WHY a strategy adds a second, different asset: gold behaves differently from crypto (safe haven, reacts to dollar, rates and geopolitics), trades in other hours and market conditions, allows diversifying across conditions, protecting capital and not depending on one market's cycle; testing scalping/intraday/swing approaches. Teach readers how gold and bitcoin differ (volatility, drivers, trading hours, correlation that changes over time) and what diversification across assets really does and does not do. Mention Cortex Automation as the real example, soberly. NO results, win rates or profit numbers for gold (too early); no promises."},
     {"id": "o-que-e-drawdown", "kw": "o que é drawdown",
      "angulo": "Drawdown and maximum drawdown explained, how to read it on a track record, recovery math, how it differs from volatility, why it matters more than the headline return."},
 ]
@@ -90,6 +94,21 @@ Rules:
 def escrever(cl, tema, lang):
     pedido = (f"Topic id: {tema['id']}\nSearch intent (Portuguese keyword, adapt to what people search in this language): "
               f"{tema['kw']}\nAngle and coverage: {tema['angulo']}")
+    if os.environ.get("CLAUDE_CODE_OAUTH_TOKEN"):
+        # subscrição Claude (Max) via Claude Code, com Opus: não gasta créditos da API
+        prompt = pedido + ("\n\nRespond ONLY with a valid JSON object (no text before/after, no code fences) matching this JSON Schema:\n"
+                           + json.dumps(ESQUEMA))
+        env = {k: v for k, v in os.environ.items() if k != "ANTHROPIC_API_KEY"}
+        r = subprocess.run(["claude", "-p", "--output-format", "json", "--model", "opus",
+                            "--append-system-prompt", SYSTEM.format(publico=PUBLICO[lang]),
+                            "--disallowedTools", "Bash,Edit,Write,Read,WebSearch,WebFetch,Glob,Grep,Task"],
+                           input=prompt, capture_output=True, text=True, timeout=1800, env=env, cwd="/tmp")
+        if r.returncode != 0:
+            raise RuntimeError(f"claude -p: {(r.stderr or r.stdout)[-300:]}")
+        txt = json.loads(r.stdout)["result"].strip()
+        a = json.loads(txt[txt.find("{"): txt.rfind("}") + 1])
+        a["slug"] = re.sub(r"[^a-z0-9-]+", "-", a["slug"].lower()).strip("-")
+        return a
     with cl.beta.messages.stream(
             model=MODELO, max_tokens=24000, system=SYSTEM.format(publico=PUBLICO[lang]),
             messages=[{"role": "user", "content": pedido}],
@@ -304,8 +323,10 @@ def main():
     dados.mkdir(parents=True, exist_ok=True)
     hoje = date.today().isoformat()
     if "--paginas" not in sys.argv:
-        import anthropic
-        cl = anthropic.Anthropic()
+        cl = None
+        if not os.environ.get("CLAUDE_CODE_OAUTH_TOKEN"):
+            import anthropic
+            cl = anthropic.Anthropic()
         so = [a for a in sys.argv[2:] if not a.startswith("--")]
         for tema in TEMAS:
             if so and tema["id"] not in so:

@@ -61,18 +61,23 @@ NOMES_TTS = {"en": "English", "fr": "French", "es": "Spanish"}
 
 
 def traduzir(lang):
-    cl = anthropic.Anthropic()
     pedido = {"frases": [f[2] for f in FRASES], "titulos": [t[-1] for t in TITULOS]}
-    msg = cl.messages.create(
-        model="claude-opus-5-5", max_tokens=8000,
-        system=(f"Translate this Portuguese voice-over script and on-screen titles of a 78-second video for Cortex Automation "
+    sistema = (f"Translate this Portuguese voice-over script and on-screen titles of a 78-second video for Cortex Automation "
                 f"(automated trading; client funds stay in the client's own account) into {LINGUAS[lang]}. "
                 "Each sentence must be speakable in roughly the same time as the Portuguese (similar or shorter length). "
                 "Keep numbers exactly (100%, 20-50, 4.38% written the target-language way, 3 years). Keep 'grid', 'martingale', "
                 "'drawdown', 'Cortex Automation'. Titles: short, same meaning. Return JSON only: "
-                '{"frases": [...13 strings...], "titulos": [...same count as input...]}'),
-        messages=[{"role": "user", "content": json.dumps(pedido, ensure_ascii=False)}])
-    txt = "".join(b.text for b in msg.content if b.type == "text")
+                '{"frases": [...13 strings...], "titulos": [...same count as input...]}')
+    if os.environ.get("CLAUDE_CODE_OAUTH_TOKEN"):  # subscrição Max (claude -p), sem créditos da API
+        env = {k: v for k, v in os.environ.items() if k != "ANTHROPIC_API_KEY"}
+        r = subprocess.run(["claude", "-p", "--output-format", "json", "--model", "opus", "--append-system-prompt", sistema,
+                            "--disallowedTools", "Bash,Edit,Write,Read,WebSearch,WebFetch,Glob,Grep,Task"],
+                           input=json.dumps(pedido, ensure_ascii=False), capture_output=True, text=True, timeout=900, env=env, cwd="/tmp")
+        txt = json.loads(r.stdout)["result"]
+    else:
+        msg = anthropic.Anthropic().messages.create(model="claude-opus-5-5", max_tokens=8000, system=sistema,
+                                                    messages=[{"role": "user", "content": json.dumps(pedido, ensure_ascii=False)}])
+        txt = "".join(b.text for b in msg.content if b.type == "text")
     d = json.loads(re.search(r"\{.*\}", txt, re.S).group(0))
     assert len(d["frases"]) == len(FRASES) and len(d["titulos"]) == len(TITULOS)
     return d
