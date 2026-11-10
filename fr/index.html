@@ -117,7 +117,7 @@
       <span class="logo__txt"><b>Cortex</b><span>Automation</span></span>
     </a>
 
-    <nav class="nav__links" id="navlinks" aria-label="Navigation principale">
+    <nav class="nav__links" id="navlinks" aria-label="Navigation principale"><!-- seo:blog --><a href="/fr/blog/">Blog</a><!-- /seo:blog -->
       <a href="#realidade">Réalité</a>
       <a href="#performance">Performance</a>
       <a href="#simulador">Simulateur</a>
@@ -129,6 +129,7 @@
 
     <div class="nav__cta">
       <!-- seo:lang --><div class="langsel" role="navigation" aria-label="Language"><a href="/" hreflang="pt-PT" lang="pt-PT" title="Português" data-lang="pt">PT</a><a href="/en/" hreflang="en" lang="en" title="English" data-lang="en">EN</a><a href="/fr/" hreflang="fr" lang="fr" title="Français" data-lang="fr" aria-current="true">FR</a><a href="/es/" hreflang="es" lang="es" title="Español" data-lang="es">ES</a></div><!-- /seo:lang -->
+      
       <a href="#" class="btn btn--acc btn--sm" data-wa>
         Nous contacter
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
@@ -141,7 +142,8 @@
 </header>
 
 <nav class="mnav" id="mnav" aria-label="Navigation mobile">
-  <!-- seo:lang --><div class="langsel langsel--m" role="navigation" aria-label="Language"><a href="/" hreflang="pt-PT" lang="pt-PT" title="Português" data-lang="pt">PT</a><a href="/en/" hreflang="en" lang="en" title="English" data-lang="en">EN</a><a href="/fr/" hreflang="fr" lang="fr" title="Français" data-lang="fr" aria-current="true">FR</a><a href="/es/" hreflang="es" lang="es" title="Español" data-lang="es">ES</a></div><!-- /seo:lang -->
+  <!-- seo:lang --><div class="langsel langsel--m" role="navigation" aria-label="Language"><a href="/" hreflang="pt-PT" lang="pt-PT" title="Português" data-lang="pt">PT</a><a href="/en/" hreflang="en" lang="en" title="English" data-lang="en">EN</a><a href="/fr/" hreflang="fr" lang="fr" title="Français" data-lang="fr" aria-current="true">FR</a><a href="/es/" hreflang="es" lang="es" title="Español" data-lang="es">ES</a></div><!-- /seo:lang --><!-- seo:blog --><a href="/fr/blog/"><span>Blog</span><i>✎</i></a><!-- /seo:blog -->
+  
   <a href="#video"><span>Vidéo · 1 min</span><i>▸</i></a>
   <a href="#realidade"><span>Réalité</span><i>01</i></a>
   <a href="#paraquem"><span>Pour qui</span><i>02</i></a>
@@ -1558,6 +1560,7 @@
     document.head.appendChild(s);
   }
 </script>
+
 <!-- seo:langjs --><script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('.langsel a');if(a)try{localStorage.setItem('lang',a.getAttribute('data-lang'))}catch(x){}});</script><!-- /seo:langjs -->
 </body>
 </html>

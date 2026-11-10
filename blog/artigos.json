@@ -1,0 +1,79 @@
+[
+ {
+  "id": "diversificar-investimentos",
+  "data": "2026-11-10",
+  "slugs": {
+   "pt": "como-diversificar-investimentos-guia",
+   "en": "how-to-diversify-investments",
+   "fr": "comment-diversifier-ses-placements",
+   "es": "como-diversificar-inversiones-guia"
+  }
+ },
+ {
+  "id": "investimento-mensal",
+  "data": "2026-11-10",
+  "slugs": {
+   "pt": "investimento-mensal-como-investir-todos-os-meses",
+   "en": "investing-monthly-pound-cost-averaging",
+   "fr": "investir-tous-les-mois-dca-guide",
+   "es": "invertir-cada-mes-guia-aportaciones-periodicas"
+  }
+ },
+ {
+  "id": "o-que-e-forex",
+  "data": "2026-11-10",
+  "slugs": {
+   "pt": "o-que-e-forex-guia-iniciantes",
+   "en": "what-is-forex-beginners-guide",
+   "fr": "qu-est-ce-que-le-forex",
+   "es": "que-es-forex-guia-principiantes"
+  }
+ },
+ {
+  "id": "trading-automatico",
+  "data": "2026-11-10",
+  "slugs": {
+   "pt": "trading-automatico-como-funciona-riscos"
+  }
+ },
+ {
+  "id": "investir-em-bitcoin",
+  "data": "2026-11-10",
+  "slugs": {
+   "pt": "como-investir-em-bitcoin",
+   "en": "how-to-invest-in-bitcoin",
+   "fr": "comment-investir-dans-le-bitcoin",
+   "es": "como-invertir-en-bitcoin"
+  }
+ },
+ {
+  "id": "gestao-de-risco",
+  "data": "2026-11-10",
+  "slugs": {
+   "pt": "gestao-de-risco-investimentos",
+   "en": "investment-risk-management-guide",
+   "fr": "gestion-des-risques-investissement",
+   "es": "gestion-de-riesgo-en-inversiones"
+  }
+ },
+ {
+  "id": "investimentos-alternativos",
+  "data": "2026-11-10",
+  "slugs": {
+   "pt": "investimentos-alternativos-guia-completo",
+   "en": "alternative-investments-guide",
+   "fr": "investissements-alternatifs-guide-complet",
+   "es": "inversiones-alternativas-guia-riesgos-liquidez"
+  }
+ },
+ {
+  "id": "rendimento-passivo",
+  "data": "2026-11-10",
+  "slugs": {
+   "pt": "rendimento-passivo-investimentos-guia-realista",
+   "en": "passive-income-investments-realistic-guide",
+   "fr": "revenus-passifs-investissement-guide-realiste",
+   "es": "ingresos-pasivos-guia-realista-inversiones"
+  }
+ }
+]

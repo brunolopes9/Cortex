@@ -45,6 +45,7 @@
     </a>
     <div class="nav__cta">
       <!-- seo:lang --><div class="langsel" role="navigation" aria-label="Language"><a href="/termos.html" hreflang="pt-PT" lang="pt-PT" title="Português" data-lang="pt">PT</a><a href="/en/termos.html" hreflang="en" lang="en" title="English" data-lang="en" aria-current="true">EN</a><a href="/fr/termos.html" hreflang="fr" lang="fr" title="Français" data-lang="fr">FR</a><a href="/es/termos.html" hreflang="es" lang="es" title="Español" data-lang="es">ES</a></div><!-- /seo:lang -->
+      
       <a href="/en/" class="btn btn--ghost btn--sm">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H6M12 19l-7-7 7-7"/></svg>
         Back to site
@@ -177,7 +178,7 @@
   <div class="wrap">
     <div class="foot__bar" style="border-top:0">
       <span class="micro">© <span id="yr">2026</span> Cortex Automation. All rights reserved.</span>
-      <nav aria-label="Legal">
+      <nav aria-label="Legal"><!-- seo:blog --><a href="/en/blog/">Blog</a><!-- /seo:blog -->
         <a href="/en/">Home</a>
         <a href="/en/privacidade.html">Privacy Policy</a>
       </nav>
@@ -211,6 +212,7 @@
     document.head.appendChild(s);
   }
 </script>
+
 <!-- seo:langjs --><script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('.langsel a');if(a)try{localStorage.setItem('lang',a.getAttribute('data-lang'))}catch(x){}});</script><!-- /seo:langjs -->
 </body>
 </html>

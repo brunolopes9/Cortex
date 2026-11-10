@@ -80,6 +80,13 @@ def tratar(lang, pag):
         h = re.sub(r'<meta property="og:(locale|locale:alternate|url)"[^>]*>\n?', "", h)
         h = h.replace("</head>", bloco_head(lang, caminho) + "\n</head>", 1)
         h = re.sub(r'"inLanguage": "[^"]*"', f'"inLanguage": "{HTML_LANG[lang]}"', h)
+    # ligação para o blog no menu (se o blog desta língua existir)
+    h = re.sub(r"<!-- seo:blog -->.*?<!-- /seo:blog -->", "", h, flags=re.S)
+    if ficheiro(lang, "blog/index.html").exists():
+        b = "" if lang == "pt" else f"/{lang}"
+        h = re.sub(r'(<nav class="nav__links"[^>]*>)', r'\1<!-- seo:blog --><a href="' + b + r'/blog/">Blog</a><!-- /seo:blog -->', h, count=1)
+        h = re.sub(r'(<nav class="mnav"[^>]*>)', r'\1<!-- seo:blog --><a href="' + b + r'/blog/"><span>Blog</span><i>✎</i></a><!-- /seo:blog -->', h, count=1)
+        h = re.sub(r'(<nav aria-label="Legal">)', r'\1<!-- seo:blog --><a href="' + b + r'/blog/">Blog</a><!-- /seo:blog -->', h, count=1)
     sel = seletor(lang, caminho or "/")
     h = h.replace('<div class="nav__cta">', '<div class="nav__cta">\n      ' + sel, 1)
     if 'class="mnav"' in h:
