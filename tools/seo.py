@@ -73,8 +73,11 @@ def tratar(lang, pag):
     h = re.sub(r'<html lang="[^"]*"', f'<html lang="{HTML_LANG[lang]}"', h, count=1)
     # tira o que havia antes (versões antigas e geradas)
     h = re.sub(r"<!-- seo:i18n -->.*?<!-- /seo:i18n -->\n?", "", h, flags=re.S)
+    # leva também a quebra de linha + indentação que foram inseridas antes do bloco
+    # (sem isto, cada execução deixava linhas em branco a mais nas páginas)
+    h = re.sub(r"\n[ \t]*<!-- seo:lang -->.*?<!-- /seo:lang -->", "", h, flags=re.S)
     h = re.sub(r"<!-- seo:lang -->.*?<!-- /seo:lang -->", "", h, flags=re.S)
-    h = re.sub(r"<!-- seo:langjs -->.*?<!-- /seo:langjs -->", "", h, flags=re.S)
+    h = re.sub(r"\n?<!-- seo:langjs -->.*?<!-- /seo:langjs -->", "", h, flags=re.S)
     if caminho:
         h = re.sub(r'<link rel="canonical"[^>]*>\n?', "", h)
         h = re.sub(r'<meta property="og:(locale|locale:alternate|url)"[^>]*>\n?', "", h)

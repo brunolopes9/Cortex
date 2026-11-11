@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>document.documentElement.classList.add('js');</script>
+<title>Martingale Trading e Grid: Riscos Reais | Cortex Automation</title>
+<meta name="description" content="Martingale trading e grid explicados com exemplos simples: porque parecem perfeitos durante meses e como identificar estes riscos num robô de trading.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#0A0B0C">
+<link rel="canonical" href="https://www.cortexautomationai.com/blog/martingale-trading-grid-riscos.html">
+<link rel="alternate" hreflang="pt-PT" href="https://www.cortexautomationai.com/blog/martingale-trading-grid-riscos.html">
+<link rel="alternate" hreflang="en" href="https://www.cortexautomationai.com/en/blog/martingale-trading-grid-strategies-explained.html">
+<link rel="alternate" hreflang="fr" href="https://www.cortexautomationai.com/fr/blog/martingale-trading-grid-risques.html">
+<link rel="alternate" hreflang="es" href="https://www.cortexautomationai.com/es/blog/martingala-en-trading-y-grid-riesgos.html">
+<link rel="alternate" hreflang="x-default" href="https://www.cortexautomationai.com/blog/martingale-trading-grid-riscos.html">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="pt_PT">
+<meta property="og:site_name" content="Cortex Automation">
+<meta property="og:url" content="https://www.cortexautomationai.com/blog/martingale-trading-grid-riscos.html">
+<meta property="og:title" content="Martingale Trading e Grid: Riscos Reais | Cortex Automation">
+<meta property="og:description" content="Martingale trading e grid explicados com exemplos simples: porque parecem perfeitos durante meses e como identificar estes riscos num robô de trading.">
+<meta property="og:image" content="https://www.cortexautomationai.com/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="/css/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Article", "headline": "Martingale trading e grid trading: como funcionam e porque podem arruinar uma conta", "description": "Martingale trading e grid explicados com exemplos simples: porque parecem perfeitos durante meses e como identificar estes riscos num robô de trading.", "inLanguage": "pt-PT", "datePublished": "2026-11-11", "dateModified": "2026-11-11", "mainEntityOfPage": "https://www.cortexautomationai.com/blog/martingale-trading-grid-riscos.html", "image": "https://www.cortexautomationai.com/assets/og-image.png", "author": {"@type": "Organization", "name": "Cortex Automation", "url": "https://www.cortexautomationai.com/"}, "publisher": {"@type": "Organization", "name": "Cortex Automation", "logo": {"@type": "ImageObject", "url": "https://www.cortexautomationai.com/assets/logo.png"}}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "O que é a estratégia martingale no trading?", "acceptedAnswer": {"@type": "Answer", "text": "É uma técnica em que o tamanho da posição é aumentado (normalmente duplicado) depois de cada perda. Assim, um único ganho recupera as perdas anteriores e dá um pequeno lucro. O risco cresce de forma exponencial em sequências de perdas."}}, {"@type": "Question", "name": "Qual é a diferença entre martingale e grid trading?", "acceptedAnswer": {"@type": "Answer", "text": "O martingale aumenta o tamanho das posições após perdas. O grid coloca ordens a intervalos fixos de preço, formando uma grelha, com tamanho fixo ou crescente. Ambos costumam funcionar sem stop loss e acumulam posições quando o mercado entra em tendência."}}, {"@type": "Question", "name": "O martingale trading funciona?", "acceptedAnswer": {"@type": "Answer", "text": "Pode dar lucros regulares durante meses em mercados laterais. Mas o ganho é pequeno e a perda potencial é muito grande. Uma tendência forte ou uma longa série de perdas pode eliminar grande parte da conta ou a conta toda."}}, {"@type": "Question", "name": "Como saber se um robô de trading usa martingale?", "acceptedAnswer": {"@type": "Answer", "text": "Procure uma curva de capital muito lisa, taxa de acerto muito alta com ganhos pequenos, várias posições abertas no mesmo sentido, tamanhos de lote crescentes, ausência de stop loss e grande diferença entre o drawdown do capital e o do saldo."}}, {"@type": "Question", "name": "O que é drawdown flutuante?", "acceptedAnswer": {"@type": "Answer", "text": "É a perda latente das posições ainda abertas, ou seja, a diferença entre o saldo e o capital da conta. Em estratégias martingale e grid pode ser muito elevado, mesmo quando o saldo mostra apenas ganhos."}}, {"@type": "Question", "name": "Qual é uma alternativa mais segura ao martingale?", "acceptedAnswer": {"@type": "Answer", "text": "Arriscar uma percentagem fixa e pequena da conta em cada operação (por exemplo 1%), usar sempre stop loss e limitar o número de posições abertas. O risco não desaparece, mas cada perda fica limitada e conhecida à partida."}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Início", "item": "https://www.cortexautomationai.com/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.cortexautomationai.com/blog/"}, {"@type": "ListItem", "position": 3, "name": "Martingale trading e grid trading: como funcionam e porque podem arruinar uma conta", "item": "https://www.cortexautomationai.com/blog/martingale-trading-grid-riscos.html"}]}]}</script>
+</head>
+<body>
+<header class="nav is-stuck" id="nav">
+  <div class="wrap nav__in">
+    <a href="/" class="logo" aria-label="Cortex Automation">
+      <img class="logo__mark" src="/assets/mark.png" width="38" height="38" alt="" aria-hidden="true">
+      <span class="logo__txt"><b>Cortex</b><span>Automation</span></span>
+    </a>
+    <div class="nav__cta">
+      <div class="langsel" role="navigation" aria-label="Language"><a href="/blog/martingale-trading-grid-riscos.html" hreflang="pt-PT" lang="pt-PT" title="Português" data-lang="pt" aria-current="true"><img src="/assets/flags/pt.svg" width="22" height="15" alt="Português"></a><a href="/en/blog/martingale-trading-grid-strategies-explained.html" hreflang="en" lang="en" title="English" data-lang="en"><img src="/assets/flags/en.svg" width="22" height="15" alt="English"></a><a href="/fr/blog/martingale-trading-grid-risques.html" hreflang="fr" lang="fr" title="Français" data-lang="fr"><img src="/assets/flags/fr.svg" width="22" height="15" alt="Français"></a><a href="/es/blog/martingala-en-trading-y-grid-riesgos.html" hreflang="es" lang="es" title="Español" data-lang="es"><img src="/assets/flags/es.svg" width="22" height="15" alt="Español"></a></div>
+      <a href="/" class="btn btn--ghost btn--sm">Voltar ao site</a>
+    </div>
+  </div>
+</header>
+<main>
+
+<article class="wrap doc">
+  <div class="doc__hd">
+    <p class="micro"><a href="/">Início</a> › <a href="/blog/">Blog</a></p>
+    <h1 class="h2" style="margin-top:14px">Martingale trading e grid trading: como funcionam e porque podem arruinar uma conta</h1>
+    <p class="micro" style="margin-top:10px">Atualizado a 2026-11-11 · 9 min de leitura</p>
+  </div>
+  <div class="doc__body">
+    <p><strong>No martingale trading, o investidor duplica o tamanho da posição depois de cada perda para recuperar tudo com um único ganho. No grid trading, deixa uma grelha de ordens abertas a intervalos fixos. As duas estratégias podem dar lucros pequenos e regulares durante meses. Basta, porém, uma tendência forte para apagarem grande parte da conta, ou mesmo a conta toda.</strong></p>
+    <p>Quem procura robôs de trading ou sinais automáticos acaba por encontrar resultados que parecem bons demais: meses seguidos de ganhos, quase nenhum mês negativo e uma curva de capital que sobe como uma escada. Muitas vezes, por trás destes números está o <strong>martingale trading</strong>, o <strong>grid trading</strong> ou uma combinação dos dois. Neste artigo explicamos como funcionam as duas técnicas, com exemplos numéricos simples, porque é que o risco fica escondido durante tanto tempo e como reconhecê-las no histórico de um robô. No fim, apresentamos alternativas mais prudentes de gestão de risco.</p>
+
+<h2>O que é o martingale trading?</h2>
+<p>A estratégia martingale vem dos jogos de casino. A ideia é simples: <strong>sempre que perde, duplica a aposta seguinte</strong>. Quando finalmente ganha, recupera todas as perdas anteriores e ainda fica com um lucro igual à aposta inicial.</p>
+<p>No trading, a lógica é a mesma. Um sistema abre uma posição. Se o preço andar contra ela, abre outra no mesmo sentido mas maior (normalmente o dobro), o que baixa o preço médio de entrada. Assim, basta um pequeno movimento a favor para fechar tudo com lucro. Também se chama a isto «fazer média para baixo» com tamanho crescente.</p>
+
+<h3>Exemplo numérico: duplicar depois de cada perda</h3>
+<p>Imagine uma conta com <strong>2000 €</strong> e uma aposta inicial de <strong>10 €</strong> em cada operação, com ganho ou perda igual ao valor arriscado. Os números são hipotéticos e servem apenas para ilustrar.</p>
+<table>
+<thead>
+<tr><th>Operação</th><th>Valor arriscado</th><th>Perda acumulada se perder</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>10 €</td><td>10 €</td></tr>
+<tr><td>2</td><td>20 €</td><td>30 €</td></tr>
+<tr><td>3</td><td>40 €</td><td>70 €</td></tr>
+<tr><td>4</td><td>80 €</td><td>150 €</td></tr>
+<tr><td>5</td><td>160 €</td><td>310 €</td></tr>
+<tr><td>6</td><td>320 €</td><td>630 €</td></tr>
+<tr><td>7</td><td>640 €</td><td>1270 €</td></tr>
+<tr><td>8</td><td>1280 €</td><td>Não há capital suficiente</td></tr>
+</tbody>
+</table>
+<p>Depois de 7 perdas seguidas, o investidor já perdeu 1270 € e sobram-lhe 730 €. Para continuar a estratégia, teria de arriscar 1280 €, que não tem. Tudo isto para ganhar, no melhor cenário, <strong>10 €</strong>.</p>
+<p>Este é o problema central: <strong>o ganho é sempre pequeno e fixo, mas a perda potencial cresce de forma exponencial</strong>. Arrisca-se mais de 1000 € para ganhar 10 €.</p>
+
+<h3>«Mas 7 perdas seguidas é raríssimo»</h3>
+<p>Num cenário idealizado, com 50% de probabilidade de ganhar cada operação e operações independentes, a probabilidade de perder 7 vezes seguidas é de 1 em 128. Parece pouco. Só que um sistema automático repete este ciclo centenas ou milhares de vezes. Um acontecimento de 1 em 128 que se tenta centenas de vezes acaba por acontecer quase de certeza.</p>
+<p>Nos mercados financeiros a situação ainda é pior, porque os movimentos não são lançamentos de moeda independentes. Há <strong>tendências</strong>: períodos em que o preço anda dias ou semanas na mesma direção. Numa tendência forte, as perdas consecutivas não são azar, são o resultado esperado de uma estratégia que aposta sempre no regresso do preço.</p>
+
+<h2>O que é o grid trading?</h2>
+<p>O grid trading (estratégia de grelha) coloca ordens a intervalos regulares acima e/ou abaixo do preço atual, formando uma grelha. Cada ordem tem normalmente um objetivo de lucro (take profit) pequeno, igual ao espaçamento da grelha. A estratégia ganha quando o mercado oscila dentro de um intervalo: compra nas descidas, vende nas subidas e repete.</p>
+<p>Ao contrário do martingale clássico, o grid nem sempre aumenta o tamanho das posições. O risco está noutro lado: <strong>em geral não há stop loss</strong> e as posições vão-se acumulando enquanto o preço se afasta.</p>
+
+<h3>Exemplo numérico: uma grelha de ordens de compra</h3>
+<p>Suponha um par de moedas a 1,1000. O sistema coloca uma ordem de compra a cada 20 pips de descida (1,1000, 1,0980, 1,0960 e assim por diante, até 10 níveis). Cada posição tem take profit de 20 pips. Para simplificar, cada pip vale <strong>1 €</strong> por posição.</p>
+<ul>
+<li><strong>Mercado lateral:</strong> o preço desce até 1,0960 e volta a 1,1000. As compras a 1,0980 e 1,0960 fecham com +20 € cada. A grelha repõe as ordens e o ciclo repete-se. Durante semanas, isto produz pequenos ganhos quase diários.</li>
+<li><strong>Tendência de descida:</strong> o preço cai de forma contínua até 1,0800. Os 10 níveis (de 1,1000 a 1,0820) foram todos ativados e nenhum chegou ao take profit. A perda latente é de 200 + 180 + 160 + … + 20 pips, ou seja, <strong>1100 €</strong>.</li>
+<li><strong>A tendência continua:</strong> se o preço descer mais 200 pips, até 1,0600, cada uma das 10 posições perde mais 200 €. A perda latente passa para <strong>3100 €</strong>. Se a grelha continuar a abrir ordens abaixo de 1,0800, a perda é ainda maior.</li>
+</ul>
+<p>Juntando grid e martingale (cada nível novo com o dobro do tamanho), o risco cresce muito mais depressa. Muitos robôs comerciais usam precisamente esta combinação.</p>
+
+<h2>Martingale vs grid vs risco fixo: comparação</h2>
+<table>
+<thead>
+<tr><th>Característica</th><th>Martingale</th><th>Grid</th><th>Risco fixo com stop loss</th></tr>
+</thead>
+<tbody>
+<tr><td>Tamanho das posições</td><td>Aumenta após cada perda</td><td>Fixo ou crescente</td><td>Calculado para arriscar uma % fixa</td></tr>
+<tr><td>Stop loss</td><td>Normalmente não tem</td><td>Normalmente não tem</td><td>Sempre definido</td></tr>
+<tr><td>Posições abertas em simultâneo</td><td>Várias no mesmo sentido</td><td>Muitas</td><td>Habitualmente uma</td></tr>
+<tr><td>Taxa de acerto aparente</td><td>Muito alta</td><td>Muito alta</td><td>Moderada</td></tr>
+<tr><td>Curva de capital</td><td>Muito lisa até ao colapso</td><td>Muito lisa até ao colapso</td><td>Irregular, com recuos visíveis</td></tr>
+<tr><td>Pior cenário</td><td>Perda de grande parte ou de toda a conta</td><td>Perda de grande parte ou de toda a conta</td><td>Série de perdas limitadas e conhecidas</td></tr>
+</tbody>
+</table>
+
+<h2>Porque é que o martingale trading parece ótimo durante meses</h2>
+<p>A razão é estatística: a estratégia <strong>troca muitos ganhos pequenos e frequentes por uma perda rara e enorme</strong>. Enquanto essa perda não acontece, os números parecem excelentes:</p>
+<ul>
+<li><strong>Taxa de acerto de 90% ou mais:</strong> quase todas as operações fecham com lucro, porque as perdas não são fechadas, ficam em aberto à espera de recuperação.</li>
+<li><strong>Curva de capital quase em linha reta:</strong> o saldo só regista operações fechadas, e as fechadas são quase todas positivas.</li>
+<li><strong>Retornos mensais regulares:</strong> enquanto o mercado oscila num intervalo, o sistema ganha um pouco todos os dias.</li>
+</ul>
+<p>O problema é que um histórico de seis meses ou um ano pode simplesmente não incluir a tendência forte que destrói a conta. Quando ela chega, uma única sequência pode apagar anos de ganhos. Os traders descrevem isto como «apanhar moedas à frente de um cilindro compressor».</p>
+
+<h3>Saldo vs capital: a diferença que esconde o risco</h3>
+<p>Nas plataformas de corretagem há dois números importantes:</p>
+<ul>
+<li><strong>Saldo (balance):</strong> o dinheiro da conta contando só as operações fechadas.</li>
+<li><strong>Capital (equity):</strong> o saldo mais ou menos o resultado das posições abertas.</li>
+</ul>
+<p>Numa estratégia martingale ou grid, o saldo pode subir todos os dias enquanto o capital está muito abaixo, por causa das posições abertas em perda. Se só lhe mostrarem a curva do saldo, está a ver metade da história.</p>
+
+<h2>Como identificar martingale ou grid no histórico de um robô</h2>
+<p>Antes de confiar dinheiro a um robô, a um gestor ou a um serviço de sinais, procure estes sinais de alerta no histórico:</p>
+<ol>
+<li><strong>Curva de capital lisa demais.</strong> O trading real tem períodos de perdas. Uma linha quase reta durante muitos meses deve gerar desconfiança, não entusiasmo.</li>
+<li><strong>Taxa de acerto extremamente alta com ganho médio muito pequeno.</strong> Por exemplo, 95% de operações vencedoras com ganhos de poucos euros, mas com algumas perdas (quando aparecem) muito maiores do que todos os ganhos.</li>
+<li><strong>Muitas posições abertas ao mesmo tempo no mesmo ativo e no mesmo sentido,</strong> com preços de entrada escalonados.</li>
+<li><strong>Tamanhos de posição crescentes:</strong> 0,01, 0,02, 0,04, 0,08 lotes… é a assinatura clássica do martingale.</li>
+<li><strong>Grupos de operações a fechar ao mesmo tempo,</strong> todas com lucro, depois de um período em aberto.</li>
+<li><strong>Drawdown flutuante elevado.</strong> Compare o drawdown máximo do capital com o do saldo. Se o saldo quase nunca recua mas o capital chegou a cair 40% ou 60%, o risco está lá.</li>
+<li><strong>Ausência de stop loss</strong> nas operações, ou stops colocados tão longe que nunca são atingidos.</li>
+<li><strong>Operações que ficam abertas muito tempo em perda</strong> enquanto as vencedoras fecham depressa.</li>
+<li><strong>Histórico curto.</strong> Poucos meses de resultados quase nunca bastam para mostrar o verdadeiro risco destas estratégias.</li>
+</ol>
+<p>Uma regra prática: <strong>peça sempre o histórico completo, com o capital e todas as operações</strong>, não só o gráfico do saldo ou um resumo de rentabilidade mensal.</p>
+
+<h2>Alternativas mais seguras ao martingale trading</h2>
+<p>Nenhuma estratégia elimina o risco. Há, no entanto, princípios de gestão de risco que fazem com que as perdas sejam <strong>limitadas, conhecidas de antemão e recuperáveis</strong>.</p>
+
+<h3>1. Risco fixo por operação</h3>
+<p>Em vez de aumentar a exposição depois de perder, arrisca-se sempre a mesma percentagem pequena da conta, por exemplo 1%. Com uma conta hipotética de 10 000 €, a primeira operação arrisca 100 €.</p>
+<p>Se houver 10 perdas seguidas, cada uma de 1% do capital nesse momento, a conta fica com cerca de <strong>9044 €</strong>: uma perda de aproximadamente 9,6%. É desagradável, mas é recuperável. Compare com o martingale, em que 7 ou 8 perdas seguidas podem esgotar a conta.</p>
+
+<h3>2. Stop loss definido em todas as operações</h3>
+<p>O stop loss fecha a posição automaticamente num nível de perda definido à partida. Assim, a perda máxima de cada operação é conhecida antes de entrar. Convém lembrar que, em situações de mercado muito rápidas ou com gaps (por exemplo, na abertura após um fim de semana), a execução pode ocorrer a um preço pior do que o previsto (slippage).</p>
+
+<h3>3. Uma posição de cada vez (ou exposição total limitada)</h3>
+<p>Ter uma só posição aberta por ativo, ou um limite claro para a exposição total, evita a acumulação silenciosa de risco típica das grelhas. Se a análise estava errada, a operação fecha com uma perda controlada, em vez de se acrescentarem posições à espera de que o mercado «dê a volta».</p>
+
+<h3>4. Relação risco/retorno equilibrada</h3>
+<p>Uma estratégia com taxa de acerto de 40% ou 50% pode ser sustentável se os ganhos médios forem maiores do que as perdas médias. É o contrário do martingale, em que se ganha quase sempre um pouco e se perde raramente muito.</p>
+
+<h3>5. Avaliar o drawdown, não só a rentabilidade</h3>
+<p>Ao comparar sistemas, olhe primeiro para o drawdown máximo do capital, a duração dos períodos de perda e o tamanho da pior operação. Só depois para a rentabilidade. Um retorno alto com risco escondido não é comparável a um retorno moderado com risco transparente.</p>
+
+<h2>O martingale trading é proibido ou ilegal?</h2>
+<p>Em geral, não. O martingale e o grid são técnicas de gestão de posições, não são práticas ilegais em si. Algumas corretoras ou plataformas podem limitar certas práticas nos seus termos, mas a questão principal não é legal, é de risco. O que deve preocupar o investidor é perceber se o sistema que está a usar ou a avaliar recorre a estas técnicas e se esse risco lhe foi explicado com clareza.</p>
+
+<h2>Perguntas a fazer antes de usar um robô ou serviço automático</h2>
+<ul>
+<li>A estratégia usa martingale, grid ou aumento de posição após perdas?</li>
+<li>Todas as operações têm stop loss? A que distância?</li>
+<li>Quantas posições podem estar abertas ao mesmo tempo?</li>
+<li>Qual foi o drawdown máximo do capital (e não só do saldo)?</li>
+<li>O histórico é verificável, completo e cobre vários anos e diferentes condições de mercado?</li>
+<li>Onde fica o dinheiro? Na sua própria conta na corretora ou numa conta de terceiros?</li>
+</ul>
+<p>Estas perguntas valem para qualquer serviço automático. Num modelo como o da Cortex Automation, por exemplo, o capital fica na conta do próprio cliente na corretora. Mesmo assim, faz sentido pedir sempre o histórico completo e perceber como é gerido o risco de cada operação.</p>
+
+<h2>Conclusão</h2>
+<p>O martingale trading e o grid trading atraem porque produzem resultados muito consistentes enquanto o mercado anda de lado. Esse aspeto, contudo, esconde um risco assimétrico: ganhos pequenos e frequentes em troca de uma perda rara mas potencialmente total. Uma curva de capital demasiado lisa, muitas posições abertas ao mesmo tempo, tamanhos crescentes e um drawdown flutuante elevado são os sinais mais claros. Uma gestão de risco prudente, com risco fixo por operação, stop loss e exposição limitada, não garante lucros, mas faz com que cada perda seja conhecida e suportável.</p>
+<p><em>Nota: este artigo tem fins exclusivamente informativos e educativos e não constitui aconselhamento financeiro. O trading envolve risco de perda de capital. Os exemplos são hipotéticos e rentabilidades passadas não garantem resultados futuros.</em></p>
+    <h2>Perguntas frequentes</h2>
+    <h3>O que é a estratégia martingale no trading?</h3><p>É uma técnica em que o tamanho da posição é aumentado (normalmente duplicado) depois de cada perda. Assim, um único ganho recupera as perdas anteriores e dá um pequeno lucro. O risco cresce de forma exponencial em sequências de perdas.</p><h3>Qual é a diferença entre martingale e grid trading?</h3><p>O martingale aumenta o tamanho das posições após perdas. O grid coloca ordens a intervalos fixos de preço, formando uma grelha, com tamanho fixo ou crescente. Ambos costumam funcionar sem stop loss e acumulam posições quando o mercado entra em tendência.</p><h3>O martingale trading funciona?</h3><p>Pode dar lucros regulares durante meses em mercados laterais. Mas o ganho é pequeno e a perda potencial é muito grande. Uma tendência forte ou uma longa série de perdas pode eliminar grande parte da conta ou a conta toda.</p><h3>Como saber se um robô de trading usa martingale?</h3><p>Procure uma curva de capital muito lisa, taxa de acerto muito alta com ganhos pequenos, várias posições abertas no mesmo sentido, tamanhos de lote crescentes, ausência de stop loss e grande diferença entre o drawdown do capital e o do saldo.</p><h3>O que é drawdown flutuante?</h3><p>É a perda latente das posições ainda abertas, ou seja, a diferença entre o saldo e o capital da conta. Em estratégias martingale e grid pode ser muito elevado, mesmo quando o saldo mostra apenas ganhos.</p><h3>Qual é uma alternativa mais segura ao martingale?</h3><p>Arriscar uma percentagem fixa e pequena da conta em cada operação (por exemplo 1%), usar sempre stop loss e limitar o número de posições abertas. O risco não desaparece, mas cada perda fica limitada e conhecida à partida.</p>
+    <div class="note" style="margin-top:40px"><p class="small">Quer ver como funciona um sistema automático, com o dinheiro na sua conta? <a href="/#performance"><strong>Ver resultados e simulador →</strong></a></p></div>
+    <h2>Artigos relacionados</h2>
+    <ul><li><a href="/blog/como-diversificar-investimentos-guia.html">Como diversificar investimentos: guia completo para construir uma carteira equilibrada</a></li><li><a href="/blog/investimento-mensal-como-investir-todos-os-meses.html">Investimento mensal: como investir um valor fixo todos os meses</a></li><li><a href="/blog/o-que-e-forex-guia-iniciantes.html">O que é Forex? Guia completo para iniciantes</a></li><li><a href="/blog/trading-automatico-como-funciona-riscos.html">Trading automático: o que é, como funciona e que riscos tem</a></li></ul>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <p class="micro" style="max-width:80ch;margin-bottom:18px">Informação geral, não é aconselhamento financeiro. Rentabilidade passada não garante rentabilidade futura. Todo o investimento envolve risco de perda de capital.</p>
+    <div class="foot__bar" style="border-top:0">
+      <span class="micro">© 2026 Cortex Automation. Todos os direitos reservados.</span>
+      <nav aria-label="Legal">
+        <a href="/">Início</a>
+        <a href="/blog/">Blog</a>
+        <a href="/termos.html">Termos e Condições</a>
+        <a href="/privacidade.html">Privacidade</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+<a href="#" class="wa" data-wa aria-label="WhatsApp"><svg width="27" height="27" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Z"/></svg></a>
+<script src="/js/main.js" defer></script>
+<script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('.langsel a');if(a)try{localStorage.setItem('lang',a.getAttribute('data-lang'))}catch(x){}});</script>
+</body>
+</html>

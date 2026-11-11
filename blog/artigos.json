@@ -100,6 +100,46 @@
   }
  },
  {
+  "id": "robo-de-trading",
+  "data": "2026-11-11",
+  "slugs": {
+   "pt": "robo-de-trading-o-que-e-como-avaliar",
+   "en": "trading-bot-explained-beginners-guide",
+   "fr": "robot-de-trading-guide-debutant",
+   "es": "robot-de-trading-que-es-como-funciona"
+  }
+ },
+ {
+  "id": "martingale-e-grid",
+  "data": "2026-11-11",
+  "slugs": {
+   "pt": "martingale-trading-grid-riscos",
+   "en": "martingale-trading-grid-strategies-explained",
+   "fr": "martingale-trading-grid-risques",
+   "es": "martingala-en-trading-y-grid-riesgos"
+  }
+ },
+ {
+  "id": "conta-pamm",
+  "data": "2026-11-11",
+  "slugs": {
+   "pt": "conta-pamm-o-que-e-como-funciona",
+   "en": "pamm-account-how-it-works-risks",
+   "fr": "compte-pamm-fonctionnement-risques",
+   "es": "cuenta-pamm-que-es-como-funciona"
+  }
+ },
+ {
+  "id": "estrategia-breakout",
+  "data": "2026-11-11",
+  "slugs": {
+   "pt": "estrategia-breakout-guia-completo",
+   "en": "breakout-trading-strategy-explained",
+   "fr": "strategie-breakout-trading-cassure",
+   "es": "estrategia-breakout-como-funciona"
+  }
+ },
+ {
   "id": "o-que-e-drawdown",
   "data": "2026-11-10",
   "slugs": {

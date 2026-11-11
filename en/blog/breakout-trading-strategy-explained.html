@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>document.documentElement.classList.add('js');</script>
+<title>Breakout Trading Strategy Explained | Cortex Automation</title>
+<meta name="description" content="Breakout trading strategy explained: support and resistance, false breakouts, confirmation, stop placement and risk/reward, with a simple worked example.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#0A0B0C">
+<link rel="canonical" href="https://www.cortexautomationai.com/en/blog/breakout-trading-strategy-explained.html">
+<link rel="alternate" hreflang="pt-PT" href="https://www.cortexautomationai.com/blog/estrategia-breakout-guia-completo.html">
+<link rel="alternate" hreflang="en" href="https://www.cortexautomationai.com/en/blog/breakout-trading-strategy-explained.html">
+<link rel="alternate" hreflang="fr" href="https://www.cortexautomationai.com/fr/blog/strategie-breakout-trading-cassure.html">
+<link rel="alternate" hreflang="es" href="https://www.cortexautomationai.com/es/blog/estrategia-breakout-como-funciona.html">
+<link rel="alternate" hreflang="x-default" href="https://www.cortexautomationai.com/blog/estrategia-breakout-guia-completo.html">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_GB">
+<meta property="og:site_name" content="Cortex Automation">
+<meta property="og:url" content="https://www.cortexautomationai.com/en/blog/breakout-trading-strategy-explained.html">
+<meta property="og:title" content="Breakout Trading Strategy Explained | Cortex Automation">
+<meta property="og:description" content="Breakout trading strategy explained: support and resistance, false breakouts, confirmation, stop placement and risk/reward, with a simple worked example.">
+<meta property="og:image" content="https://www.cortexautomationai.com/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="/css/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Article", "headline": "Breakout Trading Strategy: How It Works, False Breakouts and Managing Risk", "description": "Breakout trading strategy explained: support and resistance, false breakouts, confirmation, stop placement and risk/reward, with a simple worked example.", "inLanguage": "en", "datePublished": "2026-11-11", "dateModified": "2026-11-11", "mainEntityOfPage": "https://www.cortexautomationai.com/en/blog/breakout-trading-strategy-explained.html", "image": "https://www.cortexautomationai.com/assets/og-image.png", "author": {"@type": "Organization", "name": "Cortex Automation", "url": "https://www.cortexautomationai.com/"}, "publisher": {"@type": "Organization", "name": "Cortex Automation", "logo": {"@type": "ImageObject", "url": "https://www.cortexautomationai.com/assets/logo.png"}}}, {"@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is a breakout in trading?", "acceptedAnswer": {"@type": "Answer", "text": "A breakout is when price moves decisively beyond a defined support or resistance level, often the edge of a trading range, suggesting the balance between buyers and sellers has shifted and a new directional move may follow."}}, {"@type": "Question", "name": "How do you avoid false breakouts?", "acceptedAnswer": {"@type": "Answer", "text": "You cannot avoid them completely. Traders reduce them by waiting for a candle close beyond the level, looking for higher volume where it is reliable, waiting for a retest, trading in the direction of the larger trend and avoiding thin, illiquid periods."}}, {"@type": "Question", "name": "Where should I put my stop-loss on a breakout trade?", "acceptedAnswer": {"@type": "Answer", "text": "A common approach is to place the stop back inside the old range, with a buffer beyond the broken level, or below the breakout candle, or at a multiple of ATR. Then size the position so the amount at risk per trade stays fixed."}}, {"@type": "Question", "name": "Why do breakout strategies have a low win rate?", "acceptedAnswer": {"@type": "Answer", "text": "Many breakouts fail and are stopped out for small losses, while the successful ones can run several times the initial risk. A breakout strategy can therefore lose more often than it wins and still be viable, but only if winners are clearly larger than losers after costs."}}, {"@type": "Question", "name": "What is a good risk/reward ratio for breakout trading?", "acceptedAnswer": {"@type": "Answer", "text": "Many breakout traders aim for at least 2:1, which needs a win rate above roughly 33% to break even before costs. There is no universally correct ratio. It depends on the strategy, the market and trading costs."}}, {"@type": "Question", "name": "Is breakout trading suitable for beginners?", "acceptedAnswer": {"@type": "Answer", "text": "The concept is easy to understand, but executing it well takes discipline, strict risk management and acceptance of losing streaks. Beginners should practise with small sizes or a demo account and understand that losses are part of the process."}}]}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.cortexautomationai.com/en/"}, {"@type": "ListItem", "position": 2, "name": "Blog", "item": "https://www.cortexautomationai.com/en/blog/"}, {"@type": "ListItem", "position": 3, "name": "Breakout Trading Strategy: How It Works, False Breakouts and Managing Risk", "item": "https://www.cortexautomationai.com/en/blog/breakout-trading-strategy-explained.html"}]}]}</script>
+</head>
+<body>
+<header class="nav is-stuck" id="nav">
+  <div class="wrap nav__in">
+    <a href="/en/" class="logo" aria-label="Cortex Automation">
+      <img class="logo__mark" src="/assets/mark.png" width="38" height="38" alt="" aria-hidden="true">
+      <span class="logo__txt"><b>Cortex</b><span>Automation</span></span>
+    </a>
+    <div class="nav__cta">
+      <div class="langsel" role="navigation" aria-label="Language"><a href="/blog/estrategia-breakout-guia-completo.html" hreflang="pt-PT" lang="pt-PT" title="Português" data-lang="pt"><img src="/assets/flags/pt.svg" width="22" height="15" alt="Português"></a><a href="/en/blog/breakout-trading-strategy-explained.html" hreflang="en" lang="en" title="English" data-lang="en" aria-current="true"><img src="/assets/flags/en.svg" width="22" height="15" alt="English"></a><a href="/fr/blog/strategie-breakout-trading-cassure.html" hreflang="fr" lang="fr" title="Français" data-lang="fr"><img src="/assets/flags/fr.svg" width="22" height="15" alt="Français"></a><a href="/es/blog/estrategia-breakout-como-funciona.html" hreflang="es" lang="es" title="Español" data-lang="es"><img src="/assets/flags/es.svg" width="22" height="15" alt="Español"></a></div>
+      <a href="/en/" class="btn btn--ghost btn--sm">Back to the site</a>
+    </div>
+  </div>
+</header>
+<main>
+
+<article class="wrap doc">
+  <div class="doc__hd">
+    <p class="micro"><a href="/en/">Home</a> › <a href="/en/blog/">Blog</a></p>
+    <h1 class="h2" style="margin-top:14px">Breakout Trading Strategy: How It Works, False Breakouts and Managing Risk</h1>
+    <p class="micro" style="margin-top:10px">Updated 2026-11-11 · 9 min read</p>
+  </div>
+  <div class="doc__body">
+    <p><strong>A breakout trading strategy looks for the moment price moves decisively out of a range, through a support or resistance level, and then tries to follow the move that comes after. It is simple to describe and hard to do well. Most of the work is filtering out false breakouts, placing the stop sensibly and accepting that many trades will lose small so that a few can win bigger.</strong></p>
+    <p>A <strong>breakout trading strategy</strong> rests on one simple observation. Markets often spend time going sideways inside a range, then leave that range with a burst of momentum. Breakout traders try to catch the start of that move. This guide explains the parts of the strategy: support and resistance, what counts as a breakout, why so many breakouts fail, how traders look for confirmation, where stops and targets usually go, and why breakout systems tend to have lower win rates but larger winners. It finishes with a simple worked example using round, hypothetical numbers.</p>
+
+<h2>What is a breakout trading strategy?</h2>
+<p>A breakout trading strategy is a rules-based way of entering a trade when price moves beyond a clearly defined level, usually the top or bottom of a recent range. The idea is that once price escapes an area where buyers and sellers were roughly balanced, the imbalance can carry it further in the same direction.</p>
+<p>Breakouts can go either way:</p>
+<ul>
+<li><strong>Upside breakout:</strong> price rises above resistance, and the trader looks to buy (go long).</li>
+<li><strong>Downside breakout (breakdown):</strong> price falls below support, and the trader looks to sell or go short.</li>
+</ul>
+<p>The approach is used across shares, indices, currencies, commodities and cryptoassets, and on timeframes from minutes to weeks. The principles stay the same. What changes is how much noise you have to filter out.</p>
+
+<h2>Support, resistance and trading ranges</h2>
+<p>Before you can trade a breakout, you need something to break out <em>of</em>. That is where support and resistance come in.</p>
+<h3>Support</h3>
+<p>Support is a price area where falling prices have repeatedly stopped and turned higher. It suggests that buyers have tended to step in around that level.</p>
+<h3>Resistance</h3>
+<p>Resistance is the opposite. It is a price area where rising prices have repeatedly stalled and turned lower, which suggests sellers have been active there.</p>
+<h3>Ranges and consolidation patterns</h3>
+<p>When price moves back and forth between support and resistance, it forms a <strong>trading range</strong>, also called consolidation. Common range-type structures include:</p>
+<ul>
+<li><strong>Horizontal ranges (rectangles):</strong> flat support and flat resistance.</li>
+<li><strong>Triangles:</strong> highs and lows converge, so the range gets tighter over time.</li>
+<li><strong>Flags and pennants:</strong> short pauses after a sharp move, often read as continuation patterns.</li>
+<li><strong>Prior highs and lows:</strong> a previous swing high, a 52-week high or a session high can all act as breakout levels.</li>
+</ul>
+<p>Support and resistance are <em>zones</em>, not exact lines. Price often pokes slightly beyond a level before reversing. That is one reason false breakouts are so common.</p>
+
+<h2>What counts as a breakout?</h2>
+<p>A breakout happens when price moves beyond support or resistance with enough conviction to suggest the range has ended. Traders define "enough conviction" in different ways, but a useful breakout definition usually includes:</p>
+<ul>
+<li>A clear, well-tested level. Several touches make it more meaningful.</li>
+<li>A move beyond that level by a meaningful margin, not by a fraction of a typical day's movement.</li>
+<li>Ideally, a <strong>close</strong> beyond the level on the chosen timeframe rather than just an intraday spike.</li>
+</ul>
+<p>The key point is to define it <em>in advance</em>. A breakout strategy only works as a strategy if the entry rule is written down before the trade, not judged on the spot.</p>
+
+<h2>False breakouts: the main challenge</h2>
+<p>A <strong>false breakout</strong> (also called a fakeout or failed breakout) happens when price moves through a level, draws traders in, then quickly reverses back into the range. Anyone who bought the upside break is then sitting on a loss, and their stop orders can add fuel to the reversal.</p>
+<p>False breakouts are common for several well-understood reasons:</p>
+<ul>
+<li><strong>Obvious levels attract orders.</strong> Many traders place stops and entry orders just beyond the same visible levels, which can create brief spikes.</li>
+<li><strong>Low participation.</strong> A breakout during thin trading, such as holiday sessions or outside main market hours, may lack follow-through.</li>
+<li><strong>Counter-trend breaks.</strong> A breakout against the larger trend often meets heavy opposing pressure.</li>
+<li><strong>News spikes.</strong> A sudden headline can push price through a level briefly before the market settles.</li>
+</ul>
+<p>You cannot eliminate false breakouts. You can only reduce how often they catch you and limit the damage when they do.</p>
+
+<h2>How to confirm a breakout</h2>
+<p>Confirmation tools try to separate genuine breakouts from false ones. Each one involves a trade-off: waiting for more confirmation usually means a worse entry price and sometimes missing the move altogether.</p>
+<h3>1. Candle close beyond the level</h3>
+<p>Instead of entering the moment price touches a new high, many traders wait for a candle to <em>close</em> beyond resistance (or below support). This filters out many intraday spikes, but the entry is further from the level.</p>
+<h3>2. Volume</h3>
+<p>In markets where volume data is reliable, such as exchange-traded shares and futures, a breakout on noticeably higher-than-average volume is often treated as stronger evidence of real participation. A breakout on weak volume is viewed with more suspicion. In the spot currency market there is no centralised volume figure, so traders there tend to rely more on price behaviour.</p>
+<h3>3. The retest</h3>
+<p>After breaking out, price sometimes comes back to test the old level from the other side. Old resistance may now act as support. Some traders wait for this retest and enter only if the level holds. This can give a tighter stop and better risk/reward, but not every breakout retests, so some strong moves will be missed.</p>
+<h3>4. Range quality and volatility contraction</h3>
+<p>Breakouts from tight, well-defined ranges, especially after a period of shrinking volatility, are often preferred to breakouts from messy, wide ranges. Tools such as Average True Range (ATR) or Bollinger Band width can help measure this objectively.</p>
+
+<table>
+<thead>
+<tr><th>Entry approach</th><th>Advantage</th><th>Disadvantage</th></tr>
+</thead>
+<tbody>
+<tr><td>Enter as price crosses the level</td><td>Best price; never misses a fast move</td><td>Most exposed to false breakouts</td></tr>
+<tr><td>Enter on a candle close beyond the level</td><td>Filters many intraday spikes</td><td>Worse entry price; wider stop</td></tr>
+<tr><td>Enter on a retest of the level</td><td>Often tighter stop and better risk/reward</td><td>Many strong breakouts never retest</td></tr>
+<tr><td>Require a volume increase</td><td>Adds evidence of participation</td><td>Not available or reliable in every market</td></tr>
+</tbody>
+</table>
+
+<h2>Trend context: trade breakouts in the right direction</h2>
+<p>One of the most widely used filters is the larger trend. A breakout <em>in the direction</em> of the prevailing trend, such as an upside break from a consolidation within an uptrend, is generally considered to have better odds than one against it.</p>
+<p>Simple ways traders define trend context include:</p>
+<ul>
+<li>Price above or below a long-term moving average (for example, the 200-day).</li>
+<li>A sequence of higher highs and higher lows (uptrend) or lower highs and lower lows (downtrend) on a higher timeframe.</li>
+<li>Checking that the breakout on a lower timeframe agrees with the direction of a higher timeframe.</li>
+</ul>
+<p>A trend filter reduces the number of trades, but it tends to remove the ones that swim hardest against the current.</p>
+
+<h2>Where to put the stop-loss in a breakout trade</h2>
+<p>The stop-loss answers one question: <em>at what point is the breakout idea clearly wrong?</em> For a breakout, the logical answer is usually when price returns well inside the old range.</p>
+<p>Common stop placements:</p>
+<ul>
+<li><strong>Just inside the range:</strong> below the broken resistance (for a long) by a buffer, so normal noise or a retest does not trigger it.</li>
+<li><strong>Below the breakout candle:</strong> under the low of the candle that broke out.</li>
+<li><strong>Volatility-based:</strong> a multiple of ATR away from the entry, which adjusts the stop to current market conditions.</li>
+<li><strong>Beyond the opposite side of the range:</strong> the widest and most conservative option, mostly used for narrow ranges.</li>
+</ul>
+<p>A stop that is too tight gets hit by ordinary fluctuation. A stop that is too wide makes each loss large. In both cases, <strong>position size</strong> should be calculated from the stop distance so that the amount at risk per trade stays fixed.</p>
+
+<h2>Setting the target</h2>
+<p>Breakout traders use several approaches to taking profit:</p>
+<ul>
+<li><strong>Measured move:</strong> project the height of the range from the breakout point. A range 10 points tall that breaks upward implies a first target 10 points above resistance. It is a rule of thumb, not a prediction.</li>
+<li><strong>Next support or resistance level:</strong> take profit before the next obvious barrier.</li>
+<li><strong>Fixed reward-to-risk multiple:</strong> for example, a target at twice the distance to the stop.</li>
+<li><strong>Trailing stop:</strong> no fixed target. The stop follows price higher (for example, below recent swing lows or a moving average), so the trade can run while the move continues.</li>
+</ul>
+<p>Many breakout systems combine these, taking partial profit at a measured target and trailing the rest.</p>
+
+<h2>Risk/reward and why breakout strategies have lower win rates</h2>
+<p>It is common for breakout strategies to lose more often than they win. That surprises many beginners, but it is built into the logic of the approach:</p>
+<ul>
+<li>Many breakouts fail, so a meaningful share of trades will be stopped out for small losses.</li>
+<li>The trades that work can run much further than the initial risk, especially when a new trend develops.</li>
+</ul>
+<p>So the strategy depends on the <strong>relationship between win rate and the average size of wins versus losses</strong>, not on being right most of the time.</p>
+<h3>The break-even win rate</h3>
+<p>Before costs, the minimum win rate needed to break even depends on the reward-to-risk ratio:</p>
+<table>
+<thead>
+<tr><th>Reward-to-risk ratio</th><th>Break-even win rate (before costs)</th></tr>
+</thead>
+<tbody>
+<tr><td>1:1</td><td>50%</td></tr>
+<tr><td>1.5:1</td><td>40%</td></tr>
+<tr><td>2:1</td><td>33.3%</td></tr>
+<tr><td>3:1</td><td>25%</td></tr>
+</tbody>
+</table>
+<p>The formula is simple: break-even win rate = 1 ÷ (1 + reward-to-risk). In practice, spreads, commissions and <strong>slippage</strong> raise this figure. Slippage is a particular issue for breakouts, because orders are often filled during fast moves at a worse price than intended.</p>
+<h3>The psychological cost</h3>
+<p>A lower win rate means losing streaks are a normal part of the strategy. Even a sound breakout system can produce many losses in a row. Traders who abandon their rules after a run of losses, or who take profits too early to "feel right", often remove the large winners the strategy needs to work.</p>
+
+<h2>A simple worked example (hypothetical numbers)</h2>
+<p>The numbers below are round and purely illustrative. They do not describe any real market or expected result.</p>
+<h3>The setup</h3>
+<ul>
+<li>A market has traded between <strong>90 (support)</strong> and <strong>100 (resistance)</strong> for several weeks. The range height is 10.</li>
+<li>The longer-term trend is up: price is above its long-term moving average.</li>
+<li>A daily candle closes at <strong>102</strong>, above resistance, on higher-than-average volume.</li>
+</ul>
+<h3>The plan</h3>
+<ul>
+<li><strong>Entry:</strong> 102</li>
+<li><strong>Stop-loss:</strong> 98, back inside the old range, where the breakout idea is clearly failing. Risk per unit = 4.</li>
+<li><strong>Target:</strong> measured move of 10 from resistance = 110. Reward per unit = 8.</li>
+<li><strong>Reward-to-risk:</strong> 8 ÷ 4 = <strong>2:1</strong>.</li>
+</ul>
+<h3>Position sizing</h3>
+<p>Suppose a hypothetical account of £10,000 and a rule of risking 1% per trade, which is £100. With a risk of 4 per unit, the position size is £100 ÷ 4 = 25 units. If the stop is hit, the loss is about £100 (plus costs and any slippage). If the target is reached, the gain is about 25 × 8 = £200.</p>
+<h3>Over a series of trades</h3>
+<p>Imagine 10 such trades with a 40% win rate:</p>
+<ul>
+<li>4 winners × £200 = £800</li>
+<li>6 losers × £100 = £600</li>
+<li>Net result before costs: <strong>+£200</strong></li>
+</ul>
+<p>Now the same 10 trades with a 30% win rate: 3 × £200 = £600 against 7 × £100 = £700, a <strong>loss of £100</strong>. A modest change in win rate, or costs creeping up, can turn a positive result negative. That is why testing, discipline and realistic cost assumptions matter so much.</p>
+
+<h2>Common breakout trading mistakes</h2>
+<ul>
+<li><strong>Chasing:</strong> entering long after the breakout has already run far, leaving a poor risk/reward.</li>
+<li><strong>Trading every level:</strong> treating minor, poorly defined levels as meaningful.</li>
+<li><strong>Ignoring context:</strong> buying upside breakouts in a clear downtrend, or trading during thin, illiquid hours.</li>
+<li><strong>Moving the stop:</strong> widening the stop when price comes back into the range, which turns a small planned loss into a large one.</li>
+<li><strong>Oversizing:</strong> risking too much per trade, so a normal losing streak does serious damage.</li>
+<li><strong>Ignoring costs and slippage:</strong> especially on short timeframes, where they can absorb much of the edge.</li>
+</ul>
+
+<h2>Manual vs automated breakout trading</h2>
+<p>Breakout strategies suit rules-based execution because the entry, stop, target and position size can all be defined in advance. Some traders use alerts or pending orders, such as buy-stop orders just above resistance, while others use fully automated systems. Automated approaches can help with consistency and remove hesitation, but they do not remove market risk. They can still suffer losing streaks, slippage and technical issues, and a strategy that tested well on past data may not perform the same way in future.</p>
+<p>Some automated services, such as Cortex Automation, are built around waiting for strong breakouts and applying predefined risk on each trade, with client funds held in the client's own broker account. As with any approach, results vary and losses are possible.</p>
+
+<h2>Key risks to keep in mind</h2>
+<ul>
+<li>False breakouts are frequent, and losing streaks are normal for this style.</li>
+<li>Gaps and fast markets can push fills well beyond the planned stop, so actual losses can exceed the intended risk.</li>
+<li>Leveraged products such as CFDs, spread bets and futures magnify both gains and losses.</li>
+<li>Back-tested or historical results do not guarantee future performance.</li>
+</ul>
+
+<p><em>This article is general information for educational purposes only and is not financial advice. Trading involves risk, and you can lose money. Past performance does not guarantee future results. Consider your own circumstances and, if needed, seek independent advice.</em></p>
+    <h2>Frequently asked questions</h2>
+    <h3>What is a breakout in trading?</h3><p>A breakout is when price moves decisively beyond a defined support or resistance level, often the edge of a trading range, suggesting the balance between buyers and sellers has shifted and a new directional move may follow.</p><h3>How do you avoid false breakouts?</h3><p>You cannot avoid them completely. Traders reduce them by waiting for a candle close beyond the level, looking for higher volume where it is reliable, waiting for a retest, trading in the direction of the larger trend and avoiding thin, illiquid periods.</p><h3>Where should I put my stop-loss on a breakout trade?</h3><p>A common approach is to place the stop back inside the old range, with a buffer beyond the broken level, or below the breakout candle, or at a multiple of ATR. Then size the position so the amount at risk per trade stays fixed.</p><h3>Why do breakout strategies have a low win rate?</h3><p>Many breakouts fail and are stopped out for small losses, while the successful ones can run several times the initial risk. A breakout strategy can therefore lose more often than it wins and still be viable, but only if winners are clearly larger than losers after costs.</p><h3>What is a good risk/reward ratio for breakout trading?</h3><p>Many breakout traders aim for at least 2:1, which needs a win rate above roughly 33% to break even before costs. There is no universally correct ratio. It depends on the strategy, the market and trading costs.</p><h3>Is breakout trading suitable for beginners?</h3><p>The concept is easy to understand, but executing it well takes discipline, strict risk management and acceptance of losing streaks. Beginners should practise with small sizes or a demo account and understand that losses are part of the process.</p>
+    <div class="note" style="margin-top:40px"><p class="small">Want to see how an automated system works, with the money in your own account? <a href="/en/#performance"><strong>See results and simulator →</strong></a></p></div>
+    <h2>Related articles</h2>
+    <ul><li><a href="/en/blog/how-to-diversify-investments.html">How to Diversify Investments: A Step-by-Step Guide to Building a Balanced Portfolio</a></li><li><a href="/en/blog/investing-monthly-pound-cost-averaging.html">Investing Monthly: How to Invest a Fixed Amount Every Month</a></li><li><a href="/en/blog/what-is-forex-beginners-guide.html">What Is Forex? A Beginner&#x27;s Guide to the Currency Market</a></li><li><a href="/en/blog/automated-trading-how-it-works-risks.html">Automated Trading: How It Works, the Real Risks and How to Evaluate a Service</a></li></ul>
+  </div>
+</article>
+</main>
+<footer class="foot">
+  <div class="wrap">
+    <p class="micro" style="max-width:80ch;margin-bottom:18px">General information, not financial advice. Past performance does not guarantee future results. All investing involves risk of capital loss.</p>
+    <div class="foot__bar" style="border-top:0">
+      <span class="micro">© 2026 Cortex Automation. All rights reserved.</span>
+      <nav aria-label="Legal">
+        <a href="/en/">Home</a>
+        <a href="/en/blog/">Blog</a>
+        <a href="/en/termos.html">Terms and Conditions</a>
+        <a href="/en/privacidade.html">Privacy</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+<a href="#" class="wa" data-wa aria-label="WhatsApp"><svg width="27" height="27" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Z"/></svg></a>
+<script src="/js/main.js" defer></script>
+<script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('.langsel a');if(a)try{localStorage.setItem('lang',a.getAttribute('data-lang'))}catch(x){}});</script>
+</body>
+</html>
