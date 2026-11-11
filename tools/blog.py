@@ -209,6 +209,7 @@ def cabeca(lang, titulo, descricao, caminhos, tipo, jsonld):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&display=swap">
 <link rel="stylesheet" href="/css/style.css">
+<style>.doc table{{width:100%;border-collapse:collapse;margin:26px 0;font-size:15px}}.doc th,.doc td{{padding:11px 14px;text-align:left;border-bottom:1px solid rgba(255,255,255,.12)}}.doc thead th{{color:#fff;font-weight:700;border-bottom:2px solid rgba(46,224,138,.55)}}.doc tbody tr:nth-child(odd){{background:rgba(255,255,255,.035)}}@media(max-width:600px){{.doc table{{font-size:13px}}.doc th,.doc td{{padding:8px 8px}}}}</style>
 <script type="application/ld+json">{json.dumps(jsonld, ensure_ascii=False)}</script>
 </head>
 <body>
