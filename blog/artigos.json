@@ -148,5 +148,15 @@
    "fr": "drawdown-definition-et-calcul",
    "es": "que-es-el-drawdown"
   }
+ },
+ {
+  "id": "o-que-e-a-cortex-automation",
+  "data": "2026-11-11",
+  "slugs": {
+   "pt": "o-que-e-a-cortex-automation",
+   "en": "what-is-cortex-automation",
+   "fr": "qu-est-ce-que-cortex-automation",
+   "es": "que-es-cortex-automation"
+  }
  }
 ]
