@@ -86,6 +86,21 @@ def main():
         s = s.replace("</head>", bloco + "\n</head>", 1)
         f.write_text(s, encoding="utf-8")
 
+    # Organization: logótipo e nomes alternativos (distingue a marca das outras "Cortex" no Google)
+    for lang in ["pt", "en", "fr", "es"]:
+        f = SITE / ("index.html" if lang == "pt" else f"{lang}/index.html")
+        s = f.read_text(encoding="utf-8")
+
+        def org(m):
+            d = json.loads(m.group(2))
+            for n in d.get("@graph", [d]):
+                if n.get("@type") == "Organization":
+                    n["logo"] = DOM + "/assets/logo.png"
+                    n["alternateName"] = ["Cortex Automation AI", "cortexautomationai", "Cortex Automation trading"]
+            return m.group(1) + json.dumps(d, ensure_ascii=False) + m.group(3)
+        s = re.sub(r'(<script type="application/ld\+json">)(.*?"Organization".*?)(</script>)', org, s, count=1, flags=re.S)
+        f.write_text(s, encoding="utf-8")
+
     for f in list(SITE.glob("*.html")) + list(SITE.glob("*/*.html")):
         if f.name not in ("privacidade.html", "termos.html"):
             continue
