@@ -97,6 +97,7 @@ def main():
                 if n.get("@type") == "Organization":
                     n["logo"] = DOM + "/assets/logo.png"
                     n["alternateName"] = ["Cortex Automation AI", "cortexautomationai", "Cortex Automation trading"]
+                    n["sameAs"] = ["https://www.facebook.com/profile.php?id=61595990747659"]   # página oficial da Cortex no Facebook
             return m.group(1) + json.dumps(d, ensure_ascii=False) + m.group(3)
         s = re.sub(r'(<script type="application/ld\+json">)(.*?"Organization".*?)(</script>)', org, s, count=1, flags=re.S)
         f.write_text(s, encoding="utf-8")
