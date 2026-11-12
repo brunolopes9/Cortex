@@ -15,25 +15,26 @@ TROCAS = {
            ("sem sair da sua conta.", "without leaving your account."),
            ("Trading algorítmico em Bitcoin. Sem taxa de adesão, sem mensalidades. Só ganhamos quando você ganha.",
             "Algorithmic Bitcoin trading. No sign-up fee, no monthly fees. We only earn when you earn."),
-           ("+363,06%", "+363.06%"), ("Desde Janeiro de 2024", "Since January 2024"), ("−9,20%", "−9.20%"),
-           ("Drawdown máximo", "Maximum drawdown"), (">0 €<", ">€0<"), ("Custo de adesão", "Sign-up cost"), ('lang="pt-PT"', 'lang="en"')],
+           ("+271,95%", "+271.95%"), ("Desde Janeiro de 2024", "Since January 2024"), ("−17,60%", "−17.60%"),
+           ("Maior queda", "Largest drop"), (">0 €<", ">€0<"), ("Custo de adesão", "Sign-up cost"), ('lang="pt-PT"', 'lang="en"')],
     "fr": [("Conta real verificada", "Compte réel vérifié"), ("O seu dinheiro a trabalhar 24/7 —", "Votre argent travaille 24h/24 —"),
            ("sem sair da sua conta.", "sans quitter votre compte."),
            ("Trading algorítmico em Bitcoin. Sem taxa de adesão, sem mensalidades. Só ganhamos quando você ganha.",
             "Trading algorithmique en Bitcoin. Sans frais d’adhésion, sans abonnement. Nous ne gagnons que si vous gagnez."),
-           ("+363,06%", "+363,06 %"), ("Desde Janeiro de 2024", "Depuis janvier 2024"), ("−9,20%", "−9,20 %"),
-           ("Drawdown máximo", "Drawdown maximal"), ("Custo de adesão", "Frais d’adhésion"), ('lang="pt-PT"', 'lang="fr"')],
+           ("+271,95%", "+271,95 %"), ("Desde Janeiro de 2024", "Depuis janvier 2024"), ("−17,60%", "−17,60 %"),
+           ("Maior queda", "Plus forte baisse"), ("Custo de adesão", "Frais d’adhésion"), ('lang="pt-PT"', 'lang="fr"')],
     "es": [("Conta real verificada", "Cuenta real verificada"), ("O seu dinheiro a trabalhar 24/7 —", "Su dinero trabajando 24/7 —"),
            ("sem sair da sua conta.", "sin salir de su cuenta."),
            ("Trading algorítmico em Bitcoin. Sem taxa de adesão, sem mensalidades. Só ganhamos quando você ganha.",
             "Trading algorítmico en Bitcoin. Sin cuota de alta, sin mensualidades. Solo ganamos cuando usted gana."),
-           ("Desde Janeiro de 2024", "Desde enero de 2024"), ("Drawdown máximo", "Drawdown máximo"),
+           ("Desde Janeiro de 2024", "Desde enero de 2024"), ("Maior queda", "Mayor caída"),
            ("Custo de adesão", "Coste de alta"), ('lang="pt-PT"', 'lang="es"')],
 }
 
 
 def main():
     src = (SITE / "assets" / "og-source.html").read_text(encoding="utf-8")
+    TROCAS["pt"] = []
     for lang, trocas in TROCAS.items():
         h = src
         for a, b in trocas:
@@ -47,7 +48,9 @@ def main():
             png = Path(tmp) / "og.png"
             subprocess.run([CHROME, "--headless=new", "--disable-gpu", "--hide-scrollbars", "--window-size=1200,630",
                             "--virtual-time-budget=4000", f"--screenshot={png}", f.as_uri()], check=True, capture_output=True)
-            Image.open(png).convert("RGB").crop((0, 0, 1200, 630)).save(SITE / "assets" / f"og-image-{lang}.png", optimize=True)
+            Image.open(png).convert("RGB").crop((0, 0, 1200, 630)).save(SITE / "assets" / ("og-image.png" if lang == "pt" else f"og-image-{lang}.png"), optimize=True)
+        if lang == "pt":
+            print(lang, "ok"); continue
         for pag in (SITE / lang).rglob("*.html"):
             s = pag.read_text(encoding="utf-8")
             n = re.sub(r'(<meta (?:property="og:image"|name="twitter:image") content=")[^"]*og-image\.png(")',

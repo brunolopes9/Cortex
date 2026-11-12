@@ -140,6 +140,46 @@
   }
  },
  {
+  "id": "o-que-e-stop-loss",
+  "data": "2026-11-11",
+  "slugs": {
+   "pt": "o-que-e-stop-loss-guia-iniciantes",
+   "en": "what-is-a-stop-loss",
+   "fr": "qu-est-ce-qu-un-stop-loss",
+   "es": "que-es-stop-loss-como-usarlo"
+  }
+ },
+ {
+  "id": "backtesting",
+  "data": "2026-11-11",
+  "slugs": {
+   "pt": "backtesting-trading-como-testar-estrategia",
+   "en": "backtesting-trading-strategies-guide",
+   "fr": "backtesting-trading-guide-methode",
+   "es": "backtesting-en-trading-guia-practica"
+  }
+ },
+ {
+  "id": "psicologia-do-trading",
+  "data": "2026-11-11",
+  "slugs": {
+   "pt": "psicologia-do-trading-guia-iniciantes",
+   "en": "trading-psychology-for-beginners",
+   "fr": "psychologie-du-trading-guide-debutant",
+   "es": "psicologia-del-trading-guia-principiantes"
+  }
+ },
+ {
+  "id": "conta-financiada",
+  "data": "2026-11-11",
+  "slugs": {
+   "pt": "conta-financiada-trading-como-funciona",
+   "en": "funded-trading-account-explained",
+   "fr": "compte-finance-trading-prop-firm",
+   "es": "cuenta-fondeada-de-trading-como-funciona"
+  }
+ },
+ {
   "id": "o-que-e-drawdown",
   "data": "2026-11-10",
   "slugs": {

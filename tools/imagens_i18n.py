@@ -14,6 +14,14 @@ D = {2024: [-3.16, -6.05, -5.97, 6.38, 3.88, 5.44, 2.05, 14.03, 9.06, 8.57, 10.8
      2026: [4.94, 5.62, 5.67, 9.60, 3.98, 2.64, 1.56, -8.61]}
 DD = {2024: 9.75, 2025: 7.52, 2026: 13.83}   # maior drawdown do ano (da imagem original)
 T = {
+ "pt": {"meses": "JAN FEV MAR ABR MAI JUN JUL AGO SET OUT NOV DEZ".split(), "dec": ",", "pct": "%",
+        "topo": "RESULTADOS REAIS. DISCIPLINA CONSTANTE.", "comp_ano": "LUCRO<br>COMPOSTO", "no_ano": "(NO ANO)",
+        "simples": "LUCRO SIMPLES", "composto": "LUCRO COMPOSTO", "ano": "(NO ANO)", "ate": "(ATÉ AGO)", "dd": "MAIOR DRAWDOWN<br>DO ANO",
+        "total": "TOTAL 32 MESES:", "simp": "SIMPLES", "comj": "COM JURO COMPOSTO", "risco": "1% DE RISCO POR OPERAÇÃO",
+        "t1": "O mesmo capital.", "t2a": "Resultados totalmente ", "t2b": "diferentes.", "sub": "Veja o poder da automação inteligente.",
+        "sem": "SEM CORTEX AUTOMATION", "sem2": "Apenas o seu capital inicial", "com": "COM CORTEX AUTOMATION", "com2": "Capital + resultados do sistema",
+        "de": "DE", "jan": "JANEIRO 2024", "ate2": "ATÉ", "ago": "AGOSTO 2026", "jc": "JURO COMPOSTO", "ini": "Capital inicial",
+        "res": "Resultado com Cortex Automation", "eur": lambda v: "€ " + f"{v:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")},
  "en": {"meses": "JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC".split(), "dec": ".", "pct": "%",
         "topo": "REAL RESULTS. CONSTANT DISCIPLINE.", "comp_ano": "COMPOUNDED<br>PROFIT", "no_ano": "(YEAR)",
         "simples": "SIMPLE PROFIT", "composto": "COMPOUNDED PROFIT", "ano": "(YEAR)", "ate": "(TO AUG)", "dd": "LARGEST DRAWDOWN<br>OF THE YEAR",
@@ -164,7 +172,10 @@ def comparativo(lang):
 
 
 if __name__ == "__main__":
-    for l in T:
-        tabela(l)
+    import sys
+    langs = sys.argv[1:] or [l for l in T if l != "pt"]   # o PT só se regenera quando pedido: py -3 tools/imagens_i18n.py pt
+    for l in langs:
+        if l != "pt":
+            tabela(l)
         comparativo(l)
         print(l, "ok")
