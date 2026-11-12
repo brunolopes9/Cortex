@@ -190,6 +190,16 @@
   }
  },
  {
+  "id": "inflacao-outubro-2026",
+  "data": "2026-11-12",
+  "slugs": {
+   "pt": "inflacao-outubro-2026-portugal",
+   "en": "inflation-portugal-october-2026",
+   "fr": "inflation-portugal-octobre-2026",
+   "es": "inflacion-portugal-octubre-2026"
+  }
+ },
+ {
   "id": "o-que-e-a-cortex-automation",
   "data": "2026-11-11",
   "slugs": {

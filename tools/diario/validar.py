@@ -24,7 +24,7 @@ if set(d.get("lang", {})) != {"pt", "en", "fr", "es"}:
 # slugs e ids já usados
 usados = set()
 for g in (SITE / "tools" / "blog-dados").glob("*.json"):
-    if g == f:
+    if g.resolve() == f.resolve():
         continue
     o = json.loads(g.read_text(encoding="utf-8"))
     usados.add(o["id"])
