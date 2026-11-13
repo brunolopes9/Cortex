@@ -208,5 +208,15 @@
    "fr": "qu-est-ce-que-cortex-automation",
    "es": "que-es-cortex-automation"
   }
+ },
+ {
+  "id": "o-que-e-alavancagem",
+  "data": "2026-11-13",
+  "slugs": {
+   "pt": "o-que-e-alavancagem-trading",
+   "en": "what-is-leverage-in-trading",
+   "fr": "effet-de-levier-trading",
+   "es": "que-es-el-apalancamiento-trading"
+  }
  }
 ]
