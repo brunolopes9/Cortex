@@ -1,0 +1,10 @@
+{
+ "nota": "FONTE ÚNICA dos resultados mensais publicados no site (1% de risco por operação). jan/2024–jan/2026 = teste sobre dados históricos; desde fev/2026 = conta real. Ao fechar um mês, acrescenta-se aqui (tools/diario/mes_atual.py fá-lo sozinho com o valor final das operações fechadas) e corre-se tools/atualizar_numeros.py.",
+ "meses": {
+  "2024": [-3.16, -6.05, -5.97, 6.38, 3.88, 5.44, 2.05, 14.03, 9.06, 8.57, 10.80, -6.26],
+  "2025": [17.58, 4.69, 6.56, 5.70, 0.25, 5.45, -0.21, 1.57, -3.39, 11.99, 12.85, 13.05],
+  "2026": [4.94, 5.62, 5.67, 9.60, 3.98, 2.64, 1.56, -8.61, -0.98, -2.79]
+ },
+ "maior_drawdown_ano": {"2024": 9.75, "2025": 7.52, "2026": 13.83},
+ "maior_queda_seguida": 17.60
+}

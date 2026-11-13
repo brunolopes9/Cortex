@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<title>OG source</title>
+<!-- Ficheiro de origem da imagem Open Graph. Não é publicado.
+     Abrir a 1200x630, capturar e gravar como assets/og-image.png -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Manrope:wght@400;600;700&family=Sora:wght@600;700;800&display=swap">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:1200px;height:630px;overflow:hidden;background:#0A0B0C}
+  .card{
+    position:relative;width:1200px;height:630px;padding:64px 68px;
+    display:flex;flex-direction:column;justify-content:space-between;
+    font-family:Manrope,sans-serif;color:#EDEAE3;overflow:hidden;
+  }
+  .glow{position:absolute;width:900px;height:900px;right:-260px;top:-360px;
+    background:radial-gradient(circle,rgba(46,224,138,.22),rgba(46,224,138,.05) 42%,transparent 66%)}
+  .grid{position:absolute;inset:0;
+    background-image:linear-gradient(rgba(237,234,227,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(237,234,227,.045) 1px,transparent 1px);
+    background-size:60px 60px;
+    -webkit-mask-image:radial-gradient(ellipse at 30% 40%,#000 20%,transparent 76%)}
+  .row{position:relative;display:flex;align-items:center;gap:16px}
+  .row img{width:52px;height:52px}
+  .wm b{display:block;font-family:Sora,sans-serif;font-size:22px;font-weight:700;letter-spacing:.06em;
+    background:linear-gradient(168deg,#fff 10%,#CFD6D3 46%,#8A9490 64%,#fff 96%);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .wm span{display:block;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.3em;color:#2EE08A;margin-top:4px}
+  h1{position:relative;font-family:Sora,sans-serif;font-size:66px;font-weight:700;line-height:1.04;letter-spacing:-.038em;max-width:15ch}
+  h1 em{font-style:normal;color:#2EE08A;text-shadow:0 0 44px rgba(46,224,138,.4)}
+  .sub{position:relative;font-size:21px;color:#A8A9A2;margin-top:20px;max-width:52ch;line-height:1.5}
+  .stats{position:relative;display:flex;gap:52px;align-items:flex-end}
+  .st b{display:block;font-family:'IBM Plex Mono',monospace;font-size:40px;font-weight:500;letter-spacing:-.04em;line-height:1}
+  .st span{display:block;font-size:14px;color:#6F726D;margin-top:9px}
+  .badge{position:relative;display:inline-flex;align-items:center;gap:9px;padding:9px 17px;border:1px solid rgba(46,224,138,.32);
+    background:rgba(46,224,138,.1);border-radius:100px;font-family:'IBM Plex Mono',monospace;font-size:12px;
+    letter-spacing:.13em;text-transform:uppercase;color:#2EE08A;align-self:flex-start;margin-bottom:26px}
+  .badge::before{content:'';width:7px;height:7px;border-radius:50%;background:#2EE08A}
+  .ph{position:relative;font-family:'IBM Plex Mono',monospace;font-size:19px;color:#EDEAE3;letter-spacing:.02em}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="glow"></div><div class="grid"></div>
+
+  <div class="row">
+    <img src="logo.svg" alt="">
+    <span class="wm"><b>CORTEX</b><span>AUTOMATION</span></span>
+  </div>
+
+  <div>
+    <span class="badge">Conta real verificada</span>
+    <h1>O seu dinheiro a trabalhar 24/7 — <em>sem sair da sua conta.</em></h1>
+    <p class="sub">Trading algorítmico em Bitcoin. Sem taxa de adesão, sem mensalidades. Só ganhamos quando você ganha.</p>
+  </div>
+
+  <div class="stats">
+    <div class="st"><b style="color:#2EE08A">+258,03%</b><span>Desde Janeiro de 2024</span></div>
+    <div class="st"><b style="color:#FF6A55">−17,60%</b><span>Maior queda</span></div>
+    <div class="st"><b>0 €</b><span>Custo de adesão</span></div>
+    <div class="st" style="margin-left:auto;text-align:right"><span class="ph">933 938 716</span></div>
+  </div>
+</div>
+</body>
+</html>
