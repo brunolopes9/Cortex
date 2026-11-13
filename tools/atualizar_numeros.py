@@ -109,7 +109,7 @@ def main():
         for x, y in trocas(antes, depois, "pt" if p.startswith("assets") else lang_de(p)):
             s = s.replace(x, y)
         f.write_text(s, encoding="utf-8")
-    for script in ("tools/imagens_i18n.py", "tools/og_i18n.py"):
+    for script in ("tools/imagens_i18n.py", "tools/og_i18n.py", "tools/relatorios.py"):
         subprocess.run([sys.executable, str(SITE / script)], check=True, cwd=SITE)
     print("site atualizado")
 
