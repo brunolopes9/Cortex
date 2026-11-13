@@ -80,7 +80,7 @@ def render(html, w, h, saida):
         f.write_text(html, encoding="utf-8")
         png = Path(tmp) / "p.png"
         subprocess.run([CHROME, "--headless=new", "--disable-gpu", "--hide-scrollbars", f"--window-size={w},{h}",
-                        "--virtual-time-budget=4000", f"--screenshot={png}", f.as_uri()], check=True, capture_output=True)
+                        "--no-sandbox", "--virtual-time-budget=4000", f"--screenshot={png}", f.as_uri()], check=True, capture_output=True)
         Image.open(png).convert("RGB").crop((0, 0, w, h)).save(saida, quality=90)
 
 
