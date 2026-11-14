@@ -190,6 +190,16 @@
   }
  },
  {
+  "id": "euribor-novembro-2026",
+  "data": "2026-11-14",
+  "slugs": {
+   "pt": "euribor-novembro-2026-prestacao-casa",
+   "en": "euribor-november-2026-mortgage-payments",
+   "fr": "euribor-novembre-2026-credit-immobilier",
+   "es": "euribor-noviembre-2026-hipoteca"
+  }
+ },
+ {
   "id": "inflacao-outubro-2026",
   "data": "2026-11-12",
   "slugs": {
