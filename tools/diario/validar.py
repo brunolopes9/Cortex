@@ -59,8 +59,11 @@ for l, a in d.get("lang", {}).items():
     txt = re.sub(r"<[^>]+>", " ", corpo + " " + a.get("lead", "") + " " + " ".join(q.get("q", "") + " " + q.get("a", "") for q in a.get("faq", [])))
     if txt.count("Cortex") > 2:
         erros.append(f"{l}: Cortex mencionada {txt.count('Cortex')} vezes")
-    if re.search(r"(?i)\b(\d+[.,]?\d*\s?%\s+(ao|por) m[eê]s)", txt) and "Cortex" in txt:
-        erros.append(f"{l}: possível número de rentabilidade junto da Cortex")
+    # só conta se o "% ao mês" estiver perto da Cortex (um exemplo genérico de custos noutro parágrafo não conta)
+    for m in re.finditer(r"(?i)\b\d+[.,]?\d*\s?%\s+(ao|por|per|par|al) (m[eê]s|month|mois)", txt):
+        if "Cortex" in txt[max(0, m.start() - 300):m.end() + 300]:
+            erros.append(f"{l}: possível número de rentabilidade junto da Cortex")
+            break
     if l == "pt":
         if re.search(r"\b(?:o|do|ao|no|pelo) [Bb]itcoin\b", txt):
             erros.append("pt: 'o bitcoin' (é 'a bitcoin')")
