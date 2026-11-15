@@ -228,5 +228,15 @@
    "fr": "effet-de-levier-trading",
    "es": "que-es-el-apalancamiento-trading"
   }
+ },
+ {
+  "id": "o-que-e-o-spread",
+  "data": "2026-11-15",
+  "slugs": {
+   "pt": "o-que-e-o-spread-no-trading",
+   "en": "what-is-spread-in-trading",
+   "fr": "qu-est-ce-que-le-spread-trading",
+   "es": "que-es-el-spread-en-trading"
+  }
  }
 ]
