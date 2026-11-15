@@ -1045,6 +1045,14 @@
      ───────────────────────────────────────────────────────────── */
   var VID = 'cortex.vid.v1';
 
+  function interno() {
+    try {
+      var q = /[?&]interno=([01])/.exec(location.search);
+      if (q) localStorage.setItem('cortex.interno', q[1]);
+      return localStorage.getItem('cortex.interno') === '1';
+    } catch (e) { return false; }
+  }
+
   /* O consentimento não é pedido para contarmos a visita — é pedido para
      escrevermos no aparelho de quem nos visita. É essa a distinção que a
      lei faz, e é a que respeitamos aqui:
@@ -1263,7 +1271,7 @@
          Só conta o primeiro da série: quem carrega três vezes seguidas
          já está contado como raiva, e contá-lo outras três vezes aqui
          punha a mesma frustração a pesar quatro vezes. */
-      var clicavel = el.closest('a, button, input, label, select, textarea, summary, [role="button"], [data-open-report], .faq__q');
+      var clicavel = el.closest('a, button, input, label, select, textarea, summary, video, [role="button"], [data-open-report], .faq__q');
       if (!clicavel && !repeticoes && !el.closest('#cookies, .modal__back')) {
         marcar('morto', ondeEstou(el));
       }
@@ -1297,6 +1305,12 @@
     function enviar() {
       if (visita.enviado) return;
       visita.enviado = true;
+
+      /* As visitas da casa e dos robôs não contam: enchiam o painel de
+         «Directo · Computador» e escondiam o que fazem as pessoas de fora.
+         Para marcar um aparelho como da casa: abrir o site com ?interno=1
+         (e ?interno=0 para desfazer). */
+      if (interno() || navigator.webdriver) return;
 
       /* Quem começou a preencher e se foi embora sem deixar contacto
          desistiu nalgum campo. Dizer qual é o que permite corrigi-lo. */

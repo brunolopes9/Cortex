@@ -58,6 +58,13 @@ export default async function handler(req, res) {
      erro na consola de quem está a visitar o site. */
   if (!disponivel()) return res.status(200).json({ ok: true, guardado: false });
 
+  /* Robôs (Google a renderizar, pré-visualizações de links, testes
+     automáticos) não são visitas. */
+  const ua = String(req.headers['user-agent'] || '');
+  if (/bot|crawl|spider|slurp|headless|lighthouse|preview|facebookexternalhit|curl|python|wget|vercel/i.test(ua)) {
+    return res.status(200).json({ ok: true, guardado: false });
+  }
+
   let d = req.body;
   if (typeof d === 'string') { try { d = JSON.parse(d); } catch { d = {}; } }
   d = d || {};

@@ -88,7 +88,11 @@ const ETAPAS = [
   ['Chegou à Performance', chegouA('performance')],
   ['Chegou ao simulador', chegouA('simulador')],
   ['Chegou ao investimento', chegouA('investimento')],
-  ['Abriu o formulário', function (s) { return temEvento(s, 'form', 'aberto') || clicou(s, 'Pedir relatórios'); }],
+  /* O formulário abre-se de vários sítios (topo, relatórios, menu), não
+     só depois do investimento. Por isso, a partir daqui conta-se sobre
+     todas as visitas e não só sobre quem chegou ao investimento — antes
+     ficava sempre a zero mesmo com pedidos de relatórios. */
+  ['Abriu o formulário', function (s) { return temEvento(s, 'form', 'aberto') || clicou(s, 'Pedir relatórios'); }, 'solto'],
   ['Começou a preencher', function (s) { return temEvento(s, 'form', 'começou'); }],
   ['Deixou o contacto', function (s) { return temEvento(s, 'lead') || s.lead === true; }]
 ];
@@ -237,8 +241,8 @@ export function resumir(sessoes) {
   const funil = [];
   let restantes = sessoes;
   let anterior = sessoes.length;
-  for (const [nome, passa] of ETAPAS) {
-    restantes = restantes.filter(passa);
+  for (const [nome, passa, solto] of ETAPAS) {
+    restantes = (solto ? sessoes : restantes).filter(passa);
     const quantos = restantes.length;
     funil.push({
       nome,
