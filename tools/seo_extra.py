@@ -78,7 +78,7 @@ def main():
             "publisher": {"@type": "Organization", "name": "Cortex Automation", "url": DOM + "/"},
         }, {
             "@context": "https://schema.org", "@type": "VideoObject", "name": VIDEO[lang][0], "description": VIDEO[lang][1],
-            "thumbnailUrl": DOM + "/assets/vsl-poster.jpg", "uploadDate": "2026-11-01", "duration": "PT1M",
+            "thumbnailUrl": DOM + "/assets/vsl-poster.jpg", "uploadDate": "2026-11-01T09:00:00+00:00", "duration": "PT1M",
             "contentUrl": video, "embedUrl": base + "#video", "inLanguage": lang,
         }]
         bloco = '<script type="application/ld+json" id="ld-extra">' + json.dumps(ld, ensure_ascii=False) + "</script>"
