@@ -190,6 +190,16 @@
   }
  },
  {
+  "id": "combustiveis-16-novembro-2026",
+  "data": "2026-11-16",
+  "slugs": {
+   "pt": "preco-combustiveis-semana-16-novembro",
+   "en": "fuel-prices-portugal-november-2026",
+   "fr": "prix-carburants-portugal-novembre-2026",
+   "es": "precio-combustible-portugal-noviembre-2026"
+  }
+ },
+ {
   "id": "euribor-novembro-2026",
   "data": "2026-11-14",
   "slugs": {
