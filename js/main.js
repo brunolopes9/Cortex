@@ -1053,6 +1053,20 @@
     } catch (e) { return false; }
   }
 
+  /* Microsoft Clarity (mapas de calor e gravações de sessão), sem cookies:
+     estão desligados no painel do Clarity. Não corre em localhost, nos
+     aparelhos da casa (?interno=1), em robôs nem no /admin. */
+  (function () {
+    var h = location.hostname;
+    if (h === 'localhost' || h === '127.0.0.1' || /^\/admin/.test(location.pathname)) return;
+    if (interno() || navigator.webdriver) return;
+    (function (c, l, a, r, i, t, y) {
+      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+      t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + i;
+      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, 'clarity', 'script', 'zejtavremk');
+  })();
+
   /* O consentimento não é pedido para contarmos a visita — é pedido para
      escrevermos no aparelho de quem nos visita. É essa a distinção que a
      lei faz, e é a que respeitamos aqui:
