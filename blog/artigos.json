@@ -258,5 +258,15 @@
    "fr": "qu-est-ce-qu-un-etf",
    "es": "que-es-un-etf"
   }
+ },
+ {
+  "id": "queda-bitcoin-novembro-2026",
+  "data": "2026-11-18",
+  "slugs": {
+   "pt": "queda-da-bitcoin-novembro-2026",
+   "en": "bitcoin-price-drop-november-2026",
+   "fr": "chute-du-bitcoin-novembre-2026",
+   "es": "caida-del-bitcoin-noviembre-2026"
+  }
  }
 ]
