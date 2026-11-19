@@ -268,5 +268,15 @@
    "fr": "chute-du-bitcoin-novembre-2026",
    "es": "caida-del-bitcoin-noviembre-2026"
   }
+ },
+ {
+  "id": "racio-risco-recompensa",
+  "data": "2026-11-19",
+  "slugs": {
+   "pt": "racio-risco-recompensa-trading",
+   "en": "risk-reward-ratio-trading",
+   "fr": "ratio-risque-rendement-trading",
+   "es": "ratio-riesgo-beneficio-trading"
+  }
  }
 ]
