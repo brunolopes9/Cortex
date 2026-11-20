@@ -220,6 +220,16 @@
   }
  },
  {
+  "id": "juros-credito-habitacao-outubro-2026",
+  "data": "2026-11-20",
+  "slugs": {
+   "pt": "taxa-juro-credito-habitacao-outubro-2026",
+   "en": "mortgage-interest-rate-portugal-october-2026",
+   "fr": "taux-credit-immobilier-portugal-octobre-2026",
+   "es": "tipo-interes-hipotecario-portugal-octubre-2026"
+  }
+ },
+ {
   "id": "o-que-e-a-cortex-automation",
   "data": "2026-11-11",
   "slugs": {
