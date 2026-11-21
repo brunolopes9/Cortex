@@ -260,6 +260,16 @@
   }
  },
  {
+  "id": "o-que-e-um-cfd",
+  "data": "2026-11-21",
+  "slugs": {
+   "pt": "o-que-e-um-cfd",
+   "en": "what-is-a-cfd",
+   "fr": "qu-est-ce-qu-un-cfd",
+   "es": "que-es-un-cfd"
+  }
+ },
+ {
   "id": "o-que-e-um-etf",
   "data": "2026-11-17",
   "slugs": {
