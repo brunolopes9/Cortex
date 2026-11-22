@@ -280,6 +280,16 @@
   }
  },
  {
+  "id": "preco-do-ouro-novembro-2026",
+  "data": "2026-11-22",
+  "slugs": {
+   "pt": "preco-do-ouro-minimo-de-um-ano",
+   "en": "gold-price-one-year-low",
+   "fr": "cours-de-l-or-plus-bas-un-an",
+   "es": "precio-del-oro-minimos-un-ano"
+  }
+ },
+ {
   "id": "queda-bitcoin-novembro-2026",
   "data": "2026-11-18",
   "slugs": {
