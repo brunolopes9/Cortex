@@ -438,14 +438,13 @@
     var cap = $('#cCap'), mon = $('#cMon');
     if (!cap || !mon) return;
 
-    /* A taxa é fixa: é a média mensal dos 34 meses fechados
-       entre Janeiro de 2024 e Outubro de 2026, à escala de 1% de risco
-       por operação (+136,49% somados ÷ 34 = 4,01%).
+    /* A taxa é fixa: é a média mensal do histórico publicado (tools/atualizar_numeros.py atualiza-a,
+       com o mês em curso incluído como provisório), à escala de 1% de risco por operação.
        Até Janeiro de 2026 são resultados de teste sobre dados históricos;
        a partir de Fevereiro de 2026, conta real.
        Não é um campo à escolha do visitante — se fosse, o simulador
        deixava de dizer alguma coisa sobre o sistema. */
-    var TAXA = 0.0401;
+    var TAXA = 0.0398;
 
     var oCap = $('#oCap'), oMon = $('#oMon');
     var oFinal = $('#oFinal'), oGain = $('#oGain');

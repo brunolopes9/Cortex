@@ -18,7 +18,7 @@ SITE = Path(sys.argv[1] if len(sys.argv) > 1 else Path(__file__).resolve().paren
 FONTE = SITE / "tools/dados/resultados.json"
 MESES = SITE / "tools/diario/meses.json"
 PAGINAS = ["index.html", "en/index.html", "fr/index.html", "es/index.html",
-           "termos.html", "en/termos.html", "fr/termos.html", "es/termos.html", "assets/og-source.html"]
+           "termos.html", "en/termos.html", "fr/termos.html", "es/termos.html", "assets/og-source.html", "js/main.js"]
 NOMES = {"pt": "Janeiro Fevereiro Março Abril Maio Junho Julho Agosto Setembro Outubro Novembro Dezembro",
          "en": "January February March April May June July August September October November December",
          "fr": "janvier février mars avril mai juin juillet août septembre octobre novembre décembre",
@@ -35,9 +35,20 @@ def stats(R):
     comp = lambda xs: (eval("*".join(str(1 + x / 100) for x in xs) or "1") - 1) * 100
     ult = anos[-1]
     return {"composto": comp(todos), "simples": sum(todos), "media": sum(todos) / len(todos), "n": len(todos),
+            "media_comp": ((1 + comp(todos) / 100) ** (1 / len(todos)) - 1) * 100,
             "pos": sum(1 for x in todos if x > 0), "final": 2000 * (1 + comp(todos) / 100),
             "ano": int(ult), "ano_simples": sum(R["meses"][ult]), "ano_comp": comp(R["meses"][ult]),
             "ano_pos": sum(1 for x in R["meses"][ult] if x > 0), "ano_n": len(R["meses"][ult]), "mes": len(R["meses"][ult]) - 1}
+
+
+def efetivo(R, prov):
+    """Meses fechados + o mês em curso (provisório) no fim, se seguir o último mês fechado."""
+    R2 = json.loads(json.dumps(R))
+    if prov:
+        lst = R2["meses"].setdefault(prov["mes"][:4], [])
+        if len(lst) == int(prov["mes"][5:]) - 1:
+            lst.append(prov["pct"])
+    return R2
 
 
 def f_pct(v, lang, sinal=True, esp=False):
@@ -56,29 +67,39 @@ def f_eur(v, lang):
 def trocas(a, b, lang):
     """Pares (texto antigo, texto novo) para uma língua."""
     t = []
-    for k in ("composto", "simples", "media", "ano_simples", "ano_comp"):
+    for k in ("composto", "simples", "media", "ano_simples", "ano_comp", "media_comp"):
         for esp in (False, True):
             t.append((f_pct(a[k], lang, esp=esp), f_pct(b[k], lang, esp=esp)))
+        # o francês usa «&nbsp;%» no HTML (23/11: estes ficavam por trocar)
+        t.append((f_pct(a[k], lang).replace("%", "&nbsp;%"), f_pct(b[k], lang).replace("%", "&nbsp;%")))
     t.append((f_eur(a["final"], lang), f_eur(b["final"], lang)))
     t.append((f'data-count="{a["media"]:.2f}"', f'data-count="{b["media"]:.2f}"'))
+    # simulador: taxa = média mensal e prazo máximo = nº de meses do histórico
+    t.append((f"var TAXA = {a['media'] / 100:.4f};", f"var TAXA = {b['media'] / 100:.4f};"))
+    t.append((f'id="cMon" min="3" max="{a["n"]}"', f'id="cMon" min="3" max="{b["n"]}"'))
     # nº de meses e meses positivos (sempre junto da palavra, para não apanhar outros números)
     pal = {"pt": "meses", "en": "months", "fr": "mois", "es": "meses"}[lang]
+    # combinações primeiro: depois de «34 meses» passar a «35 meses», «34 meses, 25 » já não se encontrava (23/11)
+    t.append((f"{a['n']} {pal}, {a['pos']} ", f"{b['n']} {pal}, {b['pos']} "))
+    t.append((f"{a['n']} {pal}, dont {a['pos']} ", f"{b['n']} {pal}, dont {b['pos']} "))
+    t.append((f"{a['pos']} / {a['n']}", f"{b['pos']} / {b['n']}"))
     t.append((f"{a['n']} {pal}", f"{b['n']} {pal}"))
     t.append((f"{a['ano_pos']} / {a['ano_n']}", f"{b['ano_pos']} / {b['ano_n']}"))
     t.append((f"<b>{a['pos']} ", f"<b>{b['pos']} "))
-    t.append((f"{a['n']} {pal}, {a['pos']} ", f"{b['n']} {pal}, {b['pos']} "))
     # último mês do histórico
     ma, mb = NOMES[lang].split()[a["mes"]], NOMES[lang].split()[b["mes"]]
     ya, yb = a["ano"], b["ano"]
     for x, y in [(ma, mb), (ma.capitalize(), mb.capitalize()), (ma.lower(), mb.lower())]:
         t += [(f"{x} de {ya}", f"{y} de {yb}"), (f"{x} {ya}", f"{y} {yb}"), (f"t&eacute; {x}", f"t&eacute; {y}"), (f"té {x}", f"té {y}"),
-              (f"to {x}", f"to {y}"), (f"en {x}", f"en {y}"), (f"’en {x}", f"’en {y}"), (f"&rsquo;en {x}", f"&rsquo;en {y}"), (f"asta {x}", f"asta {y}")]
+              (f"to {x}", f"to {y}"), (f"en {x}", f"en {y}"), (f"’en {x}", f"’en {y}"), (f"&rsquo;en {x}", f"&rsquo;en {y}"), (f"asta {x}", f"asta {y}"),
+              (f"'à {x}", f"'à {y}"), (f"’à {x}", f"’à {y}"), (f"&rsquo;à {x}", f"&rsquo;à {y}")]
     return [(x, y) for x, y in t if x != y]
 
 
 def main():
     R = json.loads(FONTE.read_text(encoding="utf-8"))
     est = json.loads(MESES.read_text(encoding="utf-8")) if MESES.exists() else {}
+    antes = stats(efetivo(R, R.get("provisorio_no_site")))   # o que as páginas mostram agora
     novos = []
     for mes, r in sorted(est.items()):
         if not r.get("fechado"):
@@ -91,11 +112,12 @@ def main():
             print(f"AVISO: {mes} não segue o último mês da fonte ({ano}: {len(lst)} meses) — não mexo"); return
         novos.append((mes, r["pct"]))
         lst.append(r["pct"])
-    if not novos:
-        print("sem meses novos fechados"); return
-    antes = stats(json.loads(FONTE.read_text(encoding="utf-8")))
-    depois = stats(R)
-    print("novos:", novos, "| composto", round(antes["composto"], 2), "->", round(depois["composto"], 2))
+    aberto = next(({"mes": m, "pct": r["pct"]} for m, r in sorted(est.items()) if not r.get("fechado")), None)
+    R["provisorio_no_site"] = aberto
+    depois = stats(efetivo(R, aberto))
+    if not novos and all(round(antes[k], 2) == round(depois[k], 2) for k in antes):
+        print("sem alterações nos totais"); return
+    print("novos:", novos, "| em curso:", aberto, "| composto", round(antes["composto"], 2), "->", round(depois["composto"], 2))
     if os.environ.get("DRY"):
         for p in PAGINAS:
             print(p, trocas(antes, depois, lang_de(p))[:6])

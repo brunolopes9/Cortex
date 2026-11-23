@@ -1,8 +1,10 @@
 {
  "2026-11": {
-  "pct": 4.57,
+  "pct": 2.9,
+  "pct_conta": 4.35,
   "ate": "2026-11-23",
   "n": 200,
+  "saldo_inicio": 1383.03,
   "fechado": false
  }
 }

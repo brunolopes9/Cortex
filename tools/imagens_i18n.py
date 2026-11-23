@@ -13,6 +13,9 @@ SITE = Path(__file__).resolve().parent.parent
 CHROME = next((c for c in (r"C:\Program Files\Google\Chrome\Application\chrome.exe", shutil.which("chromium"),
                             shutil.which("chromium-browser"), shutil.which("google-chrome")) if c and Path(c).exists()), "chromium")
 _R = json.loads((SITE / "tools/dados/resultados.json").read_text(encoding="utf-8"))   # FONTE ÚNICA
+_P = _R.get("provisorio_no_site")    # mês em curso (provisório), o mesmo que as páginas mostram
+if _P and len(_R["meses"].get(_P["mes"][:4], [])) == int(_P["mes"][5:]) - 1:
+    _R["meses"].setdefault(_P["mes"][:4], []).append(_P["pct"])
 D = {int(a): v for a, v in _R["meses"].items()}
 DD = {int(a): v for a, v in _R["maior_drawdown_ano"].items()}
 ANO_F = max(D)                      # último ano com dados

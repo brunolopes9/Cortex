@@ -19,6 +19,7 @@ L = ZoneInfo("Europe/Lisbon")
 ESTADO = SITE / "tools/diario/meses.json"
 BASE_ULTIMO = "2026-10"          # último mês já escrito à mão no gráfico (Out/2026)
 K = 52.7 / 9.60                  # escala das barras: +9,60% = 52,7% de altura
+ESCALA_CONTA = 1.5               # a conta real opera a 1,5% de risco; o site publica tudo à escala de 1% (termos §6)
 
 ROT = {"pt": "Jan Fev Mar Abr Mai Jun Jul Ago Set Out Nov Dez", "en": "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec",
        "fr": "Janv Févr Mars Avr Mai Juin Juil Août Sept Oct Nov Déc", "es": "Ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic"}
@@ -39,12 +40,25 @@ def fmt(v, lang):
     return ("+" if v >= 0 else "−") + s + ("&nbsp;%" if lang == "fr" else "%")
 
 
-def calcular(trades, mes):
-    t = sorted([x for x in trades if datetime.fromtimestamp(x["close_utc"], L).strftime("%Y-%m") == mes], key=lambda x: x["close_utc"])
+def _mes(x):
+    return datetime.fromtimestamp(x["close_utc"], L).strftime("%Y-%m")
+
+
+def calcular(feed, mes, antes=None):
+    """Resultado do mês = (saldo agora − lucros fechados depois do mês − saldo no início do mês) ÷ saldo no início do mês.
+    O feed só traz as últimas 200 operações (23/11: o mês já tinha 264), por isso o saldo do início do mês fica guardado
+    em meses.json («saldo_inicio») enquanto o feed ainda apanha a 1.ª operação do mês."""
+    trades = feed["trades"]
+    t = sorted([x for x in trades if _mes(x) == mes], key=lambda x: x["close_utc"])
     if not t:
         return None
-    return {"pct": round(sum(x["profit"] for x in t) / t[0]["balance_before"] * 100, 2),
-            "ate": datetime.fromtimestamp(t[-1]["close_utc"], L).strftime("%Y-%m-%d"), "n": len(t)}
+    cobre = any(_mes(x) < mes for x in trades)   # o feed começa antes do mês: tem a 1.ª operação dele
+    ini = t[0]["balance_before"] if cobre else ((antes or {}).get("saldo_inicio") or t[0]["balance_before"])
+    depois = sum(x["profit"] for x in trades if _mes(x) > mes)
+    lucro = feed["balance"] - depois - ini
+    conta = lucro / ini * 100
+    return {"pct": round(conta / ESCALA_CONTA, 2), "pct_conta": round(conta, 2), "ate": datetime.fromtimestamp(t[-1]["close_utc"], L).strftime("%Y-%m-%d"),
+            "n": len(t), "saldo_inicio": round(ini, 2)}
 
 
 def main():
@@ -54,7 +68,7 @@ def main():
     for mes in sorted(set(list(est) + [hoje])):
         if mes <= BASE_ULTIMO or est.get(mes, {}).get("fechado"):
             continue
-        r = calcular(feed["trades"], mes)
+        r = calcular(feed, mes, est.get(mes))
         if r:
             est[mes] = dict(r, fechado=mes < hoje)
         elif mes < hoje and mes in est:
