@@ -21,3 +21,4 @@ desktop.ini
 /_*.css
 
 tools/diario/*.txt
+__pycache__/
