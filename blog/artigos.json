@@ -190,6 +190,16 @@
   }
  },
  {
+  "id": "analise-tecnica-ou-fundamental",
+  "data": "2026-11-23",
+  "slugs": {
+   "pt": "analise-tecnica-ou-fundamental",
+   "en": "technical-vs-fundamental-analysis",
+   "fr": "analyse-technique-ou-fondamentale",
+   "es": "analisis-tecnico-o-fundamental"
+  }
+ },
+ {
   "id": "combustiveis-16-novembro-2026",
   "data": "2026-11-16",
   "slugs": {
