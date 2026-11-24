@@ -310,6 +310,16 @@
   }
  },
  {
+  "id": "queda-bolsas-europeias-novembro-2026",
+  "data": "2026-11-24",
+  "slugs": {
+   "pt": "queda-bolsas-europeias-novembro-2026",
+   "en": "european-stocks-fall-november-2026",
+   "fr": "chute-bourses-europeennes-novembre-2026",
+   "es": "caida-bolsas-europeas-noviembre-2026"
+  }
+ },
+ {
   "id": "racio-risco-recompensa",
   "data": "2026-11-19",
   "slugs": {
