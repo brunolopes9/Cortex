@@ -290,6 +290,16 @@
   }
  },
  {
+  "id": "ordem-limite-ou-ordem-de-mercado",
+  "data": "2026-11-25",
+  "slugs": {
+   "pt": "ordem-limite-ou-ordem-de-mercado",
+   "en": "limit-order-vs-market-order",
+   "fr": "ordre-cours-limite-ou-au-marche",
+   "es": "orden-limitada-u-orden-de-mercado"
+  }
+ },
+ {
   "id": "preco-do-ouro-novembro-2026",
   "data": "2026-11-22",
   "slugs": {
