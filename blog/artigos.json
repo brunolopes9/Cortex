@@ -200,6 +200,16 @@
   }
  },
  {
+  "id": "avaliacao-bancaria-habitacao-outubro-2026",
+  "data": "2026-11-26",
+  "slugs": {
+   "pt": "avaliacao-bancaria-habitacao-recorde-outubro",
+   "en": "portugal-bank-appraisal-value-record-october",
+   "fr": "evaluation-bancaire-portugal-record-octobre",
+   "es": "tasacion-bancaria-portugal-record-octubre"
+  }
+ },
+ {
   "id": "combustiveis-16-novembro-2026",
   "data": "2026-11-16",
   "slugs": {
